@@ -133,6 +133,15 @@ def init_state() -> None:
     if "terrain_profile" not in st.session_state:
         st.session_state.terrain_profile = "High Fidelity (512 MB)"
 
+    if "depth_signature" not in st.session_state:
+        st.session_state.depth_signature = None
+
+    if "last_depth_slider_signature" not in st.session_state:
+        st.session_state.last_depth_slider_signature = None
+
+    if "last_score_slider_signature" not in st.session_state:
+        st.session_state.last_score_slider_signature = None
+
 
 def append_log(message: str) -> None:
     """Append timestamped terminal message to mission log stream.
@@ -159,7 +168,7 @@ def log_once(key: str, message: str) -> None:
     st.session_state.step_logs.add(key)
 
 
-def decode_upload_to_gray(uploaded_file) -> tuple[np.ndarray, int]:
+def decode_upload_to_gray(uploaded_file) -> tuple[np.ndarray, int, str | None]:
     """Decode uploaded image bytes into grayscale array.
 
     Computer vision note:
@@ -170,14 +179,26 @@ def decode_upload_to_gray(uploaded_file) -> tuple[np.ndarray, int]:
         uploaded_file: Streamlit uploaded file object.
 
     Returns:
-        Tuple of (grayscale image, file size bytes).
+        Tuple of (grayscale image, file size bytes, optional resize note).
     """
 
     data = np.frombuffer(uploaded_file.read(), dtype=np.uint8)
     img = cv2.imdecode(data, cv2.IMREAD_GRAYSCALE)
     if img is None:
         raise ValueError("Unable to decode uploaded image")
-    return img, len(data)
+
+    resize_note = None
+    h, w = img.shape
+    pixels = int(h * w)
+    max_pixels = 14_000_000
+    if pixels > max_pixels:
+        scale = (max_pixels / float(pixels)) ** 0.5
+        new_w = max(1024, int(round(w * scale)))
+        new_h = max(1024, int(round(h * scale)))
+        img = cv2.resize(img, (new_w, new_h), interpolation=cv2.INTER_AREA)
+        resize_note = f"Large TIFF was resized from {w}x{h} to {new_w}x{new_h} for stable memory usage."
+
+    return img, len(data), resize_note
 
 
 def reset_downstream(start_step: int) -> None:
@@ -195,11 +216,13 @@ def reset_downstream(start_step: int) -> None:
     if start_step <= 5:
         st.session_state.depth = None
         st.session_state.fusion = None
+        st.session_state.depth_signature = None
     if start_step <= 6:
         st.session_state.terrain = None
     if start_step <= 7:
         st.session_state.scoring = None
         st.session_state.hazard_map = None
+        st.session_state.last_score_slider_signature = None
     if start_step <= 8:
         st.session_state.paths = None
 
@@ -349,24 +372,43 @@ def run_cv_detection() -> None:
     )
 
 
-def ensure_depth(theta_deg: float, pixel_scale_m: float) -> bool:
+def ensure_depth(theta_deg: float, pixel_scale_m: float, solar_azimuth_deg: float) -> bool:
     """Run crater depth estimation from current detections.
 
     Args:
         theta_deg: Solar incidence angle.
         pixel_scale_m: Pixel-to-meter scale.
+        solar_azimuth_deg: Solar azimuth controlling shadow arrow direction.
     """
 
     if st.session_state.detection is None:
         return False
 
+    det = st.session_state.detection["detections"]
+    geom_key = tuple((d["x1"], d["y1"], d["x2"], d["y2"]) for d in det[:20])
+    signature = (
+        round(float(theta_deg), 3),
+        round(float(pixel_scale_m), 4),
+        round(float(solar_azimuth_deg), 3),
+        len(det),
+        geom_key,
+    )
+
+    if st.session_state.depth is not None and st.session_state.depth_signature == signature:
+        return True
+
+    if st.session_state.depth_signature is not None and st.session_state.depth_signature != signature:
+        reset_downstream(start_step=6)
+
     rows = estimate_crater_depths(
         image=st.session_state.raw_image,
-        detections=st.session_state.detection["detections"],
+        detections=det,
         solar_incidence_angle_deg=theta_deg,
+        solar_azimuth_deg=solar_azimuth_deg,
         pixel_scale_m=pixel_scale_m,
     )
     st.session_state.depth = rows
+    st.session_state.depth_signature = signature
     st.session_state.completed_steps.add(5)
     return True
 
@@ -513,6 +555,9 @@ def render_sidebar() -> dict[str, Any]:
         theta = st.slider("Solar Incidence Angle θ", min_value=10, max_value=80, value=35, step=1)
         st.caption("Controls illumination geometry for shadow-based depth. Larger angles usually increase estimated depth.")
 
+        solar_azimuth = st.slider("Solar Azimuth φ", min_value=0, max_value=359, value=35, step=1)
+        st.caption("Controls shadow direction in ROI diagnostics. This rotates the depth arrow annotation.")
+
         td = st.slider("Depth Safety Threshold Td (m)", min_value=0.5, max_value=5.0, value=1.8, step=0.1)
         st.caption("Maximum crater depth considered landing-safe. Lower values make safety scoring stricter.")
 
@@ -529,6 +574,7 @@ def render_sidebar() -> dict[str, Any]:
             st.markdown(
                 """
                 - Solar incidence angle changes shadow-to-depth conversion sensitivity.
+                - Solar azimuth rotates shadow-direction arrows used for ROI diagnostics.
                 - Depth threshold shifts SAFE vs HAZARD boundaries.
                 - Gear span affects diameter-based landing feasibility.
                 - Density radius controls how strongly crater clustering is penalized.
@@ -551,8 +597,46 @@ def render_sidebar() -> dict[str, Any]:
             st.session_state.terrain_profile = terrain_profile
             st.session_state.terrain = None
 
-        if st.session_state.file_size_bytes and st.session_state.file_size_bytes > 200 * 1024 * 1024:
-            st.info("Large input detected (>200 MB). High Fidelity (512 MB) or Max Fidelity (1 GB) is recommended.")
+        if st.session_state.file_size_bytes and st.session_state.file_size_bytes > 80 * 1024 * 1024:
+            st.info("Large file detected. 3D profile affects mesh detail, while Streamlit transport limits are configured separately via .streamlit/config.toml.")
+
+        msg_limit = int(st.get_option("server.maxMessageSize"))
+        upload_limit = int(st.get_option("server.maxUploadSize"))
+        if msg_limit < 210 or upload_limit < 210:
+            st.warning(
+                f"Current Streamlit limits are upload={upload_limit} MB and message={msg_limit} MB. "
+                "Restart Streamlit after config changes to apply the 210 MB minimum limits."
+            )
+
+        depth_slider_signature = (
+            round(float(theta), 3),
+            int(solar_azimuth),
+            round(float(pixel_scale), 3),
+        )
+        score_slider_signature = (
+            round(float(td), 3),
+            round(float(gear_span), 3),
+            int(density_radius),
+            round(float(pixel_scale), 3),
+        )
+
+        prev_depth_sig = st.session_state.last_depth_slider_signature
+        prev_score_sig = st.session_state.last_score_slider_signature
+
+        if prev_depth_sig is None:
+            st.session_state.last_depth_slider_signature = depth_slider_signature
+            st.session_state.last_score_slider_signature = score_slider_signature
+        elif prev_depth_sig != depth_slider_signature:
+            reset_downstream(start_step=5)
+            st.session_state.last_depth_slider_signature = depth_slider_signature
+            st.session_state.last_score_slider_signature = score_slider_signature
+            append_log("[PARAM] >> Depth sliders changed; recomputing depth, terrain, scoring, and path outputs.")
+        elif prev_score_sig is None:
+            st.session_state.last_score_slider_signature = score_slider_signature
+        elif prev_score_sig != score_slider_signature:
+            reset_downstream(start_step=7)
+            st.session_state.last_score_slider_signature = score_slider_signature
+            append_log("[PARAM] >> Scoring sliders changed; recomputing scoring and path outputs.")
 
         st.markdown("---")
         enable_fusion = st.toggle("ENABLE MULTI-ANGLE FUSION", value=False)
@@ -569,6 +653,7 @@ def render_sidebar() -> dict[str, Any]:
 
     return {
         "theta": theta,
+        "solar_azimuth": solar_azimuth,
         "td": td,
         "gear_span": gear_span,
         "density_radius": density_radius,
@@ -592,19 +677,22 @@ def step_01_briefing() -> None:
 
     uploader = st.file_uploader(
         "Upload satellite image (optional; synthetic feed is loaded by default)",
-        type=["png", "jpg", "jpeg", "tif"],
+        type=["png", "jpg", "jpeg", "tif", "tiff"],
         key="primary_upload",
     )
 
     if uploader is not None:
         try:
-            img, size_bytes = decode_upload_to_gray(uploader)
+            img, size_bytes, resize_note = decode_upload_to_gray(uploader)
             st.session_state.raw_image = img
             st.session_state.image_name = uploader.name
             st.session_state.file_size_bytes = size_bytes
             st.session_state.synthetic_meta = None
             reset_downstream(start_step=3)
             append_log(f"[UPLOAD] >> New telemetry image acquired: {uploader.name}")
+            if resize_note:
+                st.info(resize_note)
+                append_log(f"[UPLOAD] >> {resize_note}")
         except Exception as exc:
             st.error(f"Upload failed: {exc}")
 
@@ -911,15 +999,25 @@ def step_05_depth(params: dict[str, Any]) -> None:
             st.rerun()
         return
 
-    ensure_depth(theta_deg=params["theta"], pixel_scale_m=params["pixel_scale"])
+    ensure_depth(
+        theta_deg=params["theta"],
+        pixel_scale_m=params["pixel_scale"],
+        solar_azimuth_deg=params["solar_azimuth"],
+    )
     depth = st.session_state.depth
     if depth is None or len(depth["rows"]) == 0:
         st.warning("Depth module could not estimate crater depths from current detections.")
         return
 
     log_once(
-        f"depth_formula_{params['theta']}_{params['pixel_scale']}",
-        f"[DEPTH] >> Formula: {depth['formula']} | theta={params['theta']} deg | pixel_scale={params['pixel_scale']} m/px",
+        f"depth_formula_{params['theta']}_{params['solar_azimuth']}_{params['pixel_scale']}",
+        f"[DEPTH] >> Formula: {depth['formula']} | theta={params['theta']} deg | "
+        f"azimuth={params['solar_azimuth']} deg | pixel_scale={params['pixel_scale']} m/px",
+    )
+
+    st.caption(
+        f"Depth scale factor tan(theta) = {np.tan(np.radians(params['theta'])):.3f}. "
+        f"Arrow direction uses azimuth phi = {params['solar_azimuth']} deg."
     )
 
     st.markdown("### ROI Diagnostic Viewer")
@@ -935,7 +1033,7 @@ def step_05_depth(params: dict[str, Any]) -> None:
 
     df = pd.DataFrame(depth["rows"])
     st.dataframe(
-        df[["crater_id", "shadow_length_px", "solar_angle_deg", "depth_m", "slope_estimate_deg"]],
+        df[["crater_id", "shadow_length_px", "solar_incidence_deg", "solar_azimuth_deg", "depth_m", "slope_estimate_deg"]],
         use_container_width=True,
         hide_index=True,
     )
@@ -959,12 +1057,12 @@ def step_05_depth(params: dict[str, Any]) -> None:
         else:
             second_upload = st.file_uploader(
                 "Upload second-angle image for fusion",
-                type=["png", "jpg", "jpeg", "tif"],
+                type=["png", "jpg", "jpeg", "tif", "tiff"],
                 key="fusion_upload",
             )
             if second_upload is not None:
                 try:
-                    second_image, _ = decode_upload_to_gray(second_upload)
+                    second_image, _, _ = decode_upload_to_gray(second_upload)
                 except Exception as exc:
                     st.warning(f"Secondary upload failed: {exc}")
 
@@ -987,6 +1085,7 @@ def step_05_depth(params: dict[str, Any]) -> None:
                 image=second_image,
                 detections=second_det["detections"],
                 solar_incidence_angle_deg=float(np.clip(params["theta"] + 15, 10, 80)),
+                solar_azimuth_deg=float((params["solar_azimuth"] + 25) % 360),
                 pixel_scale_m=params["pixel_scale"],
             )
 
@@ -1012,10 +1111,13 @@ def step_06_terrain(params: dict[str, Any]) -> None:
     initialization_animation("step06", "TERRAIN")
     st.markdown(f"## {STEP_TITLES[6]}")
 
-    if st.session_state.depth is None or len(st.session_state.depth.get("rows", [])) == 0:
-        if not ensure_depth(theta_deg=params["theta"], pixel_scale_m=params["pixel_scale"]):
-            st.info("Run YOLO detection first in Step 4 to enable terrain reconstruction.")
-            return
+    if not ensure_depth(
+        theta_deg=params["theta"],
+        pixel_scale_m=params["pixel_scale"],
+        solar_azimuth_deg=params["solar_azimuth"],
+    ):
+        st.info("Run YOLO detection first in Step 4 to enable terrain reconstruction.")
+        return
 
     if st.session_state.depth is None or len(st.session_state.depth.get("rows", [])) == 0:
         st.info("Depth estimates required before terrain reconstruction.")
@@ -1084,10 +1186,13 @@ def step_07_scoring(params: dict[str, Any]) -> None:
     initialization_animation("step07", "SCORING")
     st.markdown(f"## {STEP_TITLES[7]}")
 
-    if st.session_state.depth is None or len(st.session_state.depth.get("rows", [])) == 0:
-        if not ensure_depth(theta_deg=params["theta"], pixel_scale_m=params["pixel_scale"]):
-            st.info("Run YOLO detection first in Step 4 to enable safety scoring.")
-            return
+    if not ensure_depth(
+        theta_deg=params["theta"],
+        pixel_scale_m=params["pixel_scale"],
+        solar_azimuth_deg=params["solar_azimuth"],
+    ):
+        st.info("Run YOLO detection first in Step 4 to enable safety scoring.")
+        return
 
     if st.session_state.depth is None or len(st.session_state.depth.get("rows", [])) == 0:
         st.info("Depth estimates required before safety scoring.")
@@ -1223,13 +1328,20 @@ def step_08_path(params: dict[str, Any]) -> None:
     initialization_animation("step08", "PATHFINDER")
     st.markdown(f"## {STEP_TITLES[8]}")
 
-    if st.session_state.scoring is None:
-        ensure_scoring(
-            td=params["td"],
-            gear_span_m=params["gear_span"],
-            density_radius_px=params["density_radius"],
-            pixel_scale_m=params["pixel_scale"],
-        )
+    if not ensure_depth(
+        theta_deg=params["theta"],
+        pixel_scale_m=params["pixel_scale"],
+        solar_azimuth_deg=params["solar_azimuth"],
+    ):
+        st.info("Run YOLO detection first in Step 4 to enable path planning.")
+        return
+
+    ensure_scoring(
+        td=params["td"],
+        gear_span_m=params["gear_span"],
+        density_radius_px=params["density_radius"],
+        pixel_scale_m=params["pixel_scale"],
+    )
 
     if st.session_state.scoring is None:
         st.info("Safety scoring must run before path planning.")
@@ -1294,15 +1406,22 @@ def step_09_report(params: dict[str, Any]) -> None:
     initialization_animation("step09", "REPORT")
     st.markdown(f"## {STEP_TITLES[9]}")
 
-    if st.session_state.scoring is None:
-        ensure_scoring(
-            td=params["td"],
-            gear_span_m=params["gear_span"],
-            density_radius_px=params["density_radius"],
-            pixel_scale_m=params["pixel_scale"],
-        )
-        if st.session_state.scoring is not None:
-            ensure_paths(pixel_scale_m=params["pixel_scale"])
+    if not ensure_depth(
+        theta_deg=params["theta"],
+        pixel_scale_m=params["pixel_scale"],
+        solar_azimuth_deg=params["solar_azimuth"],
+    ):
+        st.info("Run YOLO detection first in Step 4 before generating final report artifacts.")
+        return
+
+    ensure_scoring(
+        td=params["td"],
+        gear_span_m=params["gear_span"],
+        density_radius_px=params["density_radius"],
+        pixel_scale_m=params["pixel_scale"],
+    )
+    if st.session_state.scoring is not None:
+        ensure_paths(pixel_scale_m=params["pixel_scale"])
 
     if st.session_state.scoring is None:
         st.info("Mission report requires at least scoring outputs.")

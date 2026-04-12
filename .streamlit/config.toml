@@ -1,0 +1,4 @@
+[server]
+# Allows large TIFF uploads and larger websocket payloads for high-resolution imagery.
+maxUploadSize = 210
+maxMessageSize = 210

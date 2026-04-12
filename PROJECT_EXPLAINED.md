@@ -1,202 +1,384 @@
-# Project Explained: Autonomous Planetary Landing Site Analyzer
+# Autonomous Planetary Landing Site Analyzer - Full Technical Explanation
 
-This file describes the current implementation in app.py and modules/, including UI behavior, detector controls, slider meaning, and 3D memory profiles.
+This document is a technical walkthrough of what the project computes, how data moves between modules, what arrays are created, what each slider changes, and how cache invalidation works.
 
-## 1) Repository map and responsibilities
+## 1) System Purpose
 
-### Root
+The application ingests a lunar image, enhances contrast, detects crater candidates, estimates crater depth using photometric geometry, reconstructs a terrain depth field, scores landing safety, plans a descent path, and exports mission artifacts.
 
-- app.py
-- Streamlit mission workflow controller.
-- Session state lifecycle, step routing, sidebar controls, and navigation.
-- Integrates all processing modules and UI widgets.
+The pipeline is implemented as a 9-step Streamlit workflow in app.py and functional modules under modules/.
 
-- README.md
-- High-level overview, setup, and behavior summary.
+## 2) Core Data Model
 
-- requirements.txt
-- Runtime dependencies including streamlit, ultralytics, plotly, opencv, and reportlab.
+At runtime, the main data object is a grayscale image array:
 
-### modules/
+- Type: numpy.ndarray
+- Shape: (H, W)
+- Typical dtype: uint8
+- Value range: 0..255
 
-- modules/preprocess.py
-- CLAHE enhancement, Gaussian smoothing, histogram and image stats.
+Major downstream arrays include:
 
-- modules/detector.py
-- Primary detector: YOLO inference using trained crater weights.
-- Comparison detector: CV hybrid (Hough circles plus LoG blobs).
-- Overlay drawing and normalized crater record creation.
-- Default model path is runs/crater_detector_SOTA/weights/best.pt.
+- Enhanced image (CLAHE): uint8, shape (H, W)
+- Smoothed image (Gaussian): uint8, shape (H, W)
+- Shadow mask per crater ROI: uint8 binary mask with values {0, 255}
+- Depth map: float32, shape (H, W)
+- Safety score map: float32, shape (H, W), range 0..100
+- Path cost map: float32, shape (h_ds, w_ds)
 
-- modules/depth.py
-- Photometric depth estimation from crater ROI shadows.
-- Otsu shadow mask, shadow-length extraction, depth and slope estimates.
-- Multi-angle fusion utility with IoU correspondence.
+## 3) Session State and Pipeline Continuity
 
-- modules/terrain3d.py
-- Builds a depth map from crater rows.
-- Creates heatmap, contour, and interactive 3D surface figures.
-- 3D downsample logic supports larger targets than legacy 200-size rendering.
+The app relies on st.session_state to persist outputs across Streamlit reruns.
 
-- modules/scorer.py
-- Safety scoring for each crater.
-- Zone labeling and score map generation.
-- Hazard overlay generation and safety gauge support.
+Key state keys:
 
-- modules/pathfinder.py
-- A* descent path planning on the score-cost map.
-- Returns primary and alternative routes with path metrics.
+- raw_image
+- preprocess
+- detection
+- cv_detection
+- depth
+- terrain
+- scoring
+- paths
+- hazard_map
 
-- modules/reporter.py
-- PDF report generation.
-- PNG export for hazard map and CSV export for crater table.
+Important cache signatures:
 
-### utils/
+- depth_signature: prevents stale depth reuse when theta, azimuth, pixel scale, or detections change.
+- last_depth_slider_signature: tracks depth-related slider values.
+- last_score_slider_signature: tracks scoring-related slider values.
 
-- utils/synthetic.py
-- Synthetic lunar scene generation and metadata.
-- Secondary-angle synthetic view generator for fusion demos.
+When an upstream value changes, reset_downstream(start_step=...) clears all downstream artifacts to force recomputation.
 
-- utils/ui_components.py
-- Shared visual system and mission widgets.
-- HUD rendering, pipeline strip, metric cards, formula blocks, detection badges, and terminal panel.
+## 4) Image Upload, Byte Decoding, and Resolution Mode
 
-## 2) Pipeline behavior by step
+Primary upload is handled in step 1. The app supports:
 
-The app uses TOTAL_STEPS = 9 and persists intermediate outputs in st.session_state.
+- png, jpg, jpeg, tif, tiff
 
-1. Mission Briefing
-- Optional upload or synthetic default feed.
-- Initializes mission context and launch action.
+### 4.1 Byte decoding
 
-2. Raw Image Acquisition
-- Raw feed display.
-- Image stats table and intensity histogram.
+Image bytes are decoded with:
 
-3. Preprocessing and Enhancement
-- CLAHE plus Gaussian smoothing.
-- Side-by-side raw/enhanced/smoothed previews with histograms.
-- Before/after comparison with robust fallback path.
+- data = np.frombuffer(file_bytes, dtype=np.uint8)
+- img = cv2.imdecode(data, cv2.IMREAD_GRAYSCALE)
 
-4. Crater Detection (Manual)
-- No auto-run on entry.
-- Two explicit controls:
-- Run YOLO Detection (primary downstream source).
-- Run CV Detection (comparison source).
-- Displays crater counts, elapsed times, overlays, and speed comparison delta/ratio when both runs exist.
+### 4.2 Keep Original vs Auto-Resize toggle
 
-5. Photometric Depth Estimation
-- Requires YOLO detections.
-- If YOLO has not run, the UI prompts the operator to run YOLO first.
-- Computes per-crater depth and slope, with ROI diagnostics.
+The sidebar toggle Keep Original Upload Resolution controls whether large uploads are resized.
 
-6. 3D Terrain Reconstruction
-- Builds depth map from crater depth rows.
-- Renders heatmap, contour, and interactive 3D surface.
-- Uses profile-based 3D mesh target sizing and memory estimate display.
+- Keep Original ON: decode and preserve full upload resolution.
+- Keep Original OFF: if pixel count exceeds threshold, image is resized for stability.
 
-7. Landing Safety Scoring
-- Scores each crater using depth, diameter feasibility, and local density.
-- Produces SAFE/CAUTION/HAZARD summary and hazard map.
+Current resize threshold logic:
 
-8. Descent Path Planning
-- Runs A* planning on score-derived traversal costs.
-- Produces primary and alternative routes and recommended landing coordinates.
+- max_pixels = 14,000,000
+- if H * W > max_pixels:
+  - scale = sqrt(max_pixels / (H * W))
+  - new_w = round(W * scale)
+  - new_h = round(H * scale)
+  - cv2.resize(..., interpolation=cv2.INTER_AREA)
 
-9. Mission Report Export
-- Final crater table and hazard map.
-- Export package: PDF plus PNG plus CSV.
+The app caches uploaded bytes and filename, then re-decodes from cache when this toggle changes, followed by downstream reset from step 3.
 
-## 3) Sidebar mission controls and why they matter
+## 5) Step-by-Step Technical Computation
+
+## Step 1: Mission briefing and image source
+
+- Either uses synthetic image generator or uploaded file.
+- On upload change, downstream artifacts are invalidated from preprocessing onward.
+
+## Step 2: Raw acquisition and instrumentation
+
+Computes telemetry-style metrics:
+
+- width and height
+- file size in KB
+- mean and standard deviation of intensity
+- min and max intensity
+
+Histogram:
+
+- np.histogram(image.flatten(), bins=64, range=(0, 255))
+- normalized by total count for probability-like visualization.
+
+## Step 3: Preprocessing and enhancement
+
+The preprocess pipeline runs:
+
+1. CLAHE
+2. Gaussian smoothing
+
+### 5.3.1 CLAHE (Contrast Limited Adaptive Histogram Equalization)
+
+CLAHE is local contrast enhancement per tile.
+
+Parameters:
+
+- clip_limit
+- tile_grid_size
+
+Computation concept:
+
+- Partition image into tiles.
+- For each tile, compute histogram h(k).
+- Clip bins above limit and redistribute excess uniformly.
+- Compute local CDF for intensity remapping.
+- Blend neighboring tile mappings by bilinear interpolation.
+
+Why this helps:
+
+- Lunar rims and shadow boundaries are local features; global equalization is weaker.
+- CLAHE boosts local separability for both YOLO/CV detection and shadow segmentation.
+
+### 5.3.2 Gaussian blur
+
+Gaussian smoothing suppresses high-frequency noise using kernel:
+
+- G(x, y) = (1 / (2 * pi * sigma^2)) * exp(-(x^2 + y^2) / (2 * sigma^2))
+
+OpenCV computes a kernel based on sigma and performs convolution.
+
+Why this helps:
+
+- Stabilizes edge/circle extraction and reduces noisy false positives.
+
+### 5.3.3 Before/after blend math
+
+Fallback comparison mode uses per-pixel weighted blend:
+
+- blended = cv2.addWeighted(before, 1 - alpha, after, alpha, 0)
+
+This is direct pixel multiplication and accumulation:
+
+- blended[i, j] = (1 - alpha) * before[i, j] + alpha * after[i, j]
+
+## Step 4: Crater detection (manual YOLO and CV)
+
+Two independent buttons run two detector families.
+
+### 5.4.1 YOLO path
+
+- Uses ultralytics YOLO model loaded from runs/crater_detector_SOTA/weights/best.pt
+- Inference settings include imgsz=416, CPU execution, confidence threshold.
+- Produces xyxy boxes and confidence arrays.
+- Boxes are converted into normalized crater records with center, radius, diameter.
+
+### 5.4.2 CV hybrid path
+
+- Hough circles at multiple scales
+- LoG blob detection
+- Candidate merging and filtering
+
+If image is large, CV path downsamples to max_detection_dim and later rescales detections back to full image coordinates.
+
+Speed comparison section computes:
+
+- elapsed time delta
+- time ratio
+- faster method label
+
+## Step 5: Photometric depth estimation
+
+For each detected crater bounding box:
+
+1. Extract ROI (array slicing)
+2. Segment shadow using Otsu on blurred ROI
+3. Build anti-sun projection axis from azimuth
+4. Project shadow pixels onto axis
+5. Shadow length = max projection - min projection
+6. Convert shadow length to depth
+
+### 5.5.1 Otsu shadow mask
+
+- Blur ROI slightly
+- Otsu threshold chooses split value automatically
+- mask = 255 where pixel is shadow class else 0
+- Morphological open/close cleans mask noise
+
+### 5.5.2 Shadow projection array math
+
+Given shadow pixel coordinates:
+
+- xs, ys = np.where(mask > 0)
+- pts = np.stack([xs, ys], axis=1)
+
+Azimuth vector:
+
+- anti = radians((azimuth + 180) % 360)
+- v = [cos(anti), sin(anti)]
+
+Projection:
+
+- proj = pts @ v
+
+Shadow length in pixels:
+
+- L = max(proj) - min(proj)
+
+### 5.5.3 Depth formula
+
+- depth_m = shadow_length_px * pixel_scale_m / tan(theta_incidence)
+
+Where:
+
+- theta is solar incidence angle from surface normal (depth scale control)
+- azimuth controls arrow direction and projection axis
+
+Also computes slope:
+
+- radius_m = 0.5 * diameter_px * pixel_scale_m
+- slope_deg = degrees(arctan2(depth_m, radius_m))
+
+## Step 6: Terrain reconstruction and 3D rendering
+
+The terrain model builds a continuous depth map from crater rows.
+
+For each crater:
+
+- Center (cx, cy), radius r, depth d
+- sigma = r * 0.62
+- Evaluate local Gaussian crater bowl on a bounded patch
+
+Per-pixel crater contribution:
+
+- crater(y, x) = d * exp(-dist_sq / (2 * sigma^2))
+
+Accumulation:
+
+- depth_map[y0:y1, x0:x1] += crater_patch
+
+Then apply light Gaussian smoothing to depth_map.
+
+### 5.6.1 3D downsample profile
+
+The UI profile maps to target mesh size. Higher profile means larger render map and higher memory use.
+
+The surface rendering uses downsampled depth map for WebGL smoothness and stability.
+
+## Step 7: Landing safety scoring
+
+Each crater receives a score from depth, diameter, and local density.
+
+Current scoring uses continuous penalties:
+
+- depth_scale = depth_threshold_m * 5
+- depth_penalty = 45 * depth_m / (depth_m + depth_scale)
+
+- gear_scale = landing_gear_span_m * 3
+- diameter_penalty = 30 * diameter_m / (diameter_m + gear_scale)
+
+- density_penalty = min(25, neighbors * 4)
+
+Final score:
+
+- score = clip(100 - depth_penalty - diameter_penalty - density_penalty, 0, 100)
+
+Zone mapping:
+
+- SAFE if score >= 70
+- CAUTION if 40 <= score < 70
+- HAZARD if score < 40
+
+This stage also rasterizes crater influence into a dense score map.
+
+### 5.7.1 Score map pixel blending math
+
+For each crater influence field:
+
+- influence = exp(-dist^2 / (2 * (radius * 1.15)^2))
+- local = score_map * (1 - influence) + crater_score * influence
+- score_map = minimum(score_map, local)
+
+This is another key pixel multiplication and weighted blending operation.
+
+## Step 8: Path planning (A*)
+
+Path planning runs on a downsampled score map for speed.
+
+### 5.8.1 Score to cost
+
+- base cost = 1 + (100 - score) / 18
+- extra hazard penalty added for very low score regions
+
+### 5.8.2 A* search
+
+- Graph: 8-connected grid
+- g(n): cumulative traversal cost
+- h(n): Euclidean heuristic to goal
+- f(n) = g(n) + h(n)
+
+Outputs:
+
+- primary path
+- several offset-goal alternative paths
+- path length in meters: path_length_px * pixel_scale_m
+
+## Step 9: Report export
+
+Exports:
+
+- PDF (ReportLab)
+- PNG hazard map
+- CSV crater table
+
+The report includes score summary and recommended landing coordinates.
+
+## 6) Slider-to-Computation Mapping
 
 - Solar Incidence Angle theta
-- Changes shadow geometry used in depth estimation.
+- Affects 1/tan(theta) term in depth formula.
+- Impacts depth, slope, terrain map, scoring, path.
 
-- Depth Safety Threshold Td (m)
-- Sets safety strictness for depth-related hazard penalties.
-
-- Landing Gear Span (m)
-- Controls diameter feasibility relative to lander footprint.
-
-- Crater Density Radius (px)
-- Controls neighborhood radius used in local roughness risk.
+- Solar Azimuth phi
+- Affects projection axis for shadow length measurement.
+- Changes shadow arrow direction and can alter measured L depending on ROI shape.
 
 - Pixel Scale (m/px)
-- Converts pixel distances to metric units used across modules.
+- Converts pixel lengths to meters in depth and path length.
+- Also affects crater diameter in meters for scoring.
+
+- Depth Safety Threshold Td
+- Affects depth penalty curve in scoring.
+
+- Landing Gear Span
+- Affects diameter penalty curve in scoring.
+
+- Crater Density Radius
+- Affects neighbor counts and density penalty in scoring.
 
 - 3D Terrain Memory Profile
-- Balanced (256 MB)
-- High Fidelity (512 MB) default
-- Max Fidelity (1 GB)
-- Adaptive
-- Influences surface mesh downsample target and render memory usage.
+- Affects 3D surface target mesh size and rendering memory footprint.
 
-- Enable Multi-Angle Fusion
-- Allows optional second-view depth fusion in Step 5.
+- Keep Original Upload Resolution
+- Controls whether very large uploads are resized before the full pipeline.
+- Triggers downstream recomputation when changed.
 
-## 4) Detector behavior details
+## 7) Cache Invalidation and Recompute Rules
 
-- YOLO path
-- Implemented in modules/detector.py via detect_craters().
-- Uses trained crater model at runs/crater_detector_SOTA/weights/best.pt.
-- Output stored as st.session_state.detection.
-- This is the downstream source for depth/terrain/scoring/path/report.
+The app intentionally invalidates downstream data when upstream inputs change.
 
-- CV path
-- Implemented via detect_craters_cv() in modules/detector.py.
-- Uses Hough plus LoG crater candidates and quality filtering.
-- Output stored as st.session_state.cv_detection.
-- Used for visual and speed comparison in Step 4.
+Examples:
 
-## 5) Before/after comparison behavior
+- New upload or synthetic regeneration -> reset from step 3.
+- Preprocess parameter change -> reset from step 4.
+- Depth-related slider change -> reset from step 5.
+- Scoring-related slider change -> reset from step 7.
+- Upload resolution mode toggle -> re-decode cached upload bytes and reset from step 3.
 
-- Primary mode
-- Uses streamlit-image-comparison interactive swipe when available.
+This prevents stale visuals and stale metrics.
 
-- Fallback mode
-- If unavailable or runtime-failing, app switches to:
-- side-by-side RAW/SMOOTHED view
-- blend slider for continuous visual interpolation
-- explicit operator notice in UI and telemetry log
+## 8) Memory and Performance Controls
 
-## 6) Navigation behavior
+- Streamlit server upload/message limits are configured in .streamlit/config.toml.
+- Large-upload auto-resize protects memory and interaction latency.
+- CV detector includes max dimension control before detection.
+- Path planning downsamples score map for fast A*.
+- 3D view uses profile-based downsample target.
 
-- The app uses bottom-only navigation arrows for all steps.
-- The previous duplicated top-and-bottom navigation layout has been removed.
+## 9) Practical Presentation Talking Points
 
-## 7) Blur operations currently used
-
-### Operational pipeline blurs
-
-1. Preprocess smoothing
-- modules/preprocess.py
-- Gaussian blur with configurable sigma (sidebar/step controls).
-
-2. CV detector pre-smoothing
-- modules/detector.py
-- Gaussian blur before Hough candidate generation.
-
-3. Depth ROI smoothing before Otsu thresholding
-- modules/depth.py
-- Gaussian blur to stabilize shadow segmentation.
-
-4. Terrain depth-map smoothing
-- modules/terrain3d.py
-- Gaussian blur after crater depression aggregation.
-
-### Synthetic generation blurs
-
-5. Base synthetic terrain smoothing
-- utils/synthetic.py
-
-6. Synthetic texture smoothing
-- utils/synthetic.py
-
-7. Secondary view smoothing
-- utils/synthetic.py
-
-## 8) Notes on large files and memory
-
-- Large uploads can increase reconstruction and rendering cost.
-- 3D surface rendering now uses profile-based target sizing and can exceed the old 200-size mesh behavior.
-- High Fidelity (512 MB) is the default profile and is intended for better detail retention on larger scenes.
+- The pipeline is transparent: every major stage exposes intermediate arrays and plots.
+- Crater depth is physically grounded in shadow geometry, not a black-box depth network.
+- Scoring and path planning are deterministic and auditable.
+- Slider changes are wired to cache invalidation so outputs stay consistent with current controls.

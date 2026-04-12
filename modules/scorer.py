@@ -69,8 +69,8 @@ def score_landing_safety(
     """Compute crater-level landing safety scores and classifications.
 
     Risk model:
-    - Depth penalty: deep craters increase topographic risk.
-    - Diameter penalty: craters wider than gear span can destabilize touchdown.
+    - Depth penalty: larger depth relative to threshold increases risk smoothly.
+    - Diameter penalty: crater width relative to gear span increases risk smoothly.
     - Density penalty: clusters of impacts increase obstacle congestion.
 
     Args:
@@ -93,13 +93,14 @@ def score_landing_safety(
 
         score = 100.0
 
-        if depth_m > depth_threshold_m:
-            over = (depth_m - depth_threshold_m) / max(depth_threshold_m, 0.1)
-            score -= min(45.0, 20.0 + 40.0 * over)
+        # Continuous penalties preserve slider sensitivity even in rough scenes.
+        depth_scale = max(0.2, float(depth_threshold_m) * 5.0)
+        depth_penalty = 45.0 * (depth_m / (depth_m + depth_scale))
+        score -= depth_penalty
 
-        if diameter_m > landing_gear_span_m:
-            over = (diameter_m - landing_gear_span_m) / max(landing_gear_span_m, 0.1)
-            score -= min(30.0, 12.0 + 25.0 * over)
+        gear_scale = max(0.2, float(landing_gear_span_m) * 3.0)
+        diameter_penalty = 30.0 * (diameter_m / (diameter_m + gear_scale))
+        score -= diameter_penalty
 
         score -= min(25.0, neighbors * 4.0)
         score = float(np.clip(score, 0.0, 100.0))

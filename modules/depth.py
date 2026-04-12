@@ -34,7 +34,7 @@ def compute_otsu_shadow_mask(roi: np.ndarray) -> np.ndarray:
     return shadow
 
 
-def measure_shadow_length(mask: np.ndarray, solar_angle_deg: float) -> tuple[float, tuple[int, int], tuple[int, int]]:
+def measure_shadow_length(mask: np.ndarray, solar_azimuth_deg: float) -> tuple[float, tuple[int, int], tuple[int, int]]:
     """Estimate shadow length along opposite solar direction.
 
     Physics note:
@@ -44,7 +44,7 @@ def measure_shadow_length(mask: np.ndarray, solar_angle_deg: float) -> tuple[flo
 
     Args:
         mask: Binary shadow mask.
-        solar_angle_deg: Solar azimuth angle in image plane degrees.
+        solar_azimuth_deg: Solar azimuth angle in image plane degrees.
 
     Returns:
         Tuple of (length_px, point_start, point_end) in ROI coordinates.
@@ -54,7 +54,7 @@ def measure_shadow_length(mask: np.ndarray, solar_angle_deg: float) -> tuple[flo
     if len(xs) < 3:
         return 0.0, (0, 0), (0, 0)
 
-    anti = math.radians((solar_angle_deg + 180.0) % 360.0)
+    anti = math.radians((solar_azimuth_deg + 180.0) % 360.0)
     v = np.array([math.cos(anti), math.sin(anti)], dtype=np.float64)
 
     pts = np.stack([xs.astype(np.float64), ys.astype(np.float64)], axis=1)
@@ -99,6 +99,7 @@ def estimate_crater_depths(
     image: np.ndarray,
     detections: list[dict[str, Any]],
     solar_incidence_angle_deg: float,
+    solar_azimuth_deg: float = 35.0,
     pixel_scale_m: float = 1.0,
 ) -> dict[str, Any]:
     """Estimate depth and slope for each detected crater with ROI diagnostics.
@@ -112,6 +113,7 @@ def estimate_crater_depths(
         image: Grayscale scene image.
         detections: Crater detections with bbox fields.
         solar_incidence_angle_deg: User-specified solar incidence angle.
+        solar_azimuth_deg: User-specified solar azimuth for shadow direction.
         pixel_scale_m: Meters per pixel.
 
     Returns:
@@ -133,7 +135,7 @@ def estimate_crater_depths(
 
         roi = image[y1:y2, x1:x2]
         mask = compute_otsu_shadow_mask(roi)
-        shadow_len, p0, p1 = measure_shadow_length(mask, solar_angle_deg=solar_incidence_angle_deg)
+        shadow_len, p0, p1 = measure_shadow_length(mask, solar_azimuth_deg=solar_azimuth_deg)
 
         depth_m = depth_from_shadow(
             shadow_length_px=shadow_len,
@@ -148,7 +150,7 @@ def estimate_crater_depths(
         cv2.arrowedLine(annotated, p0, p1, (255, 179, 0), 2, tipLength=0.22)
         cv2.putText(
             annotated,
-            f"L={shadow_len:.1f}px",
+            f"L={shadow_len:.1f}px  AZ={solar_azimuth_deg:.0f}deg",
             (6, 14),
             cv2.FONT_HERSHEY_SIMPLEX,
             0.45,
@@ -161,6 +163,8 @@ def estimate_crater_depths(
             "crater_id": det["crater_id"],
             "shadow_length_px": round(float(shadow_len), 3),
             "solar_angle_deg": round(float(solar_incidence_angle_deg), 3),
+            "solar_incidence_deg": round(float(solar_incidence_angle_deg), 3),
+            "solar_azimuth_deg": round(float(solar_azimuth_deg), 3),
             "depth_m": round(float(depth_m), 3),
             "slope_estimate_deg": round(float(slope_deg), 3),
             "confidence": float(det.get("confidence", 0.7)),
