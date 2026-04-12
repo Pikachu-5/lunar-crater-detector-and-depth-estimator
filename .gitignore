@@ -23,6 +23,6 @@ temp/
 *.onnx
 *.tif
 *.tiff
-
+*.png
 # Local metadata/debug exports
 temp_meta.txt
