@@ -1,0 +1,28 @@
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+.venv_train/
+.env
+.streamlit/secrets.toml
+*.log
+
+# Large datasets and generated artifacts
+LU3M6TGT_yolo_format/
+runs/
+temp/
+
+# Local caches
+*.cache
+*.tmp
+
+# Large binary assets (weights and sample captures)
+*.pt
+*.onnx
+*.tif
+*.tiff
+
+# Local metadata/debug exports
+temp_meta.txt
