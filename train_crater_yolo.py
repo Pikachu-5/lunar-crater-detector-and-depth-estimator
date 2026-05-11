@@ -8,11 +8,11 @@ using an Intel Arc GPU via native PyTorch XPU support.
 Usage:
     .venv_train\Scripts\python train_crater_yolo.py
 
-The trained model will be saved to:
-    runs/detect/crater_detector/weights/best.pt
-
-After training, copy best.pt to the project root to replace yolov8n.pt,
-or update detector.py to point to the new weights.
+# The trained model will be saved to:
+#     runs/crater_detector/weights/best.pt
+#
+# After training, copy best.pt to the project root or update
+# modules/detector.py to point to the new weights.
 """
 
 from __future__ import annotations
@@ -59,7 +59,7 @@ def detect_device() -> torch.device:
 # ---------------------------------------------------------------------------
 DATA_YAML    = str(Path(__file__).parent / "LU3M6TGT_yolo_format" / "data.yaml")
 BASE_MODEL   = "yolo11s.pt"           # Start from COCO-pretrained YOLO11s (9.4M params, 47% mAP)
-PROJECT_NAME = "runs/detect"
+PROJECT_NAME = "runs"
 RUN_NAME     = "crater_detector"
 
 # Training hyperparameters — maximize accuracy within 16 GB RAM

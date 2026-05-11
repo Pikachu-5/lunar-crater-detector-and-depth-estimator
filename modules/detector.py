@@ -20,9 +20,7 @@ except Exception:  # pragma: no cover - optional runtime dependency behavior
 
 # --- Path to the trained crater detector weights ---
 _PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DEFAULT_MODEL_PATH = os.path.join(
-    _PROJECT_ROOT, "runs", "crater_detector_SOTA", "weights", "best.pt"
-)
+DEFAULT_MODEL_PATH = os.path.join(_PROJECT_ROOT, "best.pt")
 
 
 @lru_cache(maxsize=1)

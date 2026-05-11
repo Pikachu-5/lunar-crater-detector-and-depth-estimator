@@ -20,6 +20,7 @@ temp/
 
 # Large binary assets (weights and sample captures)
 *.pt
+!best.pt
 *.onnx
 *.tif
 *.tiff

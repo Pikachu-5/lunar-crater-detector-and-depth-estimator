@@ -8,7 +8,7 @@ This project is not just a planetary landing-site analyzer. The core product is 
 
 - Loads a synthetic lunar scene by default, or a user-uploaded grayscale image.
 - Enhances the image with CLAHE and Gaussian smoothing before detection.
-- Runs trained YOLO crater detection from runs/crater_detector_SOTA/weights/best.pt.
+- Runs trained YOLO crater detection from best.pt.
 - Provides a CV comparison detector using Hough circles plus LoG blobs.
 - Estimates crater depth from shadow projection geometry.
 - Reconstructs a terrain depth map and renders 2D and 3D views.
@@ -33,7 +33,7 @@ flowchart TD
 	H --> F
 	A --> UI[utils/ui_components.py\nHUD, cards, comparison widgets]
 
-	D -. uses .-> W[runs/crater_detector_SOTA/weights/best.pt]
+	D -. uses .-> W[best.pt]
 ```
 
 ## Pipeline Overview
@@ -67,11 +67,11 @@ The repository includes a training script for the crater detector:
 python train_crater_yolo.py
 ```
 
-The script expects the LU3M6TGT YOLO-format dataset and trains a YOLO11s-based crater detector. The active app model path is:
+The script expects the LU3M6TGT YOLO-format dataset inside the `LU3M6TGT_yolo_format` folder and trains a YOLO11s-based crater detector. The active app model path is:
 
-- runs/crater_detector_SOTA/weights/best.pt
+- `best.pt`
 
-If you retrain the model and want to use a new checkpoint, keep that path updated in modules/detector.py.
+If you retrain the model and want to use a new checkpoint, copy the new weights to the root directory as `best.pt` or update `modules/detector.py`.
 
 ## Controls That Matter
 
