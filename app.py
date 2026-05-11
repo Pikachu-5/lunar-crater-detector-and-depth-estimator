@@ -1,4 +1,4 @@
-"""Autonomous Planetary Landing Site Analyzer mission-control Streamlit app."""
+"""Lunar Crater Detector + Depth Estimator mission-control Streamlit app."""
 
 from __future__ import annotations
 
@@ -1523,7 +1523,7 @@ def render_navigation(key_prefix: str) -> None:
 def main() -> None:
     """Application entrypoint for mission-control interactive pipeline."""
 
-    st.set_page_config(page_title="Autonomous Planetary Landing Site Analyzer", layout="wide")
+    st.set_page_config(page_title="Lunar Crater Detector + Depth Estimator", layout="wide")
     init_state()
     inject_mission_css()
 
