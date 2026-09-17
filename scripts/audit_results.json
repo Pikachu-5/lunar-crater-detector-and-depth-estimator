@@ -12,147 +12,147 @@
  "app_default_call_equals_seed42": true,
  "B1_warmup_run_excluded": {
   "yolo": {
-   "wall_total": 1.734720099993865,
+   "wall_total": 1.8220034999976633,
    "stages": {
-    "preprocess": 0.0016472999996040016,
-    "detection": 1.2657573999895249,
-    "depth": 0.02441260000341572,
-    "terrain_depth_map": 0.0035611999919638038,
-    "terrain_figures": 0.11857959999179002,
-    "terrain_total": 0.12214079998375382,
-    "scoring": 0.08194240000739228,
-    "astar": 0.23876210000889841
+    "preprocess": 0.0009972000116249546,
+    "detection": 1.3346561000071233,
+    "depth": 0.023193800006993115,
+    "terrain_depth_map": 0.0038911999872652814,
+    "terrain_figures": 0.13954439999361057,
+    "terrain_total": 0.14343559998087585,
+    "scoring": 0.07667110000329558,
+    "astar": 0.2430025000066962
    }
   },
   "synthetic_meta": {
-   "wall_total": 0.9216537000029348,
+   "wall_total": 0.9728340000001481,
    "stages": {
-    "preprocess": 0.0009965000062948093,
-    "detection": 0.00028059999749530107,
-    "depth": 0.0011884999985340983,
-    "terrain_depth_map": 0.0025815999979386106,
-    "terrain_figures": 0.015090199987753294,
-    "terrain_total": 0.017671799985691905,
-    "scoring": 0.07428929999878164,
-    "astar": 0.8270999000087613
+    "preprocess": 0.0011552000069059432,
+    "detection": 0.00027039999258704484,
+    "depth": 0.0017157999973278493,
+    "terrain_depth_map": 0.003578400006517768,
+    "terrain_figures": 0.013737300003413111,
+    "terrain_total": 0.01731570000993088,
+    "scoring": 0.07324199999857228,
+    "astar": 0.8789967999910004
    }
   }
  },
  "B1_timing_raw_s": {
   "yolo": {
    "preprocess": [
-    0.0017226000054506585,
-    0.0009523999906377867,
-    0.0009915999980876222,
-    0.0010520999931031838,
-    0.0009969999955501407
+    0.0010806000063894317,
+    0.0010178000084124506,
+    0.001664699986577034,
+    0.0010323999886168167,
+    0.0009385999874211848
    ],
    "detection": [
-    0.08601179999823216,
-    0.08233280001149978,
-    0.07909270000527613,
-    0.0909038999961922,
-    0.07909689999360126
+    0.09221209998941049,
+    0.08677910000551492,
+    0.08689859999867622,
+    0.09236009999585804,
+    0.08618539999588393
    ],
    "depth": [
-    0.0018044000025838614,
-    0.0018710000003920868,
-    0.0018475000106263906,
-    0.002059099992038682,
-    0.0018337000074097887
+    0.002664800005732104,
+    0.002709099993808195,
+    0.002246399992145598,
+    0.0025840000016614795,
+    0.0028718999965349212
    ],
    "terrain_depth_map": [
-    0.0033101000008173287,
-    0.003103800001554191,
-    0.003445900001679547,
-    0.003444000001763925,
-    0.0036204000061843544
+    0.003423400004976429,
+    0.0035154999932274222,
+    0.0031116000027395785,
+    0.0032202000002143905,
+    0.0034882000036304817
    ],
    "terrain_figures": [
-    0.016928400000324473,
-    0.016484799998579547,
-    0.01704059999610763,
-    0.01786589999392163,
-    0.014826499987975694
+    0.017336699995212257,
+    0.017972999994526617,
+    0.017572199998539872,
+    0.015017300000181422,
+    0.01799020000908058
    ],
    "terrain_total": [
-    0.0202385000011418,
-    0.019588600000133738,
-    0.020486499997787178,
-    0.021309899995685555,
-    0.01844689999416005
+    0.020760100000188686,
+    0.02148849998775404,
+    0.02068380000127945,
+    0.018237500000395812,
+    0.021478400012711063
    ],
    "scoring": [
-    0.08491740000317805,
-    0.08798039999965113,
-    0.08622659998945892,
-    0.092257200012682,
-    0.08685569999215659
+    0.08716310000454541,
+    0.09119569999165833,
+    0.08886479999637231,
+    0.08677840000018477,
+    0.08863470000505913
    ],
    "astar": [
-    0.18650930000876542,
-    0.1863561999925878,
-    0.18017490000056569,
-    0.1836598999943817,
-    0.180718200004776
+    0.19385199999669567,
+    0.18922459999157581,
+    0.1842962999944575,
+    0.19087160000344738,
+    0.18687830000999384
    ]
   },
   "synthetic_meta": {
    "preprocess": [
-    0.0009805000008782372,
-    0.0009595000010449439,
-    0.0010521999938646331,
-    0.0010026999952970073,
-    0.0009368000028189272
+    0.00107709999429062,
+    0.0010231000051135197,
+    0.0009149999968940392,
+    0.0010015000007115304,
+    0.0012697000056505203
    ],
    "detection": [
-    0.0002801999944495037,
-    0.00025910000840667635,
-    0.0002697000018088147,
-    0.0002730999985942617,
-    0.0002643000043462962
+    0.00029209999775048345,
+    0.0002852000034181401,
+    0.0003285999991931021,
+    0.00026879999495577067,
+    0.00028389999351929873
    ],
    "depth": [
-    0.0017987000028369948,
-    0.00220979998994153,
-    0.0011104000004706904,
-    0.001444399997126311,
-    0.0012443000014172867
+    0.0023519999958807603,
+    0.0019767000048886985,
+    0.001739700004691258,
+    0.001931000006152317,
+    0.0024839999969117343
    ],
    "terrain_depth_map": [
-    0.0026396000030217692,
-    0.00261730000784155,
-    0.002360899990890175,
-    0.002365399996051565,
-    0.0025682999985292554
+    0.002630300004966557,
+    0.00293140001303982,
+    0.002550299992435612,
+    0.002303599991137162,
+    0.002526299998862669
    ],
    "terrain_figures": [
-    0.016071799997007474,
-    0.015767700009746477,
-    0.013585900000180118,
-    0.01390200000605546,
-    0.013492799989762716
+    0.015499200002523139,
+    0.014934300008462742,
+    0.014066500007174909,
+    0.013016199998673983,
+    0.014577699999790639
    ],
    "terrain_total": [
-    0.018711400000029244,
-    0.018385000017588027,
-    0.015946799991070293,
-    0.016267400002107024,
-    0.01606109998829197
+    0.018129500007489696,
+    0.017865700021502562,
+    0.01661679999961052,
+    0.015319799989811145,
+    0.017103999998653308
    ],
    "scoring": [
-    0.07718530000420287,
-    0.08015930000692606,
-    0.07365249999566004,
-    0.07617869999376126,
-    0.07565329999488313
+    0.07466089999070391,
+    0.07612900000822265,
+    0.07373829999414738,
+    0.07067069999175146,
+    0.07304490001115482
    ],
    "astar": [
-    0.8278627999970922,
-    0.8313848999969196,
-    0.8780885000014678,
-    0.8294352000084473,
-    0.8538187999947695
+    0.8879503999924054,
+    0.8622781000012765,
+    0.8311909000040032,
+    0.8175879000045825,
+    0.9151865000021644
    ]
   }
  },
@@ -608,12 +608,12 @@
    "yolo_depth_rows": [
     {
      "crater_id": "CR-01",
-     "shadow_length_px": 164.342,
+     "shadow_length_px": 99.863,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 115.073,
-     "slope_estimate_deg": 62.658,
+     "depth_m": 69.925,
+     "slope_estimate_deg": 49.605,
      "confidence": 0.8692474365234375,
      "x1": 14,
      "y1": 79,
@@ -626,12 +626,12 @@
     },
     {
      "crater_id": "CR-02",
-     "shadow_length_px": 100.276,
+     "shadow_length_px": 56.199,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 70.214,
-     "slope_estimate_deg": 62.533,
+     "depth_m": 39.351,
+     "slope_estimate_deg": 47.152,
      "confidence": 0.8522818684577942,
      "x1": 38,
      "y1": 431,
@@ -644,12 +644,12 @@
     },
     {
      "crater_id": "CR-03",
-     "shadow_length_px": 83.564,
+     "shadow_length_px": 46.451,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 58.512,
-     "slope_estimate_deg": 62.469,
+     "depth_m": 32.525,
+     "slope_estimate_deg": 46.841,
      "confidence": 0.8309051394462585,
      "x1": 433,
      "y1": 193,
@@ -662,12 +662,12 @@
     },
     {
      "crater_id": "CR-04",
-     "shadow_length_px": 77.993,
+     "shadow_length_px": 38.749,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 54.611,
-     "slope_estimate_deg": 62.441,
+     "depth_m": 27.132,
+     "slope_estimate_deg": 43.592,
      "confidence": 0.7702561616897583,
      "x1": 155,
      "y1": 275,
@@ -680,12 +680,12 @@
     },
     {
      "crater_id": "CR-05",
-     "shadow_length_px": 93.886,
+     "shadow_length_px": 59.312,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 65.74,
-     "slope_estimate_deg": 62.481,
+     "depth_m": 41.531,
+     "slope_estimate_deg": 50.488,
      "confidence": 0.7589907646179199,
      "x1": 361,
      "y1": 266,
@@ -698,12 +698,12 @@
     },
     {
      "crater_id": "CR-06",
-     "shadow_length_px": 142.877,
+     "shadow_length_px": 79.301,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 100.044,
-     "slope_estimate_deg": 62.649,
+     "depth_m": 55.527,
+     "slope_estimate_deg": 47.017,
      "confidence": 0.7225830554962158,
      "x1": 268,
      "y1": 135,
@@ -716,12 +716,12 @@
     },
     {
      "crater_id": "CR-07",
-     "shadow_length_px": 50.138,
+     "shadow_length_px": 28.591,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 35.107,
-     "slope_estimate_deg": 62.213,
+     "depth_m": 20.02,
+     "slope_estimate_deg": 47.259,
      "confidence": 0.7092379927635193,
      "x1": 253,
      "y1": 426,
@@ -734,12 +734,12 @@
     },
     {
      "crater_id": "CR-08",
-     "shadow_length_px": 175.484,
+     "shadow_length_px": 99.619,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 122.875,
-     "slope_estimate_deg": 62.671,
+     "depth_m": 69.754,
+     "slope_estimate_deg": 47.687,
      "confidence": 0.6920771598815918,
      "x1": 373,
      "y1": 241,
@@ -752,12 +752,12 @@
     },
     {
      "crater_id": "CR-09",
-     "shadow_length_px": 47.353,
+     "shadow_length_px": 23.02,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 33.157,
-     "slope_estimate_deg": 62.175,
+     "depth_m": 16.119,
+     "slope_estimate_deg": 42.648,
      "confidence": 0.6427695751190186,
      "x1": 389,
      "y1": 371,
@@ -770,12 +770,12 @@
     },
     {
      "crater_id": "CR-10",
-     "shadow_length_px": 14.254,
+     "shadow_length_px": 10.977,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 9.98,
-     "slope_estimate_deg": 49.58,
+     "depth_m": 7.686,
+     "slope_estimate_deg": 42.122,
      "confidence": 0.5229388475418091,
      "x1": 484,
      "y1": 91,
@@ -794,9 +794,9 @@
      "roi_h": 119,
      "otsu_threshold": 179.0,
      "shadow_px_before_morph": 6577,
-     "shadow_px_after_morph": 7413,
-     "shadow_length_px_unrounded": 164.3419607155245,
-     "depth_m": 115.073
+     "shadow_px_after_morph": 7078,
+     "shadow_length_px_unrounded": 99.86262445021944,
+     "depth_m": 69.925
     },
     {
      "crater_id": "CR-02",
@@ -804,9 +804,9 @@
      "roi_h": 73,
      "otsu_threshold": 180.0,
      "shadow_px_before_morph": 2128,
-     "shadow_px_after_morph": 3154,
-     "shadow_length_px_unrounded": 100.27645060608273,
-     "depth_m": 70.214
+     "shadow_px_after_morph": 2239,
+     "shadow_length_px_unrounded": 56.198590387989896,
+     "depth_m": 39.351
     },
     {
      "crater_id": "CR-03",
@@ -814,9 +814,9 @@
      "roi_h": 61,
      "otsu_threshold": 175.0,
      "shadow_px_before_morph": 1686,
-     "shadow_px_after_morph": 2008,
-     "shadow_length_px_unrounded": 83.56370883840228,
-     "depth_m": 58.512
+     "shadow_px_after_morph": 1631,
+     "shadow_length_px_unrounded": 46.45119107699714,
+     "depth_m": 32.525
     },
     {
      "crater_id": "CR-04",
@@ -824,9 +824,9 @@
      "roi_h": 57,
      "otsu_threshold": 162.0,
      "shadow_px_before_morph": 1335,
-     "shadow_px_after_morph": 1884,
-     "shadow_length_px_unrounded": 77.99279491584213,
-     "depth_m": 54.611
+     "shadow_px_after_morph": 1180,
+     "shadow_length_px_unrounded": 38.749121796495594,
+     "depth_m": 27.132
     },
     {
      "crater_id": "CR-05",
@@ -834,9 +834,9 @@
      "roi_h": 69,
      "otsu_threshold": 100.0,
      "shadow_px_before_morph": 2408,
-     "shadow_px_after_morph": 2254,
-     "shadow_length_px_unrounded": 93.8863846392336,
-     "depth_m": 65.74
+     "shadow_px_after_morph": 2180,
+     "shadow_length_px_unrounded": 59.31204817768307,
+     "depth_m": 41.531
     },
     {
      "crater_id": "CR-06",
@@ -844,9 +844,9 @@
      "roi_h": 103,
      "otsu_threshold": 142.0,
      "shadow_px_before_morph": 5625,
-     "shadow_px_after_morph": 4983,
-     "shadow_length_px_unrounded": 142.87745706957287,
-     "depth_m": 100.044
+     "shadow_px_after_morph": 4867,
+     "shadow_length_px_unrounded": 79.30139812251949,
+     "depth_m": 55.527
     },
     {
      "crater_id": "CR-07",
@@ -854,9 +854,9 @@
      "roi_h": 37,
      "otsu_threshold": 179.0,
      "shadow_px_before_morph": 527,
-     "shadow_px_after_morph": 833,
-     "shadow_length_px_unrounded": 50.13822530304137,
-     "depth_m": 35.107
+     "shadow_px_after_morph": 564,
+     "shadow_length_px_unrounded": 28.59129643661459,
+     "depth_m": 20.02
     },
     {
      "crater_id": "CR-08",
@@ -864,9 +864,9 @@
      "roi_h": 127,
      "otsu_threshold": 137.0,
      "shadow_px_before_morph": 6042,
-     "shadow_px_after_morph": 9992,
-     "shadow_length_px_unrounded": 175.48378856064477,
-     "depth_m": 122.875
+     "shadow_px_after_morph": 5575,
+     "shadow_length_px_unrounded": 99.61874889576902,
+     "depth_m": 69.754
     },
     {
      "crater_id": "CR-09",
@@ -874,9 +874,9 @@
      "roi_h": 35,
      "otsu_threshold": 138.0,
      "shadow_px_before_morph": 480,
-     "shadow_px_after_morph": 736,
-     "shadow_length_px_unrounded": 47.35276834176129,
-     "depth_m": 33.157
+     "shadow_px_after_morph": 455,
+     "shadow_length_px_unrounded": 23.020382514054443,
+     "depth_m": 16.119
     },
     {
      "crater_id": "CR-10",
@@ -884,21 +884,21 @@
      "roi_h": 17,
      "otsu_threshold": 204.0,
      "shadow_px_before_morph": 164,
-     "shadow_px_after_morph": 117,
-     "shadow_length_px_unrounded": 14.25358558132596,
-     "depth_m": 9.98
+     "shadow_px_after_morph": 89,
+     "shadow_length_px_unrounded": 10.976977404169995,
+     "depth_m": 7.686
     }
    ],
    "yolo_scoring": {
     "rows": [
      {
       "crater_id": "CR-01",
-      "shadow_length_px": 164.342,
+      "shadow_length_px": 99.863,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 115.073,
-      "slope_estimate_deg": 62.658,
+      "depth_m": 69.925,
+      "slope_estimate_deg": 49.605,
       "confidence": 0.8692474365234375,
       "x1": 14,
       "y1": 79,
@@ -910,17 +910,17 @@
       "radius_px": 60,
       "diameter_m": 119.0,
       "neighbor_count": 0,
-      "safety_score": 30.11,
+      "safety_score": 31.98,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-02",
-      "shadow_length_px": 100.276,
+      "shadow_length_px": 56.199,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 70.214,
-      "slope_estimate_deg": 62.533,
+      "depth_m": 39.351,
+      "slope_estimate_deg": 47.152,
       "confidence": 0.8522818684577942,
       "x1": 38,
       "y1": 431,
@@ -932,17 +932,17 @@
       "radius_px": 36,
       "diameter_m": 73.0,
       "neighbor_count": 0,
-      "safety_score": 33.01,
+      "safety_score": 36.27,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-03",
-      "shadow_length_px": 83.564,
+      "shadow_length_px": 46.451,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 58.512,
-      "slope_estimate_deg": 62.469,
+      "depth_m": 32.525,
+      "slope_estimate_deg": 46.841,
       "confidence": 0.8309051394462585,
       "x1": 433,
       "y1": 193,
@@ -954,17 +954,17 @@
       "radius_px": 30,
       "diameter_m": 61.0,
       "neighbor_count": 0,
-      "safety_score": 34.4,
+      "safety_score": 38.15,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-04",
-      "shadow_length_px": 77.993,
+      "shadow_length_px": 38.749,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 54.611,
-      "slope_estimate_deg": 62.441,
+      "depth_m": 27.132,
+      "slope_estimate_deg": 43.592,
       "confidence": 0.7702561616897583,
       "x1": 155,
       "y1": 275,
@@ -976,17 +976,17 @@
       "radius_px": 28,
       "diameter_m": 57.0,
       "neighbor_count": 0,
-      "safety_score": 34.98,
+      "safety_score": 39.82,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-05",
-      "shadow_length_px": 93.886,
+      "shadow_length_px": 59.312,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 65.74,
-      "slope_estimate_deg": 62.481,
+      "depth_m": 41.531,
+      "slope_estimate_deg": 50.488,
       "confidence": 0.7589907646179199,
       "x1": 361,
       "y1": 266,
@@ -998,17 +998,17 @@
       "radius_px": 34,
       "diameter_m": 68.5,
       "neighbor_count": 1,
-      "safety_score": 29.49,
+      "safety_score": 32.08,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-06",
-      "shadow_length_px": 142.877,
+      "shadow_length_px": 79.301,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 100.044,
-      "slope_estimate_deg": 62.649,
+      "depth_m": 55.527,
+      "slope_estimate_deg": 47.017,
       "confidence": 0.7225830554962158,
       "x1": 268,
       "y1": 135,
@@ -1020,17 +1020,17 @@
       "radius_px": 52,
       "diameter_m": 103.5,
       "neighbor_count": 0,
-      "safety_score": 30.82,
+      "safety_score": 33.38,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-07",
-      "shadow_length_px": 50.138,
+      "shadow_length_px": 28.591,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 35.107,
-      "slope_estimate_deg": 62.213,
+      "depth_m": 20.02,
+      "slope_estimate_deg": 47.259,
       "confidence": 0.7092379927635193,
       "x1": 253,
       "y1": 426,
@@ -1042,17 +1042,17 @@
       "radius_px": 18,
       "diameter_m": 37.0,
       "neighbor_count": 0,
-      "safety_score": 39.41,
-      "zone": "HAZARD"
+      "safety_score": 44.18,
+      "zone": "CAUTION"
      },
      {
       "crater_id": "CR-08",
-      "shadow_length_px": 175.484,
+      "shadow_length_px": 99.619,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 122.875,
-      "slope_estimate_deg": 62.671,
+      "depth_m": 69.754,
+      "slope_estimate_deg": 47.687,
       "confidence": 0.6920771598815918,
       "x1": 373,
       "y1": 241,
@@ -1064,17 +1064,17 @@
       "radius_px": 64,
       "diameter_m": 127.0,
       "neighbor_count": 1,
-      "safety_score": 25.81,
+      "safety_score": 27.88,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-09",
-      "shadow_length_px": 47.353,
+      "shadow_length_px": 23.02,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 33.157,
-      "slope_estimate_deg": 62.175,
+      "depth_m": 16.119,
+      "slope_estimate_deg": 42.648,
       "confidence": 0.6427695751190186,
       "x1": 389,
       "y1": 371,
@@ -1086,17 +1086,17 @@
       "radius_px": 18,
       "diameter_m": 35.0,
       "neighbor_count": 0,
-      "safety_score": 40.07,
+      "safety_score": 46.59,
       "zone": "CAUTION"
      },
      {
       "crater_id": "CR-10",
-      "shadow_length_px": 14.254,
+      "shadow_length_px": 10.977,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 9.98,
-      "slope_estimate_deg": 49.58,
+      "depth_m": 7.686,
+      "slope_estimate_deg": 42.122,
       "confidence": 0.5229388475418091,
       "x1": 484,
       "y1": 91,
@@ -1108,22 +1108,22 @@
       "radius_px": 8,
       "diameter_m": 17.0,
       "neighbor_count": 0,
-      "safety_score": 55.77,
+      "safety_score": 58.71,
       "zone": "CAUTION"
      }
     ],
     "summary": {
      "safe": 0,
-     "caution": 2,
-     "hazard": 8
+     "caution": 3,
+     "hazard": 7
     },
-    "overall": 35.39,
+    "overall": 38.9,
     "scores": {
      "n": 10,
-     "min": 25.81,
-     "median": 33.705,
-     "max": 55.77,
-     "mean": 35.387
+     "min": 27.88,
+     "median": 37.21,
+     "max": 58.71,
+     "mean": 38.904
     }
    },
    "yolo_paths": {
@@ -1151,17 +1151,17 @@
     "goal_crater_id": "CR-10",
     "goal_zone": "CAUTION",
     "hazard_craters_crossed": [],
-    "hazard_craters_other_than_goal": 8
+    "hazard_craters_other_than_goal": 7
    },
    "synthetic_meta_depth_rows": [
     {
      "crater_id": "CR-01",
-     "shadow_length_px": 45.96,
+     "shadow_length_px": 20.891,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 32.182,
-     "slope_estimate_deg": 62.155,
+     "depth_m": 14.628,
+     "slope_estimate_deg": 40.711,
      "confidence": null,
      "x1": 388,
      "y1": 370,
@@ -1174,12 +1174,12 @@
     },
     {
      "crater_id": "CR-02",
-     "shadow_length_px": 73.815,
+     "shadow_length_px": 35.637,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 51.686,
-     "slope_estimate_deg": 62.418,
+     "depth_m": 24.954,
+     "slope_estimate_deg": 42.744,
      "confidence": null,
      "x1": 155,
      "y1": 274,
@@ -1192,12 +1192,12 @@
     },
     {
      "crater_id": "CR-03",
-     "shadow_length_px": 79.386,
+     "shadow_length_px": 43.175,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 55.586,
-     "slope_estimate_deg": 62.448,
+     "depth_m": 30.231,
+     "slope_estimate_deg": 46.191,
      "confidence": null,
      "x1": 432,
      "y1": 193,
@@ -1210,12 +1210,12 @@
     },
     {
      "crater_id": "CR-04",
-     "shadow_length_px": 90.527,
+     "shadow_length_px": 52.348,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 63.388,
-     "slope_estimate_deg": 62.498,
+     "depth_m": 36.655,
+     "slope_estimate_deg": 48.004,
      "confidence": null,
      "x1": 39,
      "y1": 432,
@@ -1228,12 +1228,12 @@
     },
     {
      "crater_id": "CR-05",
-     "shadow_length_px": 154.593,
+     "shadow_length_px": 75.942,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 108.247,
-     "slope_estimate_deg": 62.646,
+     "depth_m": 53.175,
+     "slope_estimate_deg": 43.518,
      "confidence": null,
      "x1": 256,
      "y1": 124,
@@ -1246,12 +1246,12 @@
     },
     {
      "crater_id": "CR-06",
-     "shadow_length_px": 160.164,
+     "shadow_length_px": 91.834,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 112.148,
-     "slope_estimate_deg": 62.653,
+     "depth_m": 64.303,
+     "slope_estimate_deg": 47.95,
      "confidence": null,
      "x1": 11,
      "y1": 77,
@@ -1264,12 +1264,12 @@
     },
     {
      "crater_id": "CR-07",
-     "shadow_length_px": 154.593,
+     "shadow_length_px": 80.859,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 108.247,
-     "slope_estimate_deg": 62.646,
+     "depth_m": 56.618,
+     "slope_estimate_deg": 45.314,
      "confidence": null,
      "x1": 381,
      "y1": 247,
@@ -1282,12 +1282,12 @@
     },
     {
      "crater_id": "CR-08",
-     "shadow_length_px": 93.641,
+     "shadow_length_px": 54.971,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 65.568,
-     "slope_estimate_deg": 61.907,
+     "depth_m": 38.491,
+     "slope_estimate_deg": 47.72,
      "confidence": null,
      "x1": 357,
      "y1": 260,
@@ -1300,12 +1300,12 @@
     },
     {
      "crater_id": "CR-09",
-     "shadow_length_px": 45.96,
+     "shadow_length_px": 26.051,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 32.182,
-     "slope_estimate_deg": 62.155,
+     "depth_m": 18.241,
+     "slope_estimate_deg": 47.017,
      "confidence": null,
      "x1": 254,
      "y1": 426,
@@ -1324,9 +1324,9 @@
      "roi_h": 34,
      "otsu_threshold": 135.0,
      "shadow_px_before_morph": 456,
-     "shadow_px_after_morph": 689,
-     "shadow_length_px_unrounded": 45.96003986112125,
-     "depth_m": 32.182
+     "shadow_px_after_morph": 377,
+     "shadow_length_px_unrounded": 20.89092720960057,
+     "depth_m": 14.628
     },
     {
      "crater_id": "CR-02",
@@ -1334,9 +1334,9 @@
      "roi_h": 54,
      "otsu_threshold": 158.0,
      "shadow_px_before_morph": 1209,
-     "shadow_px_after_morph": 1683,
-     "shadow_length_px_unrounded": 73.814609473922,
-     "depth_m": 51.686
+     "shadow_px_after_morph": 947,
+     "shadow_length_px_unrounded": 35.63736406028994,
+     "depth_m": 24.954
     },
     {
      "crater_id": "CR-03",
@@ -1344,9 +1344,9 @@
      "roi_h": 58,
      "otsu_threshold": 173.0,
      "shadow_px_before_morph": 1574,
-     "shadow_px_after_morph": 1771,
-     "shadow_length_px_unrounded": 79.38552339648217,
-     "depth_m": 55.586
+     "shadow_px_after_morph": 1457,
+     "shadow_length_px_unrounded": 43.17458289984118,
+     "depth_m": 30.231
     },
     {
      "crater_id": "CR-04",
@@ -1354,9 +1354,9 @@
      "roi_h": 66,
      "otsu_threshold": 179.0,
      "shadow_px_before_morph": 2078,
-     "shadow_px_after_morph": 2224,
-     "shadow_length_px_unrounded": 90.52735124160247,
-     "depth_m": 63.388
+     "shadow_px_after_morph": 1908,
+     "shadow_length_px_unrounded": 52.34840577448288,
+     "depth_m": 36.655
     },
     {
      "crater_id": "CR-05",
@@ -1364,9 +1364,9 @@
      "roi_h": 112,
      "otsu_threshold": 137.0,
      "shadow_px_before_morph": 5190,
-     "shadow_px_after_morph": 7252,
-     "shadow_length_px_unrounded": 154.5928613510442,
-     "depth_m": 108.247
+     "shadow_px_after_morph": 4160,
+     "shadow_length_px_unrounded": 75.94236472488836,
+     "depth_m": 53.175
     },
     {
      "crater_id": "CR-06",
@@ -1374,9 +1374,9 @@
      "roi_h": 116,
      "otsu_threshold": 177.0,
      "shadow_px_before_morph": 6286,
-     "shadow_px_after_morph": 6996,
-     "shadow_length_px_unrounded": 160.16377527360436,
-     "depth_m": 112.148
+     "shadow_px_after_morph": 5720,
+     "shadow_length_px_unrounded": 91.83425439479231,
+     "depth_m": 64.303
     },
     {
      "crater_id": "CR-07",
@@ -1384,9 +1384,9 @@
      "roi_h": 112,
      "otsu_threshold": 131.0,
      "shadow_px_before_morph": 5193,
-     "shadow_px_after_morph": 7280,
-     "shadow_length_px_unrounded": 154.5928613510442,
-     "depth_m": 108.247
+     "shadow_px_after_morph": 4297,
+     "shadow_length_px_unrounded": 80.85897704410984,
+     "depth_m": 56.618
     },
     {
      "crater_id": "CR-08",
@@ -1394,9 +1394,9 @@
      "roi_h": 70,
      "otsu_threshold": 100.0,
      "shadow_px_before_morph": 2302,
-     "shadow_px_after_morph": 2572,
-     "shadow_length_px_unrounded": 93.64080903129565,
-     "depth_m": 65.568
+     "shadow_px_after_morph": 2095,
+     "shadow_length_px_unrounded": 54.970712348300154,
+     "depth_m": 38.491
     },
     {
      "crater_id": "CR-09",
@@ -1404,21 +1404,21 @@
      "roi_h": 34,
      "otsu_threshold": 175.0,
      "shadow_px_before_morph": 471,
-     "shadow_px_after_morph": 677,
-     "shadow_length_px_unrounded": 45.96003986112125,
-     "depth_m": 32.182
+     "shadow_px_after_morph": 426,
+     "shadow_length_px_unrounded": 26.051415083272467,
+     "depth_m": 18.241
     }
    ],
    "synthetic_meta_scoring": {
     "rows": [
      {
       "crater_id": "CR-01",
-      "shadow_length_px": 45.96,
+      "shadow_length_px": 20.891,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 32.182,
-      "slope_estimate_deg": 62.155,
+      "depth_m": 14.628,
+      "slope_estimate_deg": 40.711,
       "confidence": null,
       "x1": 388,
       "y1": 370,
@@ -1430,17 +1430,17 @@
       "radius_px": 17,
       "diameter_m": 34.0,
       "neighbor_count": 0,
-      "safety_score": 40.43,
+      "safety_score": 47.74,
       "zone": "CAUTION"
      },
      {
       "crater_id": "CR-02",
-      "shadow_length_px": 73.815,
+      "shadow_length_px": 35.637,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 51.686,
-      "slope_estimate_deg": 62.418,
+      "depth_m": 24.954,
+      "slope_estimate_deg": 42.744,
       "confidence": null,
       "x1": 155,
       "y1": 274,
@@ -1452,17 +1452,17 @@
       "radius_px": 27,
       "diameter_m": 54.0,
       "neighbor_count": 0,
-      "safety_score": 35.46,
-      "zone": "HAZARD"
+      "safety_score": 40.71,
+      "zone": "CAUTION"
      },
      {
       "crater_id": "CR-03",
-      "shadow_length_px": 79.386,
+      "shadow_length_px": 43.175,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 55.586,
-      "slope_estimate_deg": 62.448,
+      "depth_m": 30.231,
+      "slope_estimate_deg": 46.191,
       "confidence": null,
       "x1": 432,
       "y1": 193,
@@ -1474,17 +1474,17 @@
       "radius_px": 29,
       "diameter_m": 58.0,
       "neighbor_count": 1,
-      "safety_score": 30.83,
+      "safety_score": 34.88,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-04",
-      "shadow_length_px": 90.527,
+      "shadow_length_px": 52.348,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 63.388,
-      "slope_estimate_deg": 62.498,
+      "depth_m": 36.655,
+      "slope_estimate_deg": 48.004,
       "confidence": null,
       "x1": 39,
       "y1": 432,
@@ -1496,17 +1496,17 @@
       "radius_px": 33,
       "diameter_m": 66.0,
       "neighbor_count": 0,
-      "safety_score": 33.77,
+      "safety_score": 37.04,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-05",
-      "shadow_length_px": 154.593,
+      "shadow_length_px": 75.942,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 108.247,
-      "slope_estimate_deg": 62.646,
+      "depth_m": 53.175,
+      "slope_estimate_deg": 43.518,
       "confidence": null,
       "x1": 256,
       "y1": 124,
@@ -1518,17 +1518,17 @@
       "radius_px": 56,
       "diameter_m": 112.0,
       "neighbor_count": 0,
-      "safety_score": 30.41,
+      "safety_score": 33.47,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-06",
-      "shadow_length_px": 160.164,
+      "shadow_length_px": 91.834,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 112.148,
-      "slope_estimate_deg": 62.653,
+      "depth_m": 64.303,
+      "slope_estimate_deg": 47.95,
       "confidence": null,
       "x1": 11,
       "y1": 77,
@@ -1540,17 +1540,17 @@
       "radius_px": 58,
       "diameter_m": 116.0,
       "neighbor_count": 0,
-      "safety_score": 30.23,
+      "safety_score": 32.42,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-07",
-      "shadow_length_px": 154.593,
+      "shadow_length_px": 80.859,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 108.247,
-      "slope_estimate_deg": 62.646,
+      "depth_m": 56.618,
+      "slope_estimate_deg": 45.314,
       "confidence": null,
       "x1": 381,
       "y1": 247,
@@ -1562,17 +1562,17 @@
       "radius_px": 56,
       "diameter_m": 112.0,
       "neighbor_count": 2,
-      "safety_score": 22.41,
+      "safety_score": 25.13,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-08",
-      "shadow_length_px": 93.641,
+      "shadow_length_px": 54.971,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 65.568,
-      "slope_estimate_deg": 61.907,
+      "depth_m": 38.491,
+      "slope_estimate_deg": 47.72,
       "confidence": null,
       "x1": 357,
       "y1": 260,
@@ -1584,17 +1584,17 @@
       "radius_px": 35,
       "diameter_m": 70.0,
       "neighbor_count": 1,
-      "safety_score": 29.44,
+      "safety_score": 32.54,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-09",
-      "shadow_length_px": 45.96,
+      "shadow_length_px": 26.051,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 32.182,
-      "slope_estimate_deg": 62.155,
+      "depth_m": 18.241,
+      "slope_estimate_deg": 47.017,
       "confidence": null,
       "x1": 254,
       "y1": 426,
@@ -1606,32 +1606,32 @@
       "radius_px": 17,
       "diameter_m": 34.0,
       "neighbor_count": 0,
-      "safety_score": 40.43,
+      "safety_score": 45.47,
       "zone": "CAUTION"
      }
     ],
     "summary": {
      "safe": 0,
-     "caution": 2,
-     "hazard": 7
+     "caution": 3,
+     "hazard": 6
     },
-    "overall": 32.6,
+    "overall": 36.6,
     "scores": {
      "n": 9,
-     "min": 22.41,
-     "median": 30.83,
-     "max": 40.43,
-     "mean": 32.601111111111116
+     "min": 25.13,
+     "median": 34.88,
+     "max": 47.74,
+     "mean": 36.599999999999994
     }
    },
    "synthetic_meta_paths": {
     "route_found": true,
-    "path_length_m": 508.12,
+    "path_length_m": 507.76,
     "path_nodes": 156,
     "alternatives_succeeded": 3,
     "alt_nodes": [
      151,
-     169,
+     168,
      153
     ],
     "start": [
@@ -1649,7 +1649,7 @@
     "goal_crater_id": "CR-01",
     "goal_zone": "CAUTION",
     "hazard_craters_crossed": [],
-    "hazard_craters_other_than_goal": 7
+    "hazard_craters_other_than_goal": 6
    }
   },
   "7": {
@@ -2101,12 +2101,12 @@
    "yolo_depth_rows": [
     {
      "crater_id": "CR-01",
-     "shadow_length_px": 152.381,
+     "shadow_length_px": 85.365,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 106.698,
-     "slope_estimate_deg": 62.624,
+     "depth_m": 59.773,
+     "slope_estimate_deg": 47.252,
      "confidence": 0.8730961084365845,
      "x1": 336,
      "y1": 135,
@@ -2119,12 +2119,12 @@
     },
     {
      "crater_id": "CR-02",
-     "shadow_length_px": 92.494,
+     "shadow_length_px": 53.66,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 64.765,
-     "slope_estimate_deg": 62.475,
+     "depth_m": 37.573,
+     "slope_estimate_deg": 48.069,
      "confidence": 0.830994188785553,
      "x1": 239,
      "y1": 269,
@@ -2137,12 +2137,12 @@
     },
     {
      "crater_id": "CR-03",
-     "shadow_length_px": 155.986,
+     "shadow_length_px": 66.276,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 109.222,
-     "slope_estimate_deg": 62.648,
+     "depth_m": 46.407,
+     "slope_estimate_deg": 39.398,
      "confidence": 0.8197442889213562,
      "x1": 47,
      "y1": 353,
@@ -2155,12 +2155,12 @@
     },
     {
      "crater_id": "CR-04",
-     "shadow_length_px": 50.957,
+     "shadow_length_px": 25.232,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 35.681,
-     "slope_estimate_deg": 62.278,
+     "depth_m": 17.668,
+     "slope_estimate_deg": 43.298,
      "confidence": 0.7965309023857117,
      "x1": 206,
      "y1": 267,
@@ -2173,12 +2173,12 @@
     },
     {
      "crater_id": "CR-05",
-     "shadow_length_px": 89.708,
+     "shadow_length_px": 47.842,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 62.814,
-     "slope_estimate_deg": 62.463,
+     "depth_m": 33.499,
+     "slope_estimate_deg": 45.648,
      "confidence": 0.7688679695129395,
      "x1": 341,
      "y1": 357,
@@ -2191,12 +2191,12 @@
     },
     {
      "crater_id": "CR-06",
-     "shadow_length_px": 33.999,
+     "shadow_length_px": 15.811,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 23.806,
-     "slope_estimate_deg": 61.828,
+     "depth_m": 11.071,
+     "slope_estimate_deg": 40.968,
      "confidence": 0.688071072101593,
      "x1": 152,
      "y1": 164,
@@ -2209,12 +2209,12 @@
     },
     {
      "crater_id": "CR-07",
-     "shadow_length_px": 107.814,
+     "shadow_length_px": 49.07,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 75.492,
-     "slope_estimate_deg": 62.529,
+     "depth_m": 34.359,
+     "slope_estimate_deg": 41.199,
      "confidence": 0.6053634285926819,
      "x1": 34,
      "y1": 54,
@@ -2227,12 +2227,12 @@
     },
     {
      "crater_id": "CR-08",
-     "shadow_length_px": 132.883,
+     "shadow_length_px": 50.875,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 93.046,
-     "slope_estimate_deg": 62.59,
+     "depth_m": 35.623,
+     "slope_estimate_deg": 36.438,
      "confidence": 0.48157837986946106,
      "x1": 76,
      "y1": 183,
@@ -2251,9 +2251,9 @@
      "roi_h": 111,
      "otsu_threshold": 184.0,
      "shadow_px_before_morph": 5415,
-     "shadow_px_after_morph": 6702,
-     "shadow_length_px_unrounded": 152.38098082611518,
-     "depth_m": 106.698
+     "shadow_px_after_morph": 5230,
+     "shadow_length_px_unrounded": 85.36516331444305,
+     "depth_m": 59.773
     },
     {
      "crater_id": "CR-02",
@@ -2261,9 +2261,9 @@
      "roi_h": 68,
      "otsu_threshold": 195.0,
      "shadow_px_before_morph": 2001,
-     "shadow_px_after_morph": 2509,
-     "shadow_length_px_unrounded": 92.49365615859355,
-     "depth_m": 64.765
+     "shadow_px_after_morph": 2125,
+     "shadow_length_px_unrounded": 53.66040908813528,
+     "depth_m": 37.573
     },
     {
      "crater_id": "CR-03",
@@ -2271,9 +2271,9 @@
      "roi_h": 113,
      "otsu_threshold": 172.0,
      "shadow_px_before_morph": 3451,
-     "shadow_px_after_morph": 9257,
-     "shadow_length_px_unrounded": 155.98558983168425,
-     "depth_m": 109.222
+     "shadow_px_after_morph": 3390,
+     "shadow_length_px_unrounded": 66.27569058088325,
+     "depth_m": 46.407
     },
     {
      "crater_id": "CR-04",
@@ -2281,9 +2281,9 @@
      "roi_h": 37,
      "otsu_threshold": 158.0,
      "shadow_px_before_morph": 534,
-     "shadow_px_after_morph": 864,
-     "shadow_length_px_unrounded": 50.95737734733036,
-     "depth_m": 35.681
+     "shadow_px_after_morph": 485,
+     "shadow_length_px_unrounded": 25.232263038983476,
+     "depth_m": 17.668
     },
     {
      "crater_id": "CR-05",
@@ -2291,9 +2291,9 @@
      "roi_h": 66,
      "otsu_threshold": 179.0,
      "shadow_px_before_morph": 1841,
-     "shadow_px_after_morph": 2392,
-     "shadow_length_px_unrounded": 89.70819919731348,
-     "depth_m": 62.814
+     "shadow_px_after_morph": 1692,
+     "shadow_length_px_unrounded": 47.84221950414966,
+     "depth_m": 33.499
     },
     {
      "crater_id": "CR-06",
@@ -2301,9 +2301,9 @@
      "roi_h": 26,
      "otsu_threshold": 165.0,
      "shadow_px_before_morph": 215,
-     "shadow_px_after_morph": 433,
-     "shadow_length_px_unrounded": 33.99905997171196,
-     "depth_m": 23.806
+     "shadow_px_after_morph": 203,
+     "shadow_length_px_unrounded": 15.811164502916307,
+     "depth_m": 11.071
     },
     {
      "crater_id": "CR-07",
@@ -2311,9 +2311,9 @@
      "roi_h": 79,
      "otsu_threshold": 150.0,
      "shadow_px_before_morph": 1880,
-     "shadow_px_after_morph": 4263,
-     "shadow_length_px_unrounded": 107.81366944563396,
-     "depth_m": 75.492
+     "shadow_px_after_morph": 1718,
+     "shadow_length_px_unrounded": 49.070097543839395,
+     "depth_m": 34.359
     },
     {
      "crater_id": "CR-08",
@@ -2321,21 +2321,21 @@
      "roi_h": 97,
      "otsu_threshold": 152.0,
      "shadow_px_before_morph": 2461,
-     "shadow_px_after_morph": 6829,
-     "shadow_length_px_unrounded": 132.88278209715466,
-     "depth_m": 93.046
+     "shadow_px_after_morph": 2295,
+     "shadow_length_px_unrounded": 50.874952126855206,
+     "depth_m": 35.623
     }
    ],
    "yolo_scoring": {
     "rows": [
      {
       "crater_id": "CR-01",
-      "shadow_length_px": 152.381,
+      "shadow_length_px": 85.365,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 106.698,
-      "slope_estimate_deg": 62.624,
+      "depth_m": 59.773,
+      "slope_estimate_deg": 47.252,
       "confidence": 0.8730961084365845,
       "x1": 336,
       "y1": 135,
@@ -2347,17 +2347,17 @@
       "radius_px": 55,
       "diameter_m": 110.5,
       "neighbor_count": 0,
-      "safety_score": 30.48,
+      "safety_score": 32.87,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-02",
-      "shadow_length_px": 92.494,
+      "shadow_length_px": 53.66,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 64.765,
-      "slope_estimate_deg": 62.475,
+      "depth_m": 37.573,
+      "slope_estimate_deg": 48.069,
       "confidence": 0.830994188785553,
       "x1": 239,
       "y1": 269,
@@ -2369,17 +2369,17 @@
       "radius_px": 34,
       "diameter_m": 67.5,
       "neighbor_count": 1,
-      "safety_score": 29.6,
+      "safety_score": 32.8,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-03",
-      "shadow_length_px": 155.986,
+      "shadow_length_px": 66.276,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 109.222,
-      "slope_estimate_deg": 62.648,
+      "depth_m": 46.407,
+      "slope_estimate_deg": 39.398,
       "confidence": 0.8197442889213562,
       "x1": 47,
       "y1": 353,
@@ -2391,17 +2391,17 @@
       "radius_px": 56,
       "diameter_m": 113.0,
       "neighbor_count": 0,
-      "safety_score": 30.36,
+      "safety_score": 34.25,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-04",
-      "shadow_length_px": 50.957,
+      "shadow_length_px": 25.232,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 35.681,
-      "slope_estimate_deg": 62.278,
+      "depth_m": 17.668,
+      "slope_estimate_deg": 43.298,
       "confidence": 0.7965309023857117,
       "x1": 206,
       "y1": 267,
@@ -2413,17 +2413,17 @@
       "radius_px": 19,
       "diameter_m": 37.5,
       "neighbor_count": 1,
-      "safety_score": 35.23,
-      "zone": "HAZARD"
+      "safety_score": 41.35,
+      "zone": "CAUTION"
      },
      {
       "crater_id": "CR-05",
-      "shadow_length_px": 89.708,
+      "shadow_length_px": 47.842,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 62.814,
-      "slope_estimate_deg": 62.463,
+      "depth_m": 33.499,
+      "slope_estimate_deg": 45.648,
       "confidence": 0.7688679695129395,
       "x1": 341,
       "y1": 357,
@@ -2435,17 +2435,17 @@
       "radius_px": 33,
       "diameter_m": 65.5,
       "neighbor_count": 0,
-      "safety_score": 33.83,
+      "safety_score": 37.72,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-06",
-      "shadow_length_px": 33.999,
+      "shadow_length_px": 15.811,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 23.806,
-      "slope_estimate_deg": 61.828,
+      "depth_m": 11.071,
+      "slope_estimate_deg": 40.968,
       "confidence": 0.688071072101593,
       "x1": 152,
       "y1": 164,
@@ -2457,17 +2457,17 @@
       "radius_px": 13,
       "diameter_m": 25.5,
       "neighbor_count": 1,
-      "safety_score": 40.37,
+      "safety_score": 48.21,
       "zone": "CAUTION"
      },
      {
       "crater_id": "CR-07",
-      "shadow_length_px": 107.814,
+      "shadow_length_px": 49.07,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 75.492,
-      "slope_estimate_deg": 62.529,
+      "depth_m": 34.359,
+      "slope_estimate_deg": 41.199,
       "confidence": 0.6053634285926819,
       "x1": 34,
       "y1": 54,
@@ -2479,17 +2479,17 @@
       "radius_px": 39,
       "diameter_m": 78.5,
       "neighbor_count": 0,
-      "safety_score": 32.5,
+      "safety_score": 37.05,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-08",
-      "shadow_length_px": 132.883,
+      "shadow_length_px": 50.875,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 93.046,
-      "slope_estimate_deg": 62.59,
+      "depth_m": 35.623,
+      "slope_estimate_deg": 36.438,
       "confidence": 0.48157837986946106,
       "x1": 76,
       "y1": 183,
@@ -2501,22 +2501,22 @@
       "radius_px": 48,
       "diameter_m": 96.5,
       "neighbor_count": 1,
-      "safety_score": 27.21,
+      "safety_score": 32.32,
       "zone": "HAZARD"
      }
     ],
     "summary": {
      "safe": 0,
-     "caution": 1,
-     "hazard": 7
+     "caution": 2,
+     "hazard": 6
     },
-    "overall": 32.45,
+    "overall": 37.07,
     "scores": {
      "n": 8,
-     "min": 27.21,
-     "median": 31.490000000000002,
-     "max": 40.37,
-     "mean": 32.4475
+     "min": 32.32,
+     "median": 35.65,
+     "max": 48.21,
+     "mean": 37.07125
     }
    },
    "yolo_paths": {
@@ -2544,17 +2544,17 @@
     "goal_crater_id": "CR-06",
     "goal_zone": "CAUTION",
     "hazard_craters_crossed": [],
-    "hazard_craters_other_than_goal": 7
+    "hazard_craters_other_than_goal": 6
    },
    "synthetic_meta_depth_rows": [
     {
      "crater_id": "CR-01",
-     "shadow_length_px": 90.527,
+     "shadow_length_px": 41.126,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 63.388,
-     "slope_estimate_deg": 62.498,
+     "depth_m": 28.797,
+     "slope_estimate_deg": 41.109,
      "confidence": null,
      "x1": 58,
      "y1": 63,
@@ -2567,12 +2567,12 @@
     },
     {
      "crater_id": "CR-02",
-     "shadow_length_px": 87.742,
+     "shadow_length_px": 50.875,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 61.438,
-     "slope_estimate_deg": 62.487,
+     "depth_m": 35.623,
+     "slope_estimate_deg": 48.067,
      "confidence": null,
      "x1": 237,
      "y1": 269,
@@ -2585,12 +2585,12 @@
     },
     {
      "crater_id": "CR-03",
-     "shadow_length_px": 90.527,
+     "shadow_length_px": 43.255,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 63.388,
-     "slope_estimate_deg": 62.498,
+     "depth_m": 30.288,
+     "slope_estimate_deg": 42.546,
      "confidence": null,
      "x1": 37,
      "y1": 59,
@@ -2603,12 +2603,12 @@
     },
     {
      "crater_id": "CR-04",
-     "shadow_length_px": 137.88,
+     "shadow_length_px": 62.671,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 96.545,
-     "slope_estimate_deg": 62.621,
+     "depth_m": 43.883,
+     "slope_estimate_deg": 41.272,
      "confidence": null,
      "x1": 50,
      "y1": 359,
@@ -2621,12 +2621,12 @@
     },
     {
      "crater_id": "CR-05",
-     "shadow_length_px": 149.022,
+     "shadow_length_px": 79.468,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 104.346,
-     "slope_estimate_deg": 62.638,
+     "depth_m": 55.644,
+     "slope_estimate_deg": 45.859,
      "confidence": null,
      "x1": 335,
      "y1": 132,
@@ -2639,12 +2639,12 @@
     },
     {
      "crater_id": "CR-06",
-     "shadow_length_px": 73.815,
+     "shadow_length_px": 37.684,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 51.686,
-     "slope_estimate_deg": 62.418,
+     "depth_m": 26.387,
+     "slope_estimate_deg": 44.342,
      "confidence": null,
      "x1": 107,
      "y1": 223,
@@ -2657,12 +2657,12 @@
     },
     {
      "crater_id": "CR-07",
-     "shadow_length_px": 96.098,
+     "shadow_length_px": 43.994,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 67.289,
-     "slope_estimate_deg": 62.519,
+     "depth_m": 30.805,
+     "slope_estimate_deg": 41.352,
      "confidence": null,
      "x1": 100,
      "y1": 189,
@@ -2675,12 +2675,12 @@
     },
     {
      "crater_id": "CR-08",
-     "shadow_length_px": 29.247,
+     "shadow_length_px": 14.09,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 20.479,
-     "slope_estimate_deg": 61.758,
+     "depth_m": 9.866,
+     "slope_estimate_deg": 41.89,
      "confidence": null,
      "x1": 153,
      "y1": 166,
@@ -2693,12 +2693,12 @@
     },
     {
      "crater_id": "CR-09",
-     "shadow_length_px": 48.745,
+     "shadow_length_px": 23.594,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 34.132,
-     "slope_estimate_deg": 62.194,
+     "depth_m": 16.521,
+     "slope_estimate_deg": 42.546,
      "confidence": null,
      "x1": 206,
      "y1": 267,
@@ -2711,12 +2711,12 @@
     },
     {
      "crater_id": "CR-10",
-     "shadow_length_px": 112.811,
+     "shadow_length_px": 58.656,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 78.991,
-     "slope_estimate_deg": 62.569,
+     "depth_m": 41.071,
+     "slope_estimate_deg": 45.05,
      "confidence": null,
      "x1": 60,
      "y1": 345,
@@ -2729,12 +2729,12 @@
     },
     {
      "crater_id": "CR-11",
-     "shadow_length_px": 90.527,
+     "shadow_length_px": 43.254,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 63.388,
-     "slope_estimate_deg": 62.498,
+     "depth_m": 30.287,
+     "slope_estimate_deg": 42.545,
      "confidence": null,
      "x1": 337,
      "y1": 355,
@@ -2753,9 +2753,9 @@
      "roi_h": 66,
      "otsu_threshold": 147.0,
      "shadow_px_before_morph": 1634,
-     "shadow_px_after_morph": 2697,
-     "shadow_length_px_unrounded": 90.52735124160247,
-     "depth_m": 63.388
+     "shadow_px_after_morph": 1457,
+     "shadow_length_px_unrounded": 41.12585276237493,
+     "depth_m": 28.797
     },
     {
      "crater_id": "CR-02",
@@ -2763,9 +2763,9 @@
      "roi_h": 64,
      "otsu_threshold": 193.0,
      "shadow_px_before_morph": 1939,
-     "shadow_px_after_morph": 2103,
-     "shadow_length_px_unrounded": 87.74189428032238,
-     "depth_m": 61.438
+     "shadow_px_after_morph": 1670,
+     "shadow_length_px_unrounded": 50.8749521268552,
+     "depth_m": 35.623
     },
     {
      "crater_id": "CR-03",
@@ -2773,9 +2773,9 @@
      "roi_h": 66,
      "otsu_threshold": 142.0,
      "shadow_px_before_morph": 1666,
-     "shadow_px_after_morph": 2667,
-     "shadow_length_px_unrounded": 90.52735124160247,
-     "depth_m": 63.388
+     "shadow_px_after_morph": 1397,
+     "shadow_length_px_unrounded": 43.2553080668288,
+     "depth_m": 30.288
     },
     {
      "crater_id": "CR-04",
@@ -2783,9 +2783,9 @@
      "roi_h": 100,
      "otsu_threshold": 170.0,
      "shadow_px_before_morph": 3345,
-     "shadow_px_after_morph": 6598,
-     "shadow_length_px_unrounded": 137.88011958336375,
-     "depth_m": 96.545
+     "shadow_px_after_morph": 3001,
+     "shadow_length_px_unrounded": 62.67108157531419,
+     "depth_m": 43.883
     },
     {
      "crater_id": "CR-05",
@@ -2793,9 +2793,9 @@
      "roi_h": 108,
      "otsu_threshold": 182.0,
      "shadow_px_before_morph": 5233,
-     "shadow_px_after_morph": 6337,
-     "shadow_length_px_unrounded": 149.02194742848405,
-     "depth_m": 104.346
+     "shadow_px_after_morph": 4491,
+     "shadow_length_px_unrounded": 79.46794861695732,
+     "depth_m": 55.644
     },
     {
      "crater_id": "CR-06",
@@ -2803,9 +2803,9 @@
      "roi_h": 54,
      "otsu_threshold": 126.0,
      "shadow_px_before_morph": 1265,
-     "shadow_px_after_morph": 1633,
-     "shadow_length_px_unrounded": 73.814609473922,
-     "depth_m": 51.686
+     "shadow_px_after_morph": 1091,
+     "shadow_length_px_unrounded": 37.68439414426866,
+     "depth_m": 26.387
     },
     {
      "crater_id": "CR-07",
@@ -2813,9 +2813,9 @@
      "roi_h": 70,
      "otsu_threshold": 136.0,
      "shadow_px_before_morph": 1791,
-     "shadow_px_after_morph": 3082,
-     "shadow_length_px_unrounded": 96.09826516416261,
-     "depth_m": 67.289
+     "shadow_px_after_morph": 1508,
+     "shadow_length_px_unrounded": 43.99373494413017,
+     "depth_m": 30.805
     },
     {
      "crater_id": "CR-08",
@@ -2823,9 +2823,9 @@
      "roi_h": 22,
      "otsu_threshold": 158.0,
      "shadow_px_before_morph": 183,
-     "shadow_px_after_morph": 298,
-     "shadow_length_px_unrounded": 29.247298093440797,
-     "depth_m": 20.479
+     "shadow_px_after_morph": 154,
+     "shadow_length_px_unrounded": 14.090435193863168,
+     "depth_m": 9.866
     },
     {
      "crater_id": "CR-09",
@@ -2833,9 +2833,9 @@
      "roi_h": 36,
      "otsu_threshold": 156.0,
      "shadow_px_before_morph": 516,
-     "shadow_px_after_morph": 773,
-     "shadow_length_px_unrounded": 48.74549682240133,
-     "depth_m": 34.132
+     "shadow_px_after_morph": 428,
+     "shadow_length_px_unrounded": 23.593958950405487,
+     "depth_m": 16.521
     },
     {
      "crater_id": "CR-10",
@@ -2843,9 +2843,9 @@
      "roi_h": 82,
      "otsu_threshold": 160.0,
      "shadow_px_before_morph": 2748,
-     "shadow_px_after_morph": 3931,
-     "shadow_length_px_unrounded": 112.81100693184307,
-     "depth_m": 78.991
+     "shadow_px_after_morph": 2445,
+     "shadow_length_px_unrounded": 58.65604652085687,
+     "depth_m": 41.071
     },
     {
      "crater_id": "CR-11",
@@ -2853,21 +2853,21 @@
      "roi_h": 66,
      "otsu_threshold": 177.0,
      "shadow_px_before_morph": 1740,
-     "shadow_px_after_morph": 2575,
-     "shadow_length_px_unrounded": 90.52735124160247,
-     "depth_m": 63.388
+     "shadow_px_after_morph": 1470,
+     "shadow_length_px_unrounded": 43.25360801334129,
+     "depth_m": 30.287
     }
    ],
    "synthetic_meta_scoring": {
     "rows": [
      {
       "crater_id": "CR-01",
-      "shadow_length_px": 90.527,
+      "shadow_length_px": 41.126,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 63.388,
-      "slope_estimate_deg": 62.498,
+      "depth_m": 28.797,
+      "slope_estimate_deg": 41.109,
       "confidence": null,
       "x1": 58,
       "y1": 63,
@@ -2879,17 +2879,17 @@
       "radius_px": 33,
       "diameter_m": 66.0,
       "neighbor_count": 1,
-      "safety_score": 29.77,
+      "safety_score": 34.89,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-02",
-      "shadow_length_px": 87.742,
+      "shadow_length_px": 50.875,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 61.438,
-      "slope_estimate_deg": 62.487,
+      "depth_m": 35.623,
+      "slope_estimate_deg": 48.067,
       "confidence": null,
       "x1": 237,
       "y1": 269,
@@ -2901,17 +2901,17 @@
       "radius_px": 32,
       "diameter_m": 64.0,
       "neighbor_count": 1,
-      "safety_score": 30.01,
+      "safety_score": 33.34,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-03",
-      "shadow_length_px": 90.527,
+      "shadow_length_px": 43.255,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 63.388,
-      "slope_estimate_deg": 62.498,
+      "depth_m": 30.288,
+      "slope_estimate_deg": 42.546,
       "confidence": null,
       "x1": 37,
       "y1": 59,
@@ -2923,17 +2923,17 @@
       "radius_px": 33,
       "diameter_m": 66.0,
       "neighbor_count": 1,
-      "safety_score": 29.77,
+      "safety_score": 34.48,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-04",
-      "shadow_length_px": 137.88,
+      "shadow_length_px": 62.671,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 96.545,
-      "slope_estimate_deg": 62.621,
+      "depth_m": 43.883,
+      "slope_estimate_deg": 41.272,
       "confidence": null,
       "x1": 50,
       "y1": 359,
@@ -2945,17 +2945,17 @@
       "radius_px": 50,
       "diameter_m": 100.0,
       "neighbor_count": 1,
-      "safety_score": 27.01,
+      "safety_score": 30.83,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-05",
-      "shadow_length_px": 149.022,
+      "shadow_length_px": 79.468,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 104.346,
-      "slope_estimate_deg": 62.638,
+      "depth_m": 55.644,
+      "slope_estimate_deg": 45.859,
       "confidence": null,
       "x1": 335,
       "y1": 132,
@@ -2967,17 +2967,17 @@
       "radius_px": 54,
       "diameter_m": 108.0,
       "neighbor_count": 0,
-      "safety_score": 30.59,
+      "safety_score": 33.29,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-06",
-      "shadow_length_px": 73.815,
+      "shadow_length_px": 37.684,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 51.686,
-      "slope_estimate_deg": 62.418,
+      "depth_m": 26.387,
+      "slope_estimate_deg": 44.342,
       "confidence": null,
       "x1": 107,
       "y1": 223,
@@ -2989,17 +2989,17 @@
       "radius_px": 27,
       "diameter_m": 54.0,
       "neighbor_count": 2,
-      "safety_score": 27.46,
+      "safety_score": 32.23,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-07",
-      "shadow_length_px": 96.098,
+      "shadow_length_px": 43.994,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 67.289,
-      "slope_estimate_deg": 62.519,
+      "depth_m": 30.805,
+      "slope_estimate_deg": 41.352,
       "confidence": null,
       "x1": 100,
       "y1": 189,
@@ -3011,17 +3011,17 @@
       "radius_px": 35,
       "diameter_m": 70.0,
       "neighbor_count": 2,
-      "safety_score": 25.32,
+      "safety_score": 30.18,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-08",
-      "shadow_length_px": 29.247,
+      "shadow_length_px": 14.09,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 20.479,
-      "slope_estimate_deg": 61.758,
+      "depth_m": 9.866,
+      "slope_estimate_deg": 41.89,
       "confidence": null,
       "x1": 153,
       "y1": 166,
@@ -3033,17 +3033,17 @@
       "radius_px": 11,
       "diameter_m": 22.0,
       "neighbor_count": 2,
-      "safety_score": 38.59,
-      "zone": "HAZARD"
+      "safety_score": 46.32,
+      "zone": "CAUTION"
      },
      {
       "crater_id": "CR-09",
-      "shadow_length_px": 48.745,
+      "shadow_length_px": 23.594,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 34.132,
-      "slope_estimate_deg": 62.194,
+      "depth_m": 16.521,
+      "slope_estimate_deg": 42.546,
       "confidence": null,
       "x1": 206,
       "y1": 267,
@@ -3055,17 +3055,17 @@
       "radius_px": 18,
       "diameter_m": 36.0,
       "neighbor_count": 1,
-      "safety_score": 35.73,
-      "zone": "HAZARD"
+      "safety_score": 42.21,
+      "zone": "CAUTION"
      },
      {
       "crater_id": "CR-10",
-      "shadow_length_px": 112.811,
+      "shadow_length_px": 58.656,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 78.991,
-      "slope_estimate_deg": 62.569,
+      "depth_m": 41.071,
+      "slope_estimate_deg": 45.05,
       "confidence": null,
       "x1": 60,
       "y1": 345,
@@ -3077,17 +3077,17 @@
       "radius_px": 41,
       "diameter_m": 82.0,
       "neighbor_count": 1,
-      "safety_score": 28.21,
+      "safety_score": 31.69,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-11",
-      "shadow_length_px": 90.527,
+      "shadow_length_px": 43.254,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 63.388,
-      "slope_estimate_deg": 62.498,
+      "depth_m": 30.287,
+      "slope_estimate_deg": 42.545,
       "confidence": null,
       "x1": 337,
       "y1": 355,
@@ -3099,22 +3099,22 @@
       "radius_px": 33,
       "diameter_m": 66.0,
       "neighbor_count": 0,
-      "safety_score": 33.77,
+      "safety_score": 38.48,
       "zone": "HAZARD"
      }
     ],
     "summary": {
      "safe": 0,
-     "caution": 0,
-     "hazard": 11
+     "caution": 2,
+     "hazard": 9
     },
-    "overall": 30.57,
+    "overall": 35.27,
     "scores": {
      "n": 11,
-     "min": 25.32,
-     "median": 29.77,
-     "max": 38.59,
-     "mean": 30.566363636363636
+     "min": 30.18,
+     "median": 33.34,
+     "max": 46.32,
+     "mean": 35.267272727272726
     }
    },
    "synthetic_meta_paths": {
@@ -3140,9 +3140,9 @@
      180
     ],
     "goal_crater_id": "CR-08",
-    "goal_zone": "HAZARD",
+    "goal_zone": "CAUTION",
     "hazard_craters_crossed": [],
-    "hazard_craters_other_than_goal": 10
+    "hazard_craters_other_than_goal": 9
    }
   },
   "123": {
@@ -3609,12 +3609,12 @@
    "yolo_depth_rows": [
     {
      "crater_id": "CR-01",
-     "shadow_length_px": 181.055,
+     "shadow_length_px": 96.423,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 126.776,
-     "slope_estimate_deg": 62.676,
+     "depth_m": 67.516,
+     "slope_estimate_deg": 45.868,
      "confidence": 0.8704314231872559,
      "x1": 184,
      "y1": 337,
@@ -3627,12 +3627,12 @@
     },
     {
      "crater_id": "CR-02",
-     "shadow_length_px": 88.315,
+     "shadow_length_px": 45.386,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 61.839,
-     "slope_estimate_deg": 62.457,
+     "depth_m": 31.78,
+     "slope_estimate_deg": 44.579,
      "confidence": 0.823901891708374,
      "x1": 98,
      "y1": 136,
@@ -3645,12 +3645,12 @@
     },
     {
      "crater_id": "CR-03",
-     "shadow_length_px": 101.669,
+     "shadow_length_px": 54.971,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 71.19,
-     "slope_estimate_deg": 62.537,
+     "depth_m": 38.491,
+     "slope_estimate_deg": 46.131,
      "confidence": 0.8200227618217468,
      "x1": 382,
      "y1": 50,
@@ -3663,12 +3663,12 @@
     },
     {
      "crater_id": "CR-04",
-     "shadow_length_px": 142.058,
+     "shadow_length_px": 80.615,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 99.47,
-     "slope_estimate_deg": 62.627,
+     "depth_m": 56.447,
+     "slope_estimate_deg": 47.624,
      "confidence": 0.7639997005462646,
      "x1": 249,
      "y1": 109,
@@ -3681,12 +3681,12 @@
     },
     {
      "crater_id": "CR-05",
-     "shadow_length_px": 31.214,
+     "shadow_length_px": 14.173,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 21.856,
-     "slope_estimate_deg": 61.737,
+     "depth_m": 9.924,
+     "slope_estimate_deg": 40.184,
      "confidence": 0.6841952800750732,
      "x1": 233,
      "y1": 40,
@@ -3699,12 +3699,12 @@
     },
     {
      "crater_id": "CR-06",
-     "shadow_length_px": 98.31,
+     "shadow_length_px": 54.399,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 68.838,
-     "slope_estimate_deg": 62.555,
+     "depth_m": 38.09,
+     "slope_estimate_deg": 46.815,
      "confidence": 0.6821051239967346,
      "x1": 420,
      "y1": 140,
@@ -3717,12 +3717,12 @@
     },
     {
      "crater_id": "CR-07",
-     "shadow_length_px": 80.778,
+     "shadow_length_px": 40.88,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 56.562,
-     "slope_estimate_deg": 62.455,
+     "depth_m": 28.625,
+     "slope_estimate_deg": 44.137,
      "confidence": 0.6674696207046509,
      "x1": 394,
      "y1": 417,
@@ -3735,12 +3735,12 @@
     },
     {
      "crater_id": "CR-08",
-     "shadow_length_px": 55.136,
+     "shadow_length_px": 23.757,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 38.606,
-     "slope_estimate_deg": 62.322,
+     "depth_m": 16.635,
+     "slope_estimate_deg": 39.402,
      "confidence": 0.6488872766494751,
      "x1": 285,
      "y1": 12,
@@ -3753,12 +3753,12 @@
     },
     {
      "crater_id": "CR-09",
-     "shadow_length_px": 22.938,
+     "shadow_length_px": 16.057,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 16.061,
-     "slope_estimate_deg": 55.594,
+     "depth_m": 11.243,
+     "slope_estimate_deg": 45.626,
      "confidence": 0.5586980581283569,
      "x1": 442,
      "y1": 222,
@@ -3771,12 +3771,12 @@
     },
     {
      "crater_id": "CR-10",
-     "shadow_length_px": 68.652,
+     "shadow_length_px": 40.961,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 48.071,
-     "slope_estimate_deg": 60.452,
+     "depth_m": 28.681,
+     "slope_estimate_deg": 46.466,
      "confidence": 0.5181504487991333,
      "x1": 437,
      "y1": 192,
@@ -3795,9 +3795,9 @@
      "roi_h": 131,
      "otsu_threshold": 154.0,
      "shadow_px_before_morph": 6623,
-     "shadow_px_after_morph": 10425,
-     "shadow_length_px_unrounded": 181.05470248320495,
-     "depth_m": 126.776
+     "shadow_px_after_morph": 6717,
+     "shadow_length_px_unrounded": 96.42286588560069,
+     "depth_m": 67.516
     },
     {
      "crater_id": "CR-02",
@@ -3805,9 +3805,9 @@
      "roi_h": 65,
      "otsu_threshold": 159.0,
      "shadow_px_before_morph": 1564,
-     "shadow_px_after_morph": 2571,
-     "shadow_length_px_unrounded": 88.31547071667343,
-     "depth_m": 61.839
+     "shadow_px_after_morph": 1562,
+     "shadow_length_px_unrounded": 45.3864634247702,
+     "depth_m": 31.78
     },
     {
      "crater_id": "CR-03",
@@ -3815,9 +3815,9 @@
      "roi_h": 74,
      "otsu_threshold": 151.0,
      "shadow_px_before_morph": 2404,
-     "shadow_px_after_morph": 3004,
-     "shadow_length_px_unrounded": 101.66917908672276,
-     "depth_m": 71.19
+     "shadow_px_after_morph": 2148,
+     "shadow_length_px_unrounded": 54.97071234830017,
+     "depth_m": 38.491
     },
     {
      "crater_id": "CR-04",
@@ -3825,9 +3825,9 @@
      "roi_h": 103,
      "otsu_threshold": 166.0,
      "shadow_px_before_morph": 4687,
-     "shadow_px_after_morph": 5749,
-     "shadow_length_px_unrounded": 142.0583050252839,
-     "depth_m": 99.47
+     "shadow_px_after_morph": 4651,
+     "shadow_length_px_unrounded": 80.61510148965941,
+     "depth_m": 56.447
     },
     {
      "crater_id": "CR-05",
@@ -3835,9 +3835,9 @@
      "roi_h": 24,
      "otsu_threshold": 155.0,
      "shadow_px_before_morph": 196,
-     "shadow_px_after_morph": 354,
-     "shadow_length_px_unrounded": 31.213603010431882,
-     "depth_m": 21.856
+     "shadow_px_after_morph": 194,
+     "shadow_length_px_unrounded": 14.172860414338325,
+     "depth_m": 9.924
     },
     {
      "crater_id": "CR-06",
@@ -3845,9 +3845,9 @@
      "roi_h": 71,
      "otsu_threshold": 150.0,
      "shadow_px_before_morph": 2203,
-     "shadow_px_after_morph": 2873,
-     "shadow_length_px_unrounded": 98.31014568909164,
-     "depth_m": 68.838
+     "shadow_px_after_morph": 2066,
+     "shadow_length_px_unrounded": 54.39883596543663,
+     "depth_m": 38.09
     },
     {
      "crater_id": "CR-07",
@@ -3855,9 +3855,9 @@
      "roi_h": 59,
      "otsu_threshold": 141.0,
      "shadow_px_before_morph": 1305,
-     "shadow_px_after_morph": 2162,
-     "shadow_length_px_unrounded": 80.7782518771222,
-     "depth_m": 56.562
+     "shadow_px_after_morph": 1223,
+     "shadow_length_px_unrounded": 40.880277154436996,
+     "depth_m": 28.625
     },
     {
      "crater_id": "CR-08",
@@ -3865,9 +3865,9 @@
      "roi_h": 40,
      "otsu_threshold": 136.0,
      "shadow_px_before_morph": 496,
-     "shadow_px_after_morph": 1139,
-     "shadow_length_px_unrounded": 55.13556278925047,
-     "depth_m": 38.606
+     "shadow_px_after_morph": 438,
+     "shadow_length_px_unrounded": 23.757109337868282,
+     "depth_m": 16.635
     },
     {
      "crater_id": "CR-09",
@@ -3875,9 +3875,9 @@
      "roi_h": 22,
      "otsu_threshold": 142.0,
      "shadow_px_before_morph": 280,
-     "shadow_px_after_morph": 199,
-     "shadow_length_px_unrounded": 22.937957293579288,
-     "depth_m": 16.061
+     "shadow_px_after_morph": 213,
+     "shadow_length_px_unrounded": 16.056740110854257,
+     "depth_m": 11.243
     },
     {
      "crater_id": "CR-10",
@@ -3885,21 +3885,21 @@
      "roi_h": 55,
      "otsu_threshold": 161.0,
      "shadow_px_before_morph": 1583,
-     "shadow_px_after_morph": 1368,
-     "shadow_length_px_unrounded": 68.6524215467626,
-     "depth_m": 48.071
+     "shadow_px_after_morph": 1355,
+     "shadow_length_px_unrounded": 40.96100232142462,
+     "depth_m": 28.681
     }
    ],
    "yolo_scoring": {
     "rows": [
      {
       "crater_id": "CR-01",
-      "shadow_length_px": 181.055,
+      "shadow_length_px": 96.423,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 126.776,
-      "slope_estimate_deg": 62.676,
+      "depth_m": 67.516,
+      "slope_estimate_deg": 45.868,
       "confidence": 0.8704314231872559,
       "x1": 184,
       "y1": 337,
@@ -3911,17 +3911,17 @@
       "radius_px": 66,
       "diameter_m": 131.0,
       "neighbor_count": 0,
-      "safety_score": 29.67,
+      "safety_score": 31.98,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-02",
-      "shadow_length_px": 88.315,
+      "shadow_length_px": 45.386,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 61.839,
-      "slope_estimate_deg": 62.457,
+      "depth_m": 31.78,
+      "slope_estimate_deg": 44.579,
       "confidence": 0.823901891708374,
       "x1": 98,
       "y1": 136,
@@ -3933,17 +3933,17 @@
       "radius_px": 32,
       "diameter_m": 64.5,
       "neighbor_count": 0,
-      "safety_score": 33.95,
+      "safety_score": 38.17,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-03",
-      "shadow_length_px": 101.669,
+      "shadow_length_px": 54.971,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 71.19,
-      "slope_estimate_deg": 62.537,
+      "depth_m": 38.491,
+      "slope_estimate_deg": 46.131,
       "confidence": 0.8200227618217468,
       "x1": 382,
       "y1": 50,
@@ -3955,17 +3955,17 @@
       "radius_px": 37,
       "diameter_m": 74.0,
       "neighbor_count": 0,
-      "safety_score": 32.91,
+      "safety_score": 36.39,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-04",
-      "shadow_length_px": 142.058,
+      "shadow_length_px": 80.615,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 99.47,
-      "slope_estimate_deg": 62.627,
+      "depth_m": 56.447,
+      "slope_estimate_deg": 47.624,
       "confidence": 0.7639997005462646,
       "x1": 249,
       "y1": 109,
@@ -3977,17 +3977,17 @@
       "radius_px": 52,
       "diameter_m": 103.0,
       "neighbor_count": 0,
-      "safety_score": 30.85,
+      "safety_score": 33.3,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-05",
-      "shadow_length_px": 31.214,
+      "shadow_length_px": 14.173,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 21.856,
-      "slope_estimate_deg": 61.737,
+      "depth_m": 9.924,
+      "slope_estimate_deg": 40.184,
       "confidence": 0.6841952800750732,
       "x1": 233,
       "y1": 40,
@@ -3999,17 +3999,17 @@
       "radius_px": 12,
       "diameter_m": 23.5,
       "neighbor_count": 1,
-      "safety_score": 41.6,
+      "safety_score": 49.88,
       "zone": "CAUTION"
      },
      {
       "crater_id": "CR-06",
-      "shadow_length_px": 98.31,
+      "shadow_length_px": 54.399,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 68.838,
-      "slope_estimate_deg": 62.555,
+      "depth_m": 38.09,
+      "slope_estimate_deg": 46.815,
       "confidence": 0.6821051239967346,
       "x1": 420,
       "y1": 140,
@@ -4021,17 +4021,17 @@
       "radius_px": 36,
       "diameter_m": 71.5,
       "neighbor_count": 2,
-      "safety_score": 25.15,
+      "safety_score": 28.55,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-07",
-      "shadow_length_px": 80.778,
+      "shadow_length_px": 40.88,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 56.562,
-      "slope_estimate_deg": 62.455,
+      "depth_m": 28.625,
+      "slope_estimate_deg": 44.137,
       "confidence": 0.6674696207046509,
       "x1": 394,
       "y1": 417,
@@ -4043,17 +4043,17 @@
       "radius_px": 30,
       "diameter_m": 59.0,
       "neighbor_count": 0,
-      "safety_score": 34.68,
+      "safety_score": 39.27,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-08",
-      "shadow_length_px": 55.136,
+      "shadow_length_px": 23.757,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 38.606,
-      "slope_estimate_deg": 62.322,
+      "depth_m": 16.635,
+      "slope_estimate_deg": 39.402,
       "confidence": 0.6488872766494751,
       "x1": 285,
       "y1": 12,
@@ -4065,17 +4065,17 @@
       "radius_px": 20,
       "diameter_m": 40.5,
       "neighbor_count": 1,
-      "safety_score": 34.35,
-      "zone": "HAZARD"
+      "safety_score": 41.64,
+      "zone": "CAUTION"
      },
      {
       "crater_id": "CR-09",
-      "shadow_length_px": 22.938,
+      "shadow_length_px": 16.057,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 16.061,
-      "slope_estimate_deg": 55.594,
+      "depth_m": 11.243,
+      "slope_estimate_deg": 45.626,
       "confidence": 0.5586980581283569,
       "x1": 442,
       "y1": 222,
@@ -4087,17 +4087,17 @@
       "radius_px": 11,
       "diameter_m": 22.0,
       "neighbor_count": 2,
-      "safety_score": 41.01,
+      "safety_score": 44.86,
       "zone": "CAUTION"
      },
      {
       "crater_id": "CR-10",
-      "shadow_length_px": 68.652,
+      "shadow_length_px": 40.961,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 48.071,
-      "slope_estimate_deg": 60.452,
+      "depth_m": 28.681,
+      "slope_estimate_deg": 46.466,
       "confidence": 0.5181504487991333,
       "x1": 437,
       "y1": 192,
@@ -4109,22 +4109,22 @@
       "radius_px": 27,
       "diameter_m": 54.5,
       "neighbor_count": 2,
-      "safety_score": 27.85,
+      "safety_score": 31.5,
       "zone": "HAZARD"
      }
     ],
     "summary": {
      "safe": 0,
-     "caution": 2,
-     "hazard": 8
+     "caution": 3,
+     "hazard": 7
     },
-    "overall": 33.2,
+    "overall": 37.55,
     "scores": {
      "n": 10,
-     "min": 25.15,
-     "median": 33.43,
-     "max": 41.6,
-     "mean": 33.202
+     "min": 28.55,
+     "median": 37.28,
+     "max": 49.88,
+     "mean": 37.554
     }
    },
    "yolo_paths": {
@@ -4135,7 +4135,7 @@
     "alt_nodes": [
      24,
      28,
-     33
+     32
     ],
     "start": [
      256,
@@ -4152,17 +4152,17 @@
     "goal_crater_id": "CR-05",
     "goal_zone": "CAUTION",
     "hazard_craters_crossed": [],
-    "hazard_craters_other_than_goal": 8
+    "hazard_craters_other_than_goal": 7
    },
    "synthetic_meta_depth_rows": [
     {
      "crater_id": "CR-01",
-     "shadow_length_px": 43.175,
+     "shadow_length_px": 18.842,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 30.231,
-     "slope_estimate_deg": 62.11,
+     "depth_m": 13.193,
+     "slope_estimate_deg": 39.509,
      "confidence": null,
      "x1": 292,
      "y1": 18,
@@ -4175,12 +4175,12 @@
     },
     {
      "crater_id": "CR-02",
-     "shadow_length_px": 73.159,
+     "shadow_length_px": 40.47,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 51.226,
-     "slope_estimate_deg": 61.339,
+     "depth_m": 28.337,
+     "slope_estimate_deg": 45.343,
      "confidence": null,
      "x1": 433,
      "y1": 188,
@@ -4193,12 +4193,12 @@
     },
     {
      "crater_id": "CR-03",
-     "shadow_length_px": 135.095,
+     "shadow_length_px": 73.318,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 94.594,
-     "slope_estimate_deg": 62.616,
+     "depth_m": 51.338,
+     "slope_estimate_deg": 46.335,
      "confidence": null,
      "x1": 245,
      "y1": 108,
@@ -4211,12 +4211,12 @@
     },
     {
      "crater_id": "CR-04",
-     "shadow_length_px": 101.669,
+     "shadow_length_px": 52.759,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 71.19,
-     "slope_estimate_deg": 62.537,
+     "depth_m": 36.942,
+     "slope_estimate_deg": 44.955,
      "confidence": null,
      "x1": 381,
      "y1": 49,
@@ -4229,12 +4229,12 @@
     },
     {
      "crater_id": "CR-05",
-     "shadow_length_px": 162.949,
+     "shadow_length_px": 88.887,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 114.098,
-     "slope_estimate_deg": 62.657,
+     "depth_m": 62.24,
+     "slope_estimate_deg": 46.531,
      "confidence": null,
      "x1": 187,
      "y1": 340,
@@ -4247,12 +4247,12 @@
     },
     {
      "crater_id": "CR-06",
-     "shadow_length_px": 26.462,
+     "shadow_length_px": 14.992,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 18.529,
-     "slope_estimate_deg": 61.644,
+     "depth_m": 10.498,
+     "slope_estimate_deg": 46.39,
      "confidence": null,
      "x1": 442,
      "y1": 221,
@@ -4265,12 +4265,12 @@
     },
     {
      "crater_id": "CR-07",
-     "shadow_length_px": 90.527,
+     "shadow_length_px": 51.285,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 63.388,
-     "slope_estimate_deg": 62.498,
+     "depth_m": 35.91,
+     "slope_estimate_deg": 47.418,
      "confidence": null,
      "x1": 423,
      "y1": 144,
@@ -4283,12 +4283,12 @@
     },
     {
      "crater_id": "CR-08",
-     "shadow_length_px": 29.247,
+     "shadow_length_px": 11.961,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 20.479,
-     "slope_estimate_deg": 61.758,
+     "depth_m": 8.375,
+     "slope_estimate_deg": 37.285,
      "confidence": null,
      "x1": 232,
      "y1": 40,
@@ -4301,12 +4301,12 @@
     },
     {
      "crater_id": "CR-09",
-     "shadow_length_px": 73.815,
+     "shadow_length_px": 37.849,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 51.686,
-     "slope_estimate_deg": 62.418,
+     "depth_m": 26.502,
+     "slope_estimate_deg": 44.467,
      "confidence": null,
      "x1": 395,
      "y1": 419,
@@ -4319,12 +4319,12 @@
     },
     {
      "crater_id": "CR-10",
-     "shadow_length_px": 79.386,
+     "shadow_length_px": 42.436,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 55.586,
-     "slope_estimate_deg": 62.448,
+     "depth_m": 29.714,
+     "slope_estimate_deg": 45.697,
      "confidence": null,
      "x1": 99,
      "y1": 139,
@@ -4343,9 +4343,9 @@
      "roi_h": 32,
      "otsu_threshold": 121.0,
      "shadow_px_before_morph": 375,
-     "shadow_px_after_morph": 647,
-     "shadow_length_px_unrounded": 43.17458289984118,
-     "depth_m": 30.231
+     "shadow_px_after_morph": 285,
+     "shadow_length_px_unrounded": 18.84219707213433,
+     "depth_m": 13.193
     },
     {
      "crater_id": "CR-02",
@@ -4353,9 +4353,9 @@
      "roi_h": 56,
      "otsu_threshold": 157.0,
      "shadow_px_before_morph": 1673,
-     "shadow_px_after_morph": 1432,
-     "shadow_length_px_unrounded": 73.15860781709581,
-     "depth_m": 51.226
+     "shadow_px_after_morph": 1272,
+     "shadow_length_px_unrounded": 40.469851105548734,
+     "depth_m": 28.337
     },
     {
      "crater_id": "CR-03",
@@ -4363,9 +4363,9 @@
      "roi_h": 98,
      "otsu_threshold": 163.0,
      "shadow_px_before_morph": 4337,
-     "shadow_px_after_morph": 5118,
-     "shadow_length_px_unrounded": 135.0946626220837,
-     "depth_m": 94.594
+     "shadow_px_after_morph": 3478,
+     "shadow_length_px_unrounded": 73.31835809758357,
+     "depth_m": 51.338
     },
     {
      "crater_id": "CR-04",
@@ -4373,9 +4373,9 @@
      "roi_h": 74,
      "otsu_threshold": 151.0,
      "shadow_px_before_morph": 2404,
-     "shadow_px_after_morph": 3004,
-     "shadow_length_px_unrounded": 101.66917908672276,
-     "depth_m": 71.19
+     "shadow_px_after_morph": 2064,
+     "shadow_length_px_unrounded": 52.75883182337113,
+     "depth_m": 36.942
     },
     {
      "crater_id": "CR-05",
@@ -4383,9 +4383,9 @@
      "roi_h": 118,
      "otsu_threshold": 151.0,
      "shadow_px_before_morph": 6376,
-     "shadow_px_after_morph": 7447,
-     "shadow_length_px_unrounded": 162.94923223488445,
-     "depth_m": 114.098
+     "shadow_px_after_morph": 5664,
+     "shadow_length_px_unrounded": 88.88734709953697,
+     "depth_m": 62.24
     },
     {
      "crater_id": "CR-06",
@@ -4393,9 +4393,9 @@
      "roi_h": 20,
      "otsu_threshold": 126.0,
      "shadow_px_before_morph": 245,
-     "shadow_px_after_morph": 149,
-     "shadow_length_px_unrounded": 26.46184113216072,
-     "depth_m": 18.529
+     "shadow_px_after_morph": 191,
+     "shadow_length_px_unrounded": 14.992012458627318,
+     "depth_m": 10.498
     },
     {
      "crater_id": "CR-07",
@@ -4403,9 +4403,9 @@
      "roi_h": 66,
      "otsu_threshold": 147.0,
      "shadow_px_before_morph": 2075,
-     "shadow_px_after_morph": 2238,
-     "shadow_length_px_unrounded": 90.52735124160247,
-     "depth_m": 63.388
+     "shadow_px_after_morph": 1830,
+     "shadow_length_px_unrounded": 51.28537817574345,
+     "depth_m": 35.91
     },
     {
      "crater_id": "CR-08",
@@ -4413,9 +4413,9 @@
      "roi_h": 22,
      "otsu_threshold": 149.0,
      "shadow_px_before_morph": 171,
-     "shadow_px_after_morph": 313,
-     "shadow_length_px_unrounded": 29.247298093440797,
-     "depth_m": 20.479
+     "shadow_px_after_morph": 144,
+     "shadow_length_px_unrounded": 11.960979889409295,
+     "depth_m": 8.375
     },
     {
      "crater_id": "CR-09",
@@ -4423,9 +4423,9 @@
      "roi_h": 54,
      "otsu_threshold": 136.0,
      "shadow_px_before_morph": 1211,
-     "shadow_px_after_morph": 1693,
-     "shadow_length_px_unrounded": 73.814609473922,
-     "depth_m": 51.686
+     "shadow_px_after_morph": 1071,
+     "shadow_length_px_unrounded": 37.84924458521897,
+     "depth_m": 26.502
     },
     {
      "crater_id": "CR-10",
@@ -4433,21 +4433,21 @@
      "roi_h": 58,
      "otsu_threshold": 156.0,
      "shadow_px_before_morph": 1489,
-     "shadow_px_after_morph": 1853,
-     "shadow_length_px_unrounded": 79.38552339648217,
-     "depth_m": 55.586
+     "shadow_px_after_morph": 1344,
+     "shadow_length_px_unrounded": 42.43615602253982,
+     "depth_m": 29.714
     }
    ],
    "synthetic_meta_scoring": {
     "rows": [
      {
       "crater_id": "CR-01",
-      "shadow_length_px": 43.175,
+      "shadow_length_px": 18.842,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 30.231,
-      "slope_estimate_deg": 62.11,
+      "depth_m": 13.193,
+      "slope_estimate_deg": 39.509,
       "confidence": null,
       "x1": 292,
       "y1": 18,
@@ -4459,17 +4459,17 @@
       "radius_px": 16,
       "diameter_m": 32.0,
       "neighbor_count": 1,
-      "safety_score": 37.2,
-      "zone": "HAZARD"
+      "safety_score": 45.13,
+      "zone": "CAUTION"
      },
      {
       "crater_id": "CR-02",
-      "shadow_length_px": 73.159,
+      "shadow_length_px": 40.47,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 51.226,
-      "slope_estimate_deg": 61.339,
+      "depth_m": 28.337,
+      "slope_estimate_deg": 45.343,
       "confidence": null,
       "x1": 433,
       "y1": 188,
@@ -4481,17 +4481,17 @@
       "radius_px": 28,
       "diameter_m": 56.0,
       "neighbor_count": 2,
-      "safety_score": 27.39,
+      "safety_score": 31.51,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-03",
-      "shadow_length_px": 135.095,
+      "shadow_length_px": 73.318,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 94.594,
-      "slope_estimate_deg": 62.616,
+      "depth_m": 51.338,
+      "slope_estimate_deg": 46.335,
       "confidence": null,
       "x1": 245,
       "y1": 108,
@@ -4503,17 +4503,17 @@
       "radius_px": 49,
       "diameter_m": 98.0,
       "neighbor_count": 0,
-      "safety_score": 31.12,
+      "safety_score": 33.92,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-04",
-      "shadow_length_px": 101.669,
+      "shadow_length_px": 52.759,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 71.19,
-      "slope_estimate_deg": 62.537,
+      "depth_m": 36.942,
+      "slope_estimate_deg": 44.955,
       "confidence": null,
       "x1": 381,
       "y1": 49,
@@ -4525,17 +4525,17 @@
       "radius_px": 37,
       "diameter_m": 74.0,
       "neighbor_count": 0,
-      "safety_score": 32.91,
+      "safety_score": 36.68,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-05",
-      "shadow_length_px": 162.949,
+      "shadow_length_px": 88.887,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 114.098,
-      "slope_estimate_deg": 62.657,
+      "depth_m": 62.24,
+      "slope_estimate_deg": 46.531,
       "confidence": null,
       "x1": 187,
       "y1": 340,
@@ -4547,17 +4547,17 @@
       "radius_px": 59,
       "diameter_m": 118.0,
       "neighbor_count": 0,
-      "safety_score": 30.15,
+      "safety_score": 32.55,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-06",
-      "shadow_length_px": 26.462,
+      "shadow_length_px": 14.992,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 18.529,
-      "slope_estimate_deg": 61.644,
+      "depth_m": 10.498,
+      "slope_estimate_deg": 46.39,
       "confidence": null,
       "x1": 442,
       "y1": 221,
@@ -4569,17 +4569,17 @@
       "radius_px": 10,
       "diameter_m": 20.0,
       "neighbor_count": 2,
-      "safety_score": 40.13,
+      "safety_score": 46.19,
       "zone": "CAUTION"
      },
      {
       "crater_id": "CR-07",
-      "shadow_length_px": 90.527,
+      "shadow_length_px": 51.285,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 63.388,
-      "slope_estimate_deg": 62.498,
+      "depth_m": 35.91,
+      "slope_estimate_deg": 47.418,
       "confidence": null,
       "x1": 423,
       "y1": 144,
@@ -4591,17 +4591,17 @@
       "radius_px": 33,
       "diameter_m": 66.0,
       "neighbor_count": 2,
-      "safety_score": 25.77,
+      "safety_score": 29.19,
       "zone": "HAZARD"
      },
      {
       "crater_id": "CR-08",
-      "shadow_length_px": 29.247,
+      "shadow_length_px": 11.961,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 20.479,
-      "slope_estimate_deg": 61.758,
+      "depth_m": 8.375,
+      "slope_estimate_deg": 37.285,
       "confidence": null,
       "x1": 232,
       "y1": 40,
@@ -4613,17 +4613,17 @@
       "radius_px": 11,
       "diameter_m": 22.0,
       "neighbor_count": 1,
-      "safety_score": 42.59,
+      "safety_score": 52.16,
       "zone": "CAUTION"
      },
      {
       "crater_id": "CR-09",
-      "shadow_length_px": 73.815,
+      "shadow_length_px": 37.849,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 51.686,
-      "slope_estimate_deg": 62.418,
+      "depth_m": 26.502,
+      "slope_estimate_deg": 44.467,
       "confidence": null,
       "x1": 395,
       "y1": 419,
@@ -4635,17 +4635,17 @@
       "radius_px": 27,
       "diameter_m": 54.0,
       "neighbor_count": 0,
-      "safety_score": 35.46,
-      "zone": "HAZARD"
+      "safety_score": 40.19,
+      "zone": "CAUTION"
      },
      {
       "crater_id": "CR-10",
-      "shadow_length_px": 79.386,
+      "shadow_length_px": 42.436,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 55.586,
-      "slope_estimate_deg": 62.448,
+      "depth_m": 29.714,
+      "slope_estimate_deg": 45.697,
       "confidence": null,
       "x1": 99,
       "y1": 139,
@@ -4657,22 +4657,22 @@
       "radius_px": 29,
       "diameter_m": 58.0,
       "neighbor_count": 0,
-      "safety_score": 34.83,
+      "safety_score": 39.02,
       "zone": "HAZARD"
      }
     ],
     "summary": {
      "safe": 0,
-     "caution": 2,
-     "hazard": 8
+     "caution": 4,
+     "hazard": 6
     },
-    "overall": 33.75,
+    "overall": 38.65,
     "scores": {
      "n": 10,
-     "min": 25.77,
-     "median": 33.87,
-     "max": 42.59,
-     "mean": 33.755
+     "min": 29.19,
+     "median": 37.85,
+     "max": 52.16,
+     "mean": 38.654
     }
    },
    "synthetic_meta_paths": {
@@ -4700,7 +4700,7 @@
     "goal_crater_id": "CR-08",
     "goal_zone": "CAUTION",
     "hazard_craters_crossed": [],
-    "hazard_craters_other_than_goal": 8
+    "hazard_craters_other_than_goal": 6
    }
   }
  },
@@ -4709,73 +4709,73 @@
    {
     "theta": 5,
     "tan": 0.08748866352592401,
-    "mean_depth_tan_code": 8.735666666666667,
-    "mean_depth_inverse_tan": 1141.275222222222,
-    "mean_shadow_length_px": 99.84877777777778,
+    "mean_depth_tan_code": 4.682555555555556,
+    "mean_depth_inverse_tan": 611.7731111111111,
+    "mean_shadow_length_px": 53.523111111111106,
     "n": 9
    },
    {
     "theta": 15,
     "tan": 0.2679491924311227,
-    "mean_depth_tan_code": 26.754444444444445,
-    "mean_depth_inverse_tan": 372.6401111111111,
-    "mean_shadow_length_px": 99.84877777777778,
+    "mean_depth_tan_code": 14.341555555555557,
+    "mean_depth_inverse_tan": 199.75133333333332,
+    "mean_shadow_length_px": 53.523111111111106,
     "n": 9
    },
    {
     "theta": 25,
     "tan": 0.4663076581549986,
-    "mean_depth_tan_code": 46.56033333333333,
-    "mean_depth_inverse_tan": 214.1261111111111,
-    "mean_shadow_length_px": 99.84877777777778,
+    "mean_depth_tan_code": 24.958333333333332,
+    "mean_depth_inverse_tan": 114.781,
+    "mean_shadow_length_px": 53.523111111111106,
     "n": 9
    },
    {
     "theta": 35,
     "tan": 0.7002075382097097,
-    "mean_depth_tan_code": 69.9148888888889,
-    "mean_depth_inverse_tan": 142.59855555555555,
-    "mean_shadow_length_px": 99.84877777777778,
+    "mean_depth_tan_code": 37.477333333333334,
+    "mean_depth_inverse_tan": 76.43900000000001,
+    "mean_shadow_length_px": 53.523111111111106,
     "n": 9
    },
    {
     "theta": 45,
     "tan": 0.9999999999999999,
-    "mean_depth_tan_code": 99.84877777777778,
-    "mean_depth_inverse_tan": 99.84877777777778,
-    "mean_shadow_length_px": 99.84877777777778,
+    "mean_depth_tan_code": 53.523111111111106,
+    "mean_depth_inverse_tan": 53.523111111111106,
+    "mean_shadow_length_px": 53.523111111111106,
     "n": 9
    },
    {
     "theta": 55,
     "tan": 1.4281480067421144,
-    "mean_depth_tan_code": 142.59855555555555,
-    "mean_depth_inverse_tan": 69.9148888888889,
-    "mean_shadow_length_px": 99.84877777777778,
+    "mean_depth_tan_code": 76.43900000000001,
+    "mean_depth_inverse_tan": 37.477333333333334,
+    "mean_shadow_length_px": 53.523111111111106,
     "n": 9
    },
    {
     "theta": 65,
     "tan": 2.1445069205095586,
-    "mean_depth_tan_code": 214.1261111111111,
-    "mean_depth_inverse_tan": 46.56033333333333,
-    "mean_shadow_length_px": 99.84877777777778,
+    "mean_depth_tan_code": 114.781,
+    "mean_depth_inverse_tan": 24.958333333333332,
+    "mean_shadow_length_px": 53.523111111111106,
     "n": 9
    },
    {
     "theta": 75,
     "tan": 3.7320508075688776,
-    "mean_depth_tan_code": 372.6401111111111,
-    "mean_depth_inverse_tan": 26.754444444444445,
-    "mean_shadow_length_px": 99.84877777777778,
+    "mean_depth_tan_code": 199.75133333333332,
+    "mean_depth_inverse_tan": 14.341555555555557,
+    "mean_shadow_length_px": 53.523111111111106,
     "n": 9
    },
    {
     "theta": 85,
     "tan": 11.430052302761348,
-    "mean_depth_tan_code": 1141.275222222222,
-    "mean_depth_inverse_tan": 8.735666666666667,
-    "mean_shadow_length_px": 99.84877777777778,
+    "mean_depth_tan_code": 611.7731111111111,
+    "mean_depth_inverse_tan": 4.682555555555556,
+    "mean_shadow_length_px": 53.523111111111106,
     "n": 9
    }
   ],
@@ -4783,73 +4783,73 @@
    {
     "theta": 5,
     "tan": 0.08748866352592401,
-    "mean_depth_tan_code": 8.3129,
-    "mean_depth_inverse_tan": 1086.0461,
-    "mean_shadow_length_px": 95.0167,
+    "mean_depth_tan_code": 4.7426,
+    "mean_depth_inverse_tan": 619.603,
+    "mean_shadow_length_px": 54.2082,
     "n": 10
    },
    {
     "theta": 15,
     "tan": 0.2679491924311227,
-    "mean_depth_tan_code": 25.459600000000002,
-    "mean_depth_inverse_tan": 354.60720000000003,
-    "mean_shadow_length_px": 95.0167,
+    "mean_depth_tan_code": 14.5251,
+    "mean_depth_inverse_tan": 202.3079,
+    "mean_shadow_length_px": 54.2082,
     "n": 10
    },
    {
     "theta": 25,
     "tan": 0.4663076581549986,
-    "mean_depth_tan_code": 44.3071,
-    "mean_depth_inverse_tan": 203.764,
-    "mean_shadow_length_px": 95.0167,
+    "mean_depth_tan_code": 25.2779,
+    "mean_depth_inverse_tan": 116.24980000000001,
+    "mean_shadow_length_px": 54.2082,
     "n": 10
    },
    {
     "theta": 35,
     "tan": 0.7002075382097097,
-    "mean_depth_tan_code": 66.5313,
-    "mean_depth_inverse_tan": 135.698,
-    "mean_shadow_length_px": 95.0167,
+    "mean_depth_tan_code": 37.957,
+    "mean_depth_inverse_tan": 77.4174,
+    "mean_shadow_length_px": 54.2082,
     "n": 10
    },
    {
     "theta": 45,
     "tan": 0.9999999999999999,
-    "mean_depth_tan_code": 95.0167,
-    "mean_depth_inverse_tan": 95.0167,
-    "mean_shadow_length_px": 95.0167,
+    "mean_depth_tan_code": 54.2082,
+    "mean_depth_inverse_tan": 54.2082,
+    "mean_shadow_length_px": 54.2082,
     "n": 10
    },
    {
     "theta": 55,
     "tan": 1.4281480067421144,
-    "mean_depth_tan_code": 135.698,
-    "mean_depth_inverse_tan": 66.5313,
-    "mean_shadow_length_px": 95.0167,
+    "mean_depth_tan_code": 77.4174,
+    "mean_depth_inverse_tan": 37.957,
+    "mean_shadow_length_px": 54.2082,
     "n": 10
    },
    {
     "theta": 65,
     "tan": 2.1445069205095586,
-    "mean_depth_tan_code": 203.764,
-    "mean_depth_inverse_tan": 44.3071,
-    "mean_shadow_length_px": 95.0167,
+    "mean_depth_tan_code": 116.24980000000001,
+    "mean_depth_inverse_tan": 25.2779,
+    "mean_shadow_length_px": 54.2082,
     "n": 10
    },
    {
     "theta": 75,
     "tan": 3.7320508075688776,
-    "mean_depth_tan_code": 354.60720000000003,
-    "mean_depth_inverse_tan": 25.459600000000002,
-    "mean_shadow_length_px": 95.0167,
+    "mean_depth_tan_code": 202.3079,
+    "mean_depth_inverse_tan": 14.5251,
+    "mean_shadow_length_px": 54.2082,
     "n": 10
    },
    {
     "theta": 85,
     "tan": 11.430052302761348,
-    "mean_depth_tan_code": 1086.0461,
-    "mean_depth_inverse_tan": 8.3129,
-    "mean_shadow_length_px": 95.0167,
+    "mean_depth_tan_code": 619.603,
+    "mean_depth_inverse_tan": 4.7426,
+    "mean_shadow_length_px": 54.2082,
     "n": 10
    }
   ]
@@ -4863,110 +4863,110 @@
     "radius_px": 17,
     "gt_depth_scale": 54.35409181740661,
     "gt_rim_to_floor_relief": 48.619232177734375,
-    "est_depth_m": 32.182,
-    "shadow_length_px": 45.96,
-    "error_vs_depth_scale": -22.17209181740661,
-    "abs_error_vs_depth_scale": 22.17209181740661,
-    "error_vs_relief": -16.437232177734373
+    "est_depth_m": 14.628,
+    "shadow_length_px": 20.891,
+    "error_vs_depth_scale": -39.72609181740661,
+    "abs_error_vs_depth_scale": 39.72609181740661,
+    "error_vs_relief": -33.991232177734375
    },
    {
     "crater_id": "CR-02",
     "radius_px": 27,
     "gt_depth_scale": 40.10082694214742,
     "gt_rim_to_floor_relief": 36.74742126464844,
-    "est_depth_m": 51.686,
-    "shadow_length_px": 73.815,
-    "error_vs_depth_scale": 11.585173057852579,
-    "abs_error_vs_depth_scale": 11.585173057852579,
-    "error_vs_relief": 14.938578735351562
+    "est_depth_m": 24.954,
+    "shadow_length_px": 35.637,
+    "error_vs_depth_scale": -15.14682694214742,
+    "abs_error_vs_depth_scale": 15.14682694214742,
+    "error_vs_relief": -11.793421264648437
    },
    {
     "crater_id": "CR-03",
     "radius_px": 29,
     "gt_depth_scale": 25.322605527577533,
     "gt_rim_to_floor_relief": 25.66147232055664,
-    "est_depth_m": 55.586,
-    "shadow_length_px": 79.386,
-    "error_vs_depth_scale": 30.263394472422465,
-    "abs_error_vs_depth_scale": 30.263394472422465,
-    "error_vs_relief": 29.924527679443358
+    "est_depth_m": 30.231,
+    "shadow_length_px": 43.175,
+    "error_vs_depth_scale": 4.908394472422469,
+    "abs_error_vs_depth_scale": 4.908394472422469,
+    "error_vs_relief": 4.569527679443361
    },
    {
     "crater_id": "CR-04",
     "radius_px": 33,
     "gt_depth_scale": 26.284537170549584,
     "gt_rim_to_floor_relief": 25.52847671508789,
-    "est_depth_m": 63.388,
-    "shadow_length_px": 90.527,
-    "error_vs_depth_scale": 37.103462829450415,
-    "abs_error_vs_depth_scale": 37.103462829450415,
-    "error_vs_relief": 37.85952328491211
+    "est_depth_m": 36.655,
+    "shadow_length_px": 52.348,
+    "error_vs_depth_scale": 10.370462829450418,
+    "abs_error_vs_depth_scale": 10.370462829450418,
+    "error_vs_relief": 11.12652328491211
    },
    {
     "crater_id": "CR-05",
     "radius_px": 56,
     "gt_depth_scale": 56.92744308861561,
     "gt_rim_to_floor_relief": 50.56437301635742,
-    "est_depth_m": 108.247,
-    "shadow_length_px": 154.593,
-    "error_vs_depth_scale": 51.31955691138439,
-    "abs_error_vs_depth_scale": 51.31955691138439,
-    "error_vs_relief": 57.68262698364258
+    "est_depth_m": 53.175,
+    "shadow_length_px": 75.942,
+    "error_vs_depth_scale": -3.752443088615614,
+    "abs_error_vs_depth_scale": 3.752443088615614,
+    "error_vs_relief": 2.6106269836425753
    },
    {
     "crater_id": "CR-06",
     "radius_px": 58,
     "gt_depth_scale": 28.868372376793225,
     "gt_rim_to_floor_relief": 28.423799514770508,
-    "est_depth_m": 112.148,
-    "shadow_length_px": 160.164,
-    "error_vs_depth_scale": 83.27962762320678,
-    "abs_error_vs_depth_scale": 83.27962762320678,
-    "error_vs_relief": 83.72420048522949
+    "est_depth_m": 64.303,
+    "shadow_length_px": 91.834,
+    "error_vs_depth_scale": 35.43462762320677,
+    "abs_error_vs_depth_scale": 35.43462762320677,
+    "error_vs_relief": 35.87920048522949
    },
    {
     "crater_id": "CR-07",
     "radius_px": 56,
     "gt_depth_scale": 50.93171324141389,
     "gt_rim_to_floor_relief": 55.66045379638672,
-    "est_depth_m": 108.247,
-    "shadow_length_px": 154.593,
-    "error_vs_depth_scale": 57.31528675858611,
-    "abs_error_vs_depth_scale": 57.31528675858611,
-    "error_vs_relief": 52.58654620361328
+    "est_depth_m": 56.618,
+    "shadow_length_px": 80.859,
+    "error_vs_depth_scale": 5.686286758586114,
+    "abs_error_vs_depth_scale": 5.686286758586114,
+    "error_vs_relief": 0.9575462036132834
    },
    {
     "crater_id": "CR-08",
     "radius_px": 35,
     "gt_depth_scale": 50.598478071510016,
     "gt_rim_to_floor_relief": 66.78636932373047,
-    "est_depth_m": 65.568,
-    "shadow_length_px": 93.641,
-    "error_vs_depth_scale": 14.969521928489982,
-    "abs_error_vs_depth_scale": 14.969521928489982,
-    "error_vs_relief": -1.218369323730471
+    "est_depth_m": 38.491,
+    "shadow_length_px": 54.971,
+    "error_vs_depth_scale": -12.107478071510016,
+    "abs_error_vs_depth_scale": 12.107478071510016,
+    "error_vs_relief": -28.29536932373047
    },
    {
     "crater_id": "CR-09",
     "radius_px": 17,
     "gt_depth_scale": 27.905392547346114,
     "gt_rim_to_floor_relief": 27.401552200317383,
-    "est_depth_m": 32.182,
-    "shadow_length_px": 45.96,
-    "error_vs_depth_scale": 4.276607452653888,
-    "abs_error_vs_depth_scale": 4.276607452653888,
-    "error_vs_relief": 4.780447799682619
+    "est_depth_m": 18.241,
+    "shadow_length_px": 26.051,
+    "error_vs_depth_scale": -9.664392547346115,
+    "abs_error_vs_depth_scale": 9.664392547346115,
+    "error_vs_relief": -9.160552200317383
    }
   ],
-  "MAE_vs_depth_scale": 34.69830253905036,
-  "mean_signed_error_vs_depth_scale": 29.77117102407111,
-  "n_over": 8,
-  "n_under": 1,
-  "MAE_vs_rim_to_floor_relief": 33.239116963704426,
-  "mean_signed_error_vs_relief": 29.315649963378902,
-  "pearson_est_vs_depth_scale": 0.22621023094987164,
-  "pearson_est_vs_radius_px": 0.9998390451381755,
-  "pearson_shadow_len_vs_radius_px": 0.9998390831810087
+  "MAE_vs_depth_scale": 15.199667127854617,
+  "mean_signed_error_vs_depth_scale": -2.6663845314844448,
+  "n_over": 4,
+  "n_under": 5,
+  "MAE_vs_rim_to_floor_relief": 15.375999955919054,
+  "mean_signed_error_vs_relief": -3.1219055921766494,
+  "pearson_est_vs_depth_scale": 0.11279905388071543,
+  "pearson_est_vs_radius_px": 0.9852038994996937,
+  "pearson_shadow_len_vs_radius_px": 0.9852041783666181
  },
  "C2b": {
   "seeds": [
@@ -4976,12 +4976,12 @@
   ],
   "rows": 30,
   "not_measurable": 0,
-  "pearson_est_vs_true_depth": -0.19723435320093202,
-  "pearson_est_vs_radius_px": 0.99982452656156,
-  "slope_min_deg": 61.339,
-  "slope_max_deg": 62.657,
-  "slope_std_deg": 0.338374100992115,
-  "L_equals_(side-1)(cos+sin)": "28/30"
+  "pearson_est_vs_true_depth": -0.2502917291387287,
+  "pearson_est_vs_radius_px": 0.9844454878682677,
+  "slope_min_deg": 37.285,
+  "slope_max_deg": 48.067,
+  "slope_std_deg": 2.743234303801912,
+  "L_equals_(side-1)(cos+sin)": "0/30"
  },
  "C3": {
   "synthetic_meta": {
@@ -5007,508 +5007,508 @@
     [
      0.8,
      0,
-     0,
-     9
+     1,
+     8
     ],
     [
      0.9,
      0,
-     0,
-     9
+     1,
+     8
     ],
     [
      1.0,
      0,
-     0,
-     9
+     2,
+     7
     ],
     [
      1.1,
      0,
-     0,
-     9
+     2,
+     7
     ],
     [
      1.2,
      0,
-     0,
-     9
+     2,
+     7
     ],
     [
      1.3,
      0,
-     0,
-     9
+     2,
+     7
     ],
     [
      1.4,
      0,
-     0,
-     9
+     2,
+     7
     ],
     [
      1.5,
      0,
-     0,
-     9
+     2,
+     7
     ],
     [
      1.6,
      0,
-     0,
-     9
+     2,
+     7
     ],
     [
      1.7,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      1.8,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      1.9,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      2.0,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      2.1,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      2.2,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      2.3,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      2.4,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      2.5,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      2.6,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      2.7,
      0,
-     2,
-     7
+     4,
+     5
     ],
     [
      2.8,
      0,
-     2,
-     7
+     4,
+     5
     ],
     [
      2.9,
      0,
-     2,
-     7
+     4,
+     5
     ],
     [
      3.0,
      0,
-     2,
-     7
+     4,
+     5
     ],
     [
      3.1,
      0,
-     2,
-     7
+     4,
+     5
     ],
     [
      3.2,
      0,
-     2,
-     7
+     5,
+     4
     ],
     [
      3.3,
      0,
-     2,
-     7
+     5,
+     4
     ],
     [
      3.4,
      0,
-     2,
-     7
+     5,
+     4
     ],
     [
      3.5,
      0,
-     3,
-     6
+     5,
+     4
     ],
     [
      3.6,
      0,
-     3,
-     6
+     5,
+     4
     ],
     [
      3.7,
      0,
-     3,
-     6
+     5,
+     4
     ],
     [
      3.8,
      0,
-     3,
-     6
+     5,
+     4
     ],
     [
      3.9,
      0,
-     3,
-     6
+     5,
+     4
     ],
     [
      4.0,
      0,
-     3,
-     6
+     5,
+     4
     ],
     [
      4.1,
      0,
-     3,
-     6
+     5,
+     4
     ],
     [
      4.2,
      0,
-     3,
-     6
+     5,
+     4
     ],
     [
      4.3,
      0,
-     3,
-     6
+     6,
+     3
     ],
     [
      4.4,
      0,
-     3,
-     6
+     7,
+     2
     ],
     [
      4.5,
      0,
-     3,
-     6
+     7,
+     2
     ],
     [
      4.6,
      0,
-     4,
-     5
+     7,
+     2
     ],
     [
      4.7,
      0,
-     4,
-     5
+     7,
+     2
     ],
     [
      4.8,
      0,
-     4,
-     5
+     7,
+     2
     ],
     [
      4.9,
      0,
-     4,
-     5
+     7,
+     2
     ],
     [
      5.0,
      0,
-     4,
-     5
+     7,
+     2
     ]
    ],
    "gear_sweep": [
     [
      1.0,
      0,
-     0,
-     9
+     2,
+     7
     ],
     [
      1.1,
      0,
-     0,
-     9
+     2,
+     7
     ],
     [
      1.2,
      0,
-     0,
-     9
+     2,
+     7
     ],
     [
      1.3,
      0,
-     0,
-     9
+     2,
+     7
     ],
     [
      1.4,
      0,
-     0,
-     9
+     2,
+     7
     ],
     [
      1.5,
      0,
-     0,
-     9
+     2,
+     7
     ],
     [
      1.6,
      0,
-     0,
-     9
+     2,
+     7
     ],
     [
      1.7,
      0,
-     0,
-     9
+     2,
+     7
     ],
     [
      1.8,
      0,
-     0,
-     9
+     2,
+     7
     ],
     [
      1.9,
      0,
-     0,
-     9
+     2,
+     7
     ],
     [
      2.0,
      0,
-     0,
-     9
+     2,
+     7
     ],
     [
      2.1,
      0,
-     0,
-     9
+     3,
+     6
     ],
     [
      2.2,
      0,
-     0,
-     9
+     3,
+     6
     ],
     [
      2.3,
      0,
-     0,
-     9
+     3,
+     6
     ],
     [
      2.4,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      2.5,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      2.6,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      2.7,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      2.8,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      2.9,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      3.0,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      3.1,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      3.2,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      3.3,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      3.4,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      3.5,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      3.6,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      3.7,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      3.8,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      3.9,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      4.0,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      4.1,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      4.2,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      4.3,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      4.4,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      4.5,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      4.6,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      4.7,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      4.8,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      4.9,
      0,
-     2,
-     7
+     3,
+     6
     ],
     [
      5.0,
      0,
-     2,
-     7
+     3,
+     6
     ]
    ],
    "grid_distinct_outcomes": [
@@ -5519,6 +5519,11 @@
     ],
     [
      0,
+     1,
+     8
+    ],
+    [
+     0,
      2,
      7
     ],
@@ -5536,6 +5541,21 @@
      0,
      5,
      4
+    ],
+    [
+     0,
+     6,
+     3
+    ],
+    [
+     0,
+     7,
+     2
+    ],
+    [
+     0,
+     8,
+     1
     ]
    ],
    "grid_corners": {
@@ -5546,18 +5566,18 @@
     ],
     "td=0.5,gear=5.0": [
      0,
-     0,
-     9
+     1,
+     8
     ],
     "td=5.0,gear=1.0": [
      0,
-     3,
-     6
+     6,
+     3
     ],
     "td=5.0,gear=5.0": [
      0,
-     5,
-     4
+     8,
+     1
     ]
    }
   },
@@ -5590,510 +5610,505 @@
     [
      0.9,
      0,
-     1,
-     9
+     2,
+     8
     ],
     [
      1.0,
      0,
-     1,
-     9
+     2,
+     8
     ],
     [
      1.1,
      0,
-     1,
-     9
+     2,
+     8
     ],
     [
      1.2,
      0,
-     1,
-     9
+     3,
+     7
     ],
     [
      1.3,
      0,
-     1,
-     9
+     3,
+     7
     ],
     [
      1.4,
      0,
-     1,
-     9
+     3,
+     7
     ],
     [
      1.5,
      0,
-     1,
-     9
+     3,
+     7
     ],
     [
      1.6,
      0,
-     1,
-     9
+     3,
+     7
     ],
     [
      1.7,
      0,
-     1,
-     9
+     3,
+     7
     ],
     [
      1.8,
      0,
-     2,
-     8
+     3,
+     7
     ],
     [
      1.9,
      0,
-     2,
-     8
+     4,
+     6
     ],
     [
      2.0,
      0,
-     3,
-     7
+     4,
+     6
     ],
     [
      2.1,
      0,
-     3,
-     7
+     4,
+     6
     ],
     [
      2.2,
      0,
-     3,
-     7
+     4,
+     6
     ],
     [
      2.3,
      0,
-     3,
-     7
+     5,
+     5
     ],
     [
      2.4,
      0,
-     3,
-     7
+     5,
+     5
     ],
     [
      2.5,
      0,
-     3,
-     7
+     5,
+     5
     ],
     [
      2.6,
      0,
-     3,
-     7
+     5,
+     5
     ],
     [
      2.7,
      0,
-     3,
-     7
+     5,
+     5
     ],
     [
      2.8,
      0,
-     3,
-     7
+     5,
+     5
     ],
     [
      2.9,
      0,
-     3,
-     7
+     6,
+     4
     ],
     [
      3.0,
      0,
-     3,
-     7
+     6,
+     4
     ],
     [
      3.1,
      0,
-     3,
-     7
+     6,
+     4
     ],
     [
      3.2,
      0,
-     3,
-     7
+     6,
+     4
     ],
     [
      3.3,
      0,
-     3,
-     7
+     6,
+     4
     ],
     [
      3.4,
      0,
-     3,
-     7
+     6,
+     4
     ],
     [
      3.5,
      0,
-     3,
-     7
+     6,
+     4
     ],
     [
      3.6,
      0,
-     3,
-     7
+     6,
+     4
     ],
     [
      3.7,
      0,
-     3,
-     7
+     6,
+     4
     ],
     [
      3.8,
      0,
-     4,
-     6
+     6,
+     4
     ],
     [
      3.9,
      0,
-     4,
-     6
+     6,
+     4
     ],
     [
      4.0,
      0,
-     4,
-     6
+     6,
+     4
     ],
     [
      4.1,
      0,
-     5,
-     5
+     6,
+     4
     ],
     [
      4.2,
      0,
-     5,
-     5
+     6,
+     4
     ],
     [
      4.3,
      0,
-     5,
-     5
+     6,
+     4
     ],
     [
      4.4,
      0,
-     5,
-     5
+     6,
+     4
     ],
     [
      4.5,
      0,
-     5,
-     5
+     7,
+     3
     ],
     [
      4.6,
      0,
-     5,
-     5
+     8,
+     2
     ],
     [
      4.7,
      0,
-     5,
-     5
+     8,
+     2
     ],
     [
      4.8,
      0,
-     5,
-     5
+     8,
+     2
     ],
     [
      4.9,
      0,
-     5,
-     5
+     8,
+     2
     ],
     [
      5.0,
      0,
-     5,
-     5
+     8,
+     2
     ]
    ],
    "gear_sweep": [
     [
      1.0,
      0,
-     1,
-     9
+     3,
+     7
     ],
     [
      1.1,
      0,
-     1,
-     9
+     3,
+     7
     ],
     [
      1.2,
      0,
-     1,
-     9
+     3,
+     7
     ],
     [
      1.3,
      0,
-     1,
-     9
+     3,
+     7
     ],
     [
      1.4,
      0,
-     1,
-     9
+     3,
+     7
     ],
     [
      1.5,
      0,
-     1,
-     9
+     3,
+     7
     ],
     [
      1.6,
      0,
-     1,
-     9
+     3,
+     7
     ],
     [
      1.7,
      0,
-     1,
-     9
+     3,
+     7
     ],
     [
      1.8,
      0,
-     1,
-     9
+     3,
+     7
     ],
     [
      1.9,
      0,
-     1,
-     9
+     3,
+     7
     ],
     [
      2.0,
      0,
-     1,
-     9
+     3,
+     7
     ],
     [
      2.1,
      0,
-     1,
-     9
+     3,
+     7
     ],
     [
      2.2,
      0,
-     1,
-     9
+     3,
+     7
     ],
     [
      2.3,
      0,
-     1,
-     9
+     3,
+     7
     ],
     [
      2.4,
      0,
-     1,
-     9
+     3,
+     7
     ],
     [
      2.5,
      0,
-     1,
-     9
+     3,
+     7
     ],
     [
      2.6,
      0,
-     2,
-     8
+     3,
+     7
     ],
     [
      2.7,
      0,
-     2,
-     8
+     3,
+     7
     ],
     [
      2.8,
      0,
-     2,
-     8
+     4,
+     6
     ],
     [
      2.9,
      0,
-     2,
-     8
+     4,
+     6
     ],
     [
      3.0,
      0,
-     3,
-     7
+     4,
+     6
     ],
     [
      3.1,
      0,
-     3,
-     7
+     4,
+     6
     ],
     [
      3.2,
      0,
-     3,
-     7
+     4,
+     6
     ],
     [
      3.3,
      0,
-     3,
-     7
+     4,
+     6
     ],
     [
      3.4,
      0,
-     3,
-     7
+     4,
+     6
     ],
     [
      3.5,
      0,
-     3,
-     7
+     4,
+     6
     ],
     [
      3.6,
      0,
-     3,
-     7
+     4,
+     6
     ],
     [
      3.7,
      0,
-     3,
-     7
+     4,
+     6
     ],
     [
      3.8,
      0,
-     3,
-     7
+     4,
+     6
     ],
     [
      3.9,
      0,
-     3,
-     7
+     4,
+     6
     ],
     [
      4.0,
      0,
-     3,
-     7
+     4,
+     6
     ],
     [
      4.1,
      0,
-     3,
-     7
+     4,
+     6
     ],
     [
      4.2,
      0,
-     3,
-     7
+     4,
+     6
     ],
     [
      4.3,
      0,
-     3,
-     7
+     4,
+     6
     ],
     [
      4.4,
      0,
-     3,
-     7
+     5,
+     5
     ],
     [
      4.5,
      0,
-     3,
-     7
+     5,
+     5
     ],
     [
      4.6,
      0,
-     3,
-     7
+     5,
+     5
     ],
     [
      4.7,
      0,
-     3,
-     7
+     5,
+     5
     ],
     [
      4.8,
      0,
-     3,
-     7
+     5,
+     5
     ],
     [
      4.9,
      0,
-     3,
-     7
+     5,
+     5
     ],
     [
      5.0,
      0,
-     3,
-     7
+     5,
+     5
     ]
    ],
    "grid_distinct_outcomes": [
-    [
-     0,
-     0,
-     10
-    ],
     [
      0,
      1,
@@ -6125,31 +6140,56 @@
      4
     ],
     [
+     0,
+     7,
+     3
+    ],
+    [
+     0,
+     8,
+     2
+    ],
+    [
      1,
      5,
      4
+    ],
+    [
+     1,
+     6,
+     3
+    ],
+    [
+     1,
+     7,
+     2
+    ],
+    [
+     1,
+     8,
+     1
     ]
    ],
    "grid_corners": {
     "td=0.5,gear=1.0": [
      0,
-     0,
-     10
-    ],
-    "td=0.5,gear=5.0": [
-     0,
      1,
      9
     ],
+    "td=0.5,gear=5.0": [
+     0,
+     2,
+     8
+    ],
     "td=5.0,gear=1.0": [
      0,
-     4,
-     6
+     6,
+     4
     ],
     "td=5.0,gear=5.0": [
      1,
-     5,
-     4
+     8,
+     1
     ]
    }
   }

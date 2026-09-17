@@ -9,7 +9,29 @@ import cv2
 import numpy as np
 
 
-def compute_otsu_shadow_mask(roi: np.ndarray) -> np.ndarray:
+def crater_circle_mask(shape: tuple[int, int], center: tuple[float, float], radius_px: float) -> np.ndarray:
+    """Boolean mask of the crater interior inside an ROI.
+
+    Args:
+        shape: ROI shape as (height, width).
+        center: Crater centre in ROI coordinates as (x, y).
+        radius_px: Crater radius in pixels.
+
+    Returns:
+        Boolean array, True inside the crater circle.
+    """
+
+    h, w = shape
+    yy, xx = np.mgrid[0:h, 0:w]
+    r = max(1.0, float(radius_px))
+    return ((xx - float(center[0])) ** 2 + (yy - float(center[1])) ** 2) <= r * r
+
+
+def compute_otsu_shadow_mask(
+    roi: np.ndarray,
+    center: tuple[float, float] | None = None,
+    radius_px: float | None = None,
+) -> np.ndarray:
     """Segment shadow pixels in a crater ROI using Otsu thresholding.
 
     Physics note:
@@ -17,20 +39,43 @@ def compute_otsu_shadow_mask(roi: np.ndarray) -> np.ndarray:
     scales with local relief. Otsu's method automatically chooses a threshold
     that separates darker shadow regions from brighter terrain in bimodal ROIs.
 
+    The shadow is a subset of the crater interior, so when the crater geometry
+    is supplied the threshold is computed from interior pixels only and the
+    mask is clipped to the crater circle. This keeps bright surrounding terrain
+    out of the measurement.
+
     Args:
         roi: Grayscale crater crop.
+        center: Optional crater centre in ROI coordinates as (x, y).
+        radius_px: Optional crater radius in pixels.
 
     Returns:
         Binary mask where shadow pixels are 255.
     """
 
     blur = cv2.GaussianBlur(roi, (0, 0), sigmaX=1.0, sigmaY=1.0)
-    _, th = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-    shadow = np.where(blur < th, 255, 0).astype(np.uint8)
+
+    if center is not None and radius_px is not None:
+        circle = crater_circle_mask(roi.shape, center, radius_px)
+        interior = blur[circle]
+        if interior.size < 3:
+            return np.zeros_like(roi, dtype=np.uint8)
+        # cv2.threshold returns (threshold_value, thresholded_image); the VALUE
+        # is what a pixel must be compared against.
+        threshold_value, _ = cv2.threshold(
+            interior.reshape(-1, 1), 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU
+        )
+        shadow = np.where((blur < threshold_value) & circle, 255, 0).astype(np.uint8)
+    else:
+        threshold_value, _ = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        shadow = np.where(blur < threshold_value, 255, 0).astype(np.uint8)
+        circle = None
 
     kernel = np.ones((3, 3), np.uint8)
     shadow = cv2.morphologyEx(shadow, cv2.MORPH_OPEN, kernel)
     shadow = cv2.morphologyEx(shadow, cv2.MORPH_CLOSE, kernel)
+    if circle is not None:
+        shadow[~circle] = 0
     return shadow
 
 
@@ -136,7 +181,11 @@ def estimate_crater_depths(
             continue
 
         roi = image[y1:y2, x1:x2]
-        mask = compute_otsu_shadow_mask(roi)
+        mask = compute_otsu_shadow_mask(
+            roi,
+            center=(float(det["center_x"] - x1), float(det["center_y"] - y1)),
+            radius_px=float(det["radius_px"]),
+        )
         shadow_len, p0, p1 = measure_shadow_length(mask, solar_azimuth_deg=solar_azimuth_deg)
 
         depth_m = depth_from_shadow(

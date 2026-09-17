@@ -179,7 +179,11 @@ def diagnose_depth(image: np.ndarray, dets: list[dict[str, Any]], rows: list[dic
         blur = cv2.GaussianBlur(roi, (0, 0), sigmaX=1.0, sigmaY=1.0)
         otsu_t, _ = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
         pre_morph = int(np.count_nonzero(blur < otsu_t))
-        mask = compute_otsu_shadow_mask(roi)
+        mask = compute_otsu_shadow_mask(
+            roi,
+            center=(float(det["center_x"] - x1), float(det["center_y"] - y1)),
+            radius_px=float(det["radius_px"]),
+        )
         n = int(np.count_nonzero(mask))
         L, _, _ = measure_shadow_length(mask, AZIMUTH)
         rec.update(
