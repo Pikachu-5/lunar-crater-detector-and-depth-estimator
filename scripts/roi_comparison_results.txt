@@ -1,0 +1,51 @@
+Ray-cast scenes, seeds [42, 7, 123], sun elevation 20.0 deg, azimuth 35.0 deg, ROI_WINDOW_RADIUS_FACTOR = 1.4
+
+--- boxes=ground_truth  ROI=box ---
+  coverage: 2/30 = 0.06666666666666667
+  shadow estimate vs true depth : n/a
+  radius-only, SAME craters     : n/a
+  difference (shadow - radius)  : n/a
+  partial r given radius        : n/a (p = n/a, n = 2)
+  r(estimate, radius)           : n/a
+  radius-only, ALL detected     : 0.8636430715431034
+  slope spread                  : 20.456750414379716 .. 20.95693833543677 (std 0.2500939605285275)
+  reasons: {'shadow component touches the ROI boundary': 16, 'MEASURED': 2, 'shadow mask covers 65.2% of the crater area (> 60%)': 1, 'shadow mask covers 64.2% of the crater area (> 60%)': 1, 'shadow mask covers 63.5% of the crater area (> 60%)': 1, 'shadow mask covers 77.2% of the crater area (> 60%)': 1, 'shadow mask covers 82.4% of the crater area (> 60%)': 1, 'shadow mask covers 71.7% of the crater area (> 60%)': 1, 'shadow mask covers 73.6% of the crater area (> 60%)': 1, 'shadow mask covers 65.4% of the crater area (> 60%)': 1, 'shadow mask covers 68.3% of the crater area (> 60%)': 1, 'shadow mask covers 76.2% of the crater area (> 60%)': 1, 'shadow mask covers 63.2% of the crater area (> 60%)': 1, 'shadow mask covers 62.0% of the crater area (> 60%)': 1}
+
+--- boxes=ground_truth  ROI=window ---
+  coverage: 19/30 = 0.6333333333333333
+  shadow estimate vs true depth : 0.831327912297354
+  radius-only, SAME craters     : 0.8291224217811244
+  difference (shadow - radius)  : 0.0022054905162296468
+  partial r given radius        : 0.28108224687631833 (p = 0.2585243788167261, n = 19)
+  r(estimate, radius)           : 0.9358898950821479
+  radius-only, ALL detected     : 0.8636430715431034
+  slope spread                  : 19.16727773985974 .. 28.091120345969784 (std 2.421973871469177)
+  reasons: {'MEASURED': 19, 'shadow mask covers 63.9% of the crater area (> 60%)': 2, 'shadow mask covers 63.8% of the crater area (> 60%)': 1, 'shadow mask covers 61.4% of the crater area (> 60%)': 1, 'shadow mask covers 76.7% of the crater area (> 60%)': 1, 'shadow mask covers 81.7% of the crater area (> 60%)': 1, 'shadow mask covers 68.7% of the crater area (> 60%)': 1, 'shadow mask covers 72.2% of the crater area (> 60%)': 1, 'shadow mask covers 67.3% of the crater area (> 60%)': 1, 'shadow mask covers 72.6% of the crater area (> 60%)': 1, 'shadow mask covers 60.9% of the crater area (> 60%)': 1}
+
+--- boxes=yolo  ROI=box ---
+  coverage: 18/26 = 0.6923076923076923
+  shadow estimate vs true depth : 0.8995703292607853
+  radius-only, SAME craters     : 0.8682422753601329
+  difference (shadow - radius)  : 0.03132805390065241
+  partial r given radius        : 0.47537604794193633 (p = 0.05378833089122232, n = 18)
+  r(estimate, radius)           : 0.9694400346997122
+  radius-only, ALL detected     : 0.8764990870379938
+  slope spread                  : 18.49593827811613 .. 26.647717209120316 (std 2.1957625636829534)
+  reasons: {'MEASURED': 18, 'shadow component touches the ROI boundary': 5, 'shadow mask covers 62.2% of the crater area (> 60%)': 1, 'shadow mask covers 74.2% of the crater area (> 60%)': 1, 'shadow mask covers 71.6% of the crater area (> 60%)': 1}
+
+--- boxes=yolo  ROI=window ---
+  coverage: 23/26 = 0.8846153846153846
+  shadow estimate vs true depth : 0.8346774071496863
+  radius-only, SAME craters     : 0.8730120392220289
+  difference (shadow - radius)  : -0.038334632072342556
+  partial r given radius        : 0.1111774806114964 (p = 0.6223227140301517, n = 23)
+  r(estimate, radius)           : 0.9338802524982774
+  radius-only, ALL detected     : 0.8764990870379938
+  slope spread                  : 18.49593827811614 .. 32.84101468693158 (std 3.0021074162556483)
+  reasons: {'MEASURED': 23, 'shadow mask covers 62.2% of the crater area (> 60%)': 1, 'shadow mask covers 74.1% of the crater area (> 60%)': 1, 'shadow mask covers 71.2% of the crater area (> 60%)': 1}
+
+Headline: does the shadow measurement beat radius-only on the same craters?
+  boxes=ground_truth ROI=box   : cannot tell (too few measured)
+  boxes=ground_truth ROI=window: yes, by 0.0022054905162296468
+  boxes=yolo         ROI=box   : yes, by 0.03132805390065241
+  boxes=yolo         ROI=window: NO, worse by 0.038334632072342556

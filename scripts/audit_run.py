@@ -182,13 +182,18 @@ def diagnose_depth(image: np.ndarray, dets: list[dict[str, Any]], rows: list[dic
             rec["reason"] = "ROI <= 2 px on an axis: crater skipped, no row emitted (depth.py:133)"
             out.append(rec)
             continue
-        roi = image[y1:y2, x1:x2]
+        half = max(3.0, depth_mod.ROI_WINDOW_RADIUS_FACTOR * float(det["radius_px"]))
+        rx1 = int(max(0, math.floor(det["center_x"] - half)))
+        ry1 = int(max(0, math.floor(det["center_y"] - half)))
+        rx2 = int(min(w, math.ceil(det["center_x"] + half) + 1))
+        ry2 = int(min(h, math.ceil(det["center_y"] + half) + 1))
+        roi = image[ry1:ry2, rx1:rx2]
         blur = cv2.GaussianBlur(roi, (0, 0), sigmaX=1.0, sigmaY=1.0)
         otsu_t, _ = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
         pre_morph = int(np.count_nonzero(blur < otsu_t))
         mask = compute_otsu_shadow_mask(
             roi,
-            center=(float(det["center_x"] - x1), float(det["center_y"] - y1)),
+            center=(float(det["center_x"] - rx1), float(det["center_y"] - ry1)),
             radius_px=float(det["radius_px"]),
         )
         n = int(np.count_nonzero(mask))
@@ -610,11 +615,21 @@ def main() -> None:
             return None
         return float(np.corrcoef(a, b)[0, 1])
 
+    def partial_corr(est: list[float], depth: list[float], radius: list[float]) -> float | None:
+        """Correlation of estimate with depth after removing the shared radius trend."""
+
+        r_ed, r_er, r_dr = corr(est, depth), corr(est, radius), corr(depth, radius)
+        if None in (r_ed, r_er, r_dr):
+            return None
+        denom = math.sqrt(max(1e-12, (1 - r_er**2) * (1 - r_dr**2)))
+        return float((r_ed - r_er * r_dr) / denom)
+
     RAY_ELEV = 20.0
     c4: dict[str, Any] = {"sun_elevation_deg": RAY_ELEV}
     for box_source in ("ground_truth", "yolo"):
         reasons: collections.Counter[str] = collections.Counter()
         ray = {"est": [], "gt": [], "rad": [], "slope": []}
+        every = {"gt": [], "rad": []}
         total = 0
         for seed in SEEDS:
             sy = generate_synthetic_lunar_surface(
@@ -629,12 +644,6 @@ def main() -> None:
             depth_rows = estimate_crater_depths(sy["image"], dets, RAY_ELEV, AZIMUTH, PIXEL_SCALE)["rows"]
             for r in depth_rows:
                 total += 1
-                if r["depth_m"] is None:
-                    reasons[(r["not_measurable_reason"] or "unknown").split(":")[0].split(",")[0]] += 1
-                    continue
-                reasons["MEASURED"] += 1
-                ray["est"].append(r["depth_m"])
-                ray["slope"].append(r["slope_estimate_deg"])
                 # YOLO ids do not correspond to generator craters; match by centre distance.
                 if box_source == "ground_truth":
                     crater = gt_by_id[r["crater_id"]]
@@ -643,14 +652,31 @@ def main() -> None:
                         sy["craters"],
                         key=lambda c: (c["center_x"] - r["center_x"]) ** 2 + (c["center_y"] - r["center_y"]) ** 2,
                     )
+                every["gt"].append(crater["true_depth"])
+                every["rad"].append(crater["radius_px"])
+                if r["depth_m"] is None:
+                    reasons[(r["not_measurable_reason"] or "unknown").split(":")[0].split(",")[0]] += 1
+                    continue
+                reasons["MEASURED"] += 1
+                ray["est"].append(r["depth_m"])
+                ray["slope"].append(r["slope_estimate_deg"])
                 ray["gt"].append(crater["true_depth"])
                 ray["rad"].append(crater["radius_px"])
+        shadow_r = corr(ray["est"], ray["gt"])
+        radius_only_r = corr(ray["rad"], ray["gt"])
         c4[box_source] = {
-            "craters": total,
+            "craters_detected": total,
             "measured": len(ray["est"]),
             "not_measurable": total - len(ray["est"]),
+            "coverage": (len(ray["est"]) / total) if total else None,
             "rejection_reasons": {k: v for k, v in sorted(reasons.items(), key=lambda kv: -kv[1])},
-            "pearson_est_vs_true_depth": corr(ray["est"], ray["gt"]),
+            # Headline comparison: shadow measurement vs a radius-only estimator,
+            # both on exactly the craters that were measured.
+            "pearson_est_vs_true_depth": shadow_r,
+            "radius_only_r_on_measured_subset": radius_only_r,
+            "shadow_minus_radius_only": None if (shadow_r is None or radius_only_r is None) else shadow_r - radius_only_r,
+            "partial_r_est_vs_depth_given_radius": partial_corr(ray["est"], ray["gt"], ray["rad"]),
+            "radius_only_r_on_all_detected": corr(every["rad"], every["gt"]),
             "pearson_est_vs_radius_px": corr(ray["est"], ray["rad"]),
             "slope_min_deg": min(ray["slope"]) if ray["slope"] else None,
             "slope_max_deg": max(ray["slope"]) if ray["slope"] else None,

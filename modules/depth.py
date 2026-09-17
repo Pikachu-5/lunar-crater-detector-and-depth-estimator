@@ -118,6 +118,11 @@ def measure_shadow_length(mask: np.ndarray, solar_azimuth_deg: float) -> tuple[f
 MAX_SHADOW_CIRCLE_FRACTION = 0.60
 MIN_SHADOW_PIXELS = 3
 
+# Half-width of the analysis window, in crater radii, measured from the crater
+# centre. Larger than 1.0 so the window extends past the rim: a shadow that fills
+# the bowl must not be mistaken for one truncated by the edge of the crop.
+ROI_WINDOW_RADIUS_FACTOR = 1.4
+
 
 def measure_crater_shadow(
     roi: np.ndarray,
@@ -291,10 +296,28 @@ def estimate_crater_depths(
         if x2 <= x1 + 2 or y2 <= y1 + 2:
             continue
 
-        roi = image[y1:y2, x1:x2]
+        # Analysis window: a square of +/- ROI_WINDOW_RADIUS_FACTOR * radius about
+        # the crater centre, clipped to the image. The detection box itself is too
+        # tight - it IS the crater - so a shadow spanning the bowl always reached
+        # its edge and tripped the truncation guard. The crater circle used for
+        # masking keeps the detection radius; only the observable window grows, so
+        # "component touches the ROI boundary" once again means the shadow left the
+        # window rather than that the box was drawn tight.
+        cx_full = float(det["center_x"])
+        cy_full = float(det["center_y"])
+        half = max(3.0, ROI_WINDOW_RADIUS_FACTOR * float(det["radius_px"]))
+        rx1 = int(max(0, math.floor(cx_full - half)))
+        ry1 = int(max(0, math.floor(cy_full - half)))
+        rx2 = int(min(w, math.ceil(cx_full + half) + 1))
+        ry2 = int(min(h, math.ceil(cy_full + half) + 1))
+
+        roi = image[ry1:ry2, rx1:rx2]
+        if roi.shape[0] < 3 or roi.shape[1] < 3:
+            continue
+
         measurement = measure_crater_shadow(
             roi,
-            center=(float(det["center_x"] - x1), float(det["center_y"] - y1)),
+            center=(cx_full - rx1, cy_full - ry1),
             radius_px=float(det["radius_px"]),
             solar_azimuth_deg=solar_azimuth_deg,
         )

@@ -12,147 +12,147 @@
  "app_default_call_equals_seed42": true,
  "B1_warmup_run_excluded": {
   "yolo": {
-   "wall_total": 2.371660399992834,
+   "wall_total": 1.8373853999946732,
    "stages": {
-    "preprocess": 0.0010243999859085307,
-    "detection": 1.8909178000030806,
-    "depth": 0.021936699995421804,
-    "terrain_depth_map": 0.0006676000048173591,
-    "terrain_figures": 0.13202559998899233,
-    "terrain_total": 0.13269319999380969,
-    "scoring": 0.07707889999437612,
-    "astar": 0.2479282999993302
+    "preprocess": 0.001479700003983453,
+    "detection": 1.3526540999882855,
+    "depth": 0.04059639999468345,
+    "terrain_depth_map": 0.0008859999943524599,
+    "terrain_figures": 0.11998810000659432,
+    "terrain_total": 0.12087410000094678,
+    "scoring": 0.07473799999570474,
+    "astar": 0.24699390000023413
    }
   },
   "synthetic_meta": {
-   "wall_total": 0.8993010999984108,
+   "wall_total": 0.9134437999891816,
    "stages": {
-    "preprocess": 0.0012725999986287206,
-    "detection": 0.0002868000010494143,
-    "depth": 0.0018431000062264502,
-    "terrain_depth_map": 0.0005339000053936616,
-    "terrain_figures": 0.013474199993652292,
-    "terrain_total": 0.014008099999045953,
-    "scoring": 0.07674859999679029,
-    "astar": 0.8049628000007942
+    "preprocess": 0.0009204999951180071,
+    "detection": 0.0002783000090857968,
+    "depth": 0.0030583000043407083,
+    "terrain_depth_map": 0.0015147999947657809,
+    "terrain_figures": 0.01545389999228064,
+    "terrain_total": 0.01696869998704642,
+    "scoring": 0.07243220000236761,
+    "astar": 0.8196579000068596
    }
   }
  },
  "B1_timing_raw_s": {
   "yolo": {
    "preprocess": [
-    0.0016087999974843115,
-    0.0009750000026542693,
-    0.0010206000006292015,
-    0.0009722000104375184,
-    0.0009397999965585768
+    0.0011174999963259324,
+    0.0009742000111145899,
+    0.001216100004967302,
+    0.0012300999951548874,
+    0.0009378999966429546
    ],
    "detection": [
-    0.11726400000043213,
-    0.09270100000139792,
-    0.08432860000175424,
-    0.08061210000596475,
-    0.08045619999757037
+    0.09142630000133067,
+    0.09046059999673162,
+    0.10990760001004674,
+    0.0910297999944305,
+    0.09719960000074934
    ],
    "depth": [
-    0.0031602999952156097,
-    0.002796100001432933,
-    0.0028122000076109543,
-    0.002759199996944517,
-    0.002985300001455471
+    0.003723000001627952,
+    0.0037721999979112297,
+    0.003687600008561276,
+    0.003919700000551529,
+    0.0035198000114178285
    ],
    "terrain_depth_map": [
-    0.0008929000032367185,
-    0.0007775999984005466,
-    0.0007780999876558781,
-    0.0007267999899340793,
-    0.0008016000065254048
+    0.000963500002399087,
+    0.0010268000041833147,
+    0.0011215000122319907,
+    0.0010443999926792458,
+    0.001404700000421144
    ],
    "terrain_figures": [
-    0.02109730000665877,
-    0.017277999999350868,
-    0.016892800005734898,
-    0.014758399993297644,
-    0.01641179999569431
+    0.017049399990355596,
+    0.017013299991958775,
+    0.016803500009700656,
+    0.02714669999841135,
+    0.01745169999776408
    ],
    "terrain_total": [
-    0.02199020000989549,
-    0.018055599997751415,
-    0.017670899993390776,
-    0.015485199983231723,
-    0.017213400002219714
+    0.018012899992754683,
+    0.01804009999614209,
+    0.017925000021932647,
+    0.028191099991090596,
+    0.018856399998185225
    ],
    "scoring": [
-    0.10823549999622628,
-    0.09085419999610167,
-    0.08819530000619125,
-    0.08734559999720659,
-    0.08530020000762306
+    0.08773659999133088,
+    0.08619999999064021,
+    0.10270129999844357,
+    0.09774910000851378,
+    0.08941009998670779
    ],
    "astar": [
-    0.2626315999950748,
-    0.20677499999874271,
-    0.20032869999704417,
-    0.21536059999198187,
-    0.21090070001082495
+    0.20809109999390785,
+    0.1946304000011878,
+    0.20395060000009835,
+    0.20591410000633914,
+    0.20533300000533927
    ]
   },
   "synthetic_meta": {
    "preprocess": [
-    0.0009467999916523695,
-    0.0009289000008720905,
-    0.0009105000062845647,
-    0.0009390999912284315,
-    0.0009518000006210059
+    0.0015032000083010644,
+    0.0012812999921152368,
+    0.0010082999942824244,
+    0.000977099989540875,
+    0.0009616999886929989
    ],
    "detection": [
-    0.00026870000874623656,
-    0.0002578999992692843,
-    0.0002703000063775107,
-    0.00026679999427869916,
-    0.0002699000033317134
+    0.0002725000085774809,
+    0.00034389999927952886,
+    0.00044409999100025743,
+    0.00028419999580364674,
+    0.0002741000062087551
    ],
    "depth": [
-    0.002282300003571436,
-    0.0017537999956402928,
-    0.0017594999953871593,
-    0.0020669000077759847,
-    0.0021593999990727752
+    0.0028310999914538115,
+    0.0029476000054273754,
+    0.003297000002930872,
+    0.004354200005764142,
+    0.003257599993958138
    ],
    "terrain_depth_map": [
-    0.0009257000056095421,
-    0.0005338000046322122,
-    0.0005481999978655949,
-    0.0005383000097936019,
-    0.0005316999886417761
+    0.0008756000024732202,
+    0.0007212999917101115,
+    0.000876799997058697,
+    0.0013011999981245026,
+    0.0011598999990383163
    ],
    "terrain_figures": [
-    0.013022700004512444,
-    0.013457599998218939,
-    0.0138470999954734,
-    0.018374899998889305,
-    0.013117700000293553
+    0.014339000001200475,
+    0.01445149999926798,
+    0.016330600003129803,
+    0.01601190000656061,
+    0.019790399994235486
    ],
    "terrain_total": [
-    0.013948400010121986,
-    0.013991400002851151,
-    0.014395299993338995,
-    0.018913200008682907,
-    0.013649399988935329
+    0.015214600003673695,
+    0.015172799990978092,
+    0.0172074000001885,
+    0.01731310000468511,
+    0.020950299993273802
    ],
    "scoring": [
-    0.08007569999608677,
-    0.0746415000030538,
-    0.0735259000066435,
-    0.07099209999432787,
-    0.07212599999911617
+    0.07209520001197234,
+    0.07949059999373276,
+    0.07755110001016874,
+    0.0812659000075655,
+    0.0859438999905251
    ],
    "astar": [
-    0.826227800003835,
-    0.7720817999943392,
-    0.7438392000040039,
-    0.7262642999994569,
-    0.7387472000118578
+    0.7780222000001231,
+    0.879390499991132,
+    0.8800883999938378,
+    0.9268799999990733,
+    0.8761004999978468
    ]
   }
  },
@@ -615,8 +615,8 @@
      "depth_m": null,
      "slope_estimate_deg": null,
      "measurable": false,
-     "not_measurable_reason": "shadow mask covers 62.7% of the crater area (> 60%): ROI histogram was not bimodal",
-     "shadow_mask_circle_fraction": 0.6272,
+     "not_measurable_reason": "shadow mask covers 61.6% of the crater area (> 60%): ROI histogram was not bimodal",
+     "shadow_mask_circle_fraction": 0.6162,
      "confidence": 0.8692474365234375,
      "x1": 14,
      "y1": 79,
@@ -637,7 +637,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.5526,
+     "shadow_mask_circle_fraction": 0.5524,
      "confidence": 0.8522818684577942,
      "x1": 38,
      "y1": 431,
@@ -658,7 +658,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.5784,
+     "shadow_mask_circle_fraction": 0.5782,
      "confidence": 0.8309051394462585,
      "x1": 433,
      "y1": 193,
@@ -692,15 +692,15 @@
     },
     {
      "crater_id": "CR-05",
-     "shadow_length_px": null,
+     "shadow_length_px": 57.591,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": null,
-     "slope_estimate_deg": null,
-     "measurable": false,
-     "not_measurable_reason": "shadow mask covers 60.2% of the crater area (> 60%): ROI histogram was not bimodal",
-     "shadow_mask_circle_fraction": 0.6017,
+     "depth_m": 40.326,
+     "slope_estimate_deg": 49.658,
+     "measurable": true,
+     "not_measurable_reason": null,
+     "shadow_mask_circle_fraction": 0.5997,
      "confidence": 0.7589907646179199,
      "x1": 361,
      "y1": 266,
@@ -721,7 +721,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.573,
+     "shadow_mask_circle_fraction": 0.5728,
      "confidence": 0.7225830554962158,
      "x1": 268,
      "y1": 135,
@@ -742,7 +742,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.5601,
+     "shadow_mask_circle_fraction": 0.5431,
      "confidence": 0.7092379927635193,
      "x1": 253,
      "y1": 426,
@@ -763,7 +763,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.4346,
+     "shadow_mask_circle_fraction": 0.4337,
      "confidence": 0.6920771598815918,
      "x1": 373,
      "y1": 241,
@@ -784,7 +784,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.4573,
+     "shadow_mask_circle_fraction": 0.4628,
      "confidence": 0.6427695751190186,
      "x1": 389,
      "y1": 371,
@@ -805,7 +805,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.4541,
+     "shadow_mask_circle_fraction": 0.4518,
      "confidence": 0.5229388475418091,
      "x1": 484,
      "y1": 91,
@@ -822,22 +822,22 @@
      "crater_id": "CR-01",
      "roi_w": 119,
      "roi_h": 119,
-     "otsu_threshold": 179.0,
-     "shadow_px_before_morph": 6577,
-     "shadow_px_after_morph": 7078,
-     "shadow_length_px_unrounded": 99.86262445021944,
+     "otsu_threshold": 177.0,
+     "shadow_px_before_morph": 6287,
+     "shadow_px_after_morph": 6956,
+     "shadow_length_px_unrounded": 99.20662279339325,
      "depth_m": null,
      "measurable": false,
-     "reason": "shadow mask covers 62.7% of the crater area (> 60%): ROI histogram was not bimodal"
+     "reason": "shadow mask covers 61.6% of the crater area (> 60%): ROI histogram was not bimodal"
     },
     {
      "crater_id": "CR-02",
      "roi_w": 73,
      "roi_h": 73,
-     "otsu_threshold": 180.0,
-     "shadow_px_before_morph": 2128,
+     "otsu_threshold": 179.0,
+     "shadow_px_before_morph": 2079,
      "shadow_px_after_morph": 2239,
-     "shadow_length_px_unrounded": 56.198590387989896,
+     "shadow_length_px_unrounded": 56.19859038798989,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -846,8 +846,8 @@
      "crater_id": "CR-03",
      "roi_w": 61,
      "roi_h": 61,
-     "otsu_threshold": 175.0,
-     "shadow_px_before_morph": 1686,
+     "otsu_threshold": 174.0,
+     "shadow_px_before_morph": 2275,
      "shadow_px_after_morph": 1631,
      "shadow_length_px_unrounded": 46.45119107699714,
      "depth_m": null,
@@ -858,10 +858,10 @@
      "crater_id": "CR-04",
      "roi_w": 57,
      "roi_h": 57,
-     "otsu_threshold": 162.0,
-     "shadow_px_before_morph": 1335,
+     "otsu_threshold": 165.0,
+     "shadow_px_before_morph": 1419,
      "shadow_px_after_morph": 1180,
-     "shadow_length_px_unrounded": 38.749121796495594,
+     "shadow_length_px_unrounded": 38.7491217964956,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -870,20 +870,19 @@
      "crater_id": "CR-05",
      "roi_w": 68,
      "roi_h": 69,
-     "otsu_threshold": 100.0,
-     "shadow_px_before_morph": 2408,
-     "shadow_px_after_morph": 2180,
-     "shadow_length_px_unrounded": 59.31204817768307,
-     "depth_m": null,
-     "measurable": false,
-     "reason": "shadow mask covers 60.2% of the crater area (> 60%): ROI histogram was not bimodal"
+     "otsu_threshold": 119.0,
+     "shadow_px_before_morph": 3910,
+     "shadow_px_after_morph": 2174,
+     "shadow_length_px_unrounded": 57.591318868629926,
+     "depth_m": 40.326,
+     "measurable": true
     },
     {
      "crater_id": "CR-06",
      "roi_w": 104,
      "roi_h": 103,
-     "otsu_threshold": 142.0,
-     "shadow_px_before_morph": 5625,
+     "otsu_threshold": 146.0,
+     "shadow_px_before_morph": 5995,
      "shadow_px_after_morph": 4867,
      "shadow_length_px_unrounded": 79.30139812251949,
      "depth_m": null,
@@ -896,8 +895,8 @@
      "roi_h": 37,
      "otsu_threshold": 179.0,
      "shadow_px_before_morph": 527,
-     "shadow_px_after_morph": 564,
-     "shadow_length_px_unrounded": 28.59129643661459,
+     "shadow_px_after_morph": 548,
+     "shadow_length_px_unrounded": 28.017720000263548,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -906,10 +905,10 @@
      "crater_id": "CR-08",
      "roi_w": 127,
      "roi_h": 127,
-     "otsu_threshold": 137.0,
-     "shadow_px_before_morph": 6042,
-     "shadow_px_after_morph": 5575,
-     "shadow_length_px_unrounded": 99.61874889576902,
+     "otsu_threshold": 143.0,
+     "shadow_px_before_morph": 7628,
+     "shadow_px_after_morph": 5574,
+     "shadow_length_px_unrounded": 99.61874889576903,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -918,10 +917,10 @@
      "crater_id": "CR-09",
      "roi_w": 35,
      "roi_h": 35,
-     "otsu_threshold": 138.0,
-     "shadow_px_before_morph": 480,
-     "shadow_px_after_morph": 455,
-     "shadow_length_px_unrounded": 23.020382514054443,
+     "otsu_threshold": 149.0,
+     "shadow_px_before_morph": 579,
+     "shadow_px_after_morph": 467,
+     "shadow_length_px_unrounded": 23.26595812199239,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -930,10 +929,10 @@
      "crater_id": "CR-10",
      "roi_w": 17,
      "roi_h": 17,
-     "otsu_threshold": 204.0,
-     "shadow_px_before_morph": 164,
+     "otsu_threshold": 202.0,
+     "shadow_px_before_morph": 278,
      "shadow_px_after_morph": 89,
-     "shadow_length_px_unrounded": 10.976977404169995,
+     "shadow_length_px_unrounded": 10.976977404169993,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -950,8 +949,8 @@
       "depth_m": null,
       "slope_estimate_deg": null,
       "measurable": false,
-      "not_measurable_reason": "shadow mask covers 62.7% of the crater area (> 60%): ROI histogram was not bimodal",
-      "shadow_mask_circle_fraction": 0.6272,
+      "not_measurable_reason": "shadow mask covers 61.6% of the crater area (> 60%): ROI histogram was not bimodal",
+      "shadow_mask_circle_fraction": 0.6162,
       "confidence": 0.8692474365234375,
       "x1": 14,
       "y1": 79,
@@ -977,7 +976,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.5526,
+      "shadow_mask_circle_fraction": 0.5524,
       "confidence": 0.8522818684577942,
       "x1": 38,
       "y1": 431,
@@ -1003,7 +1002,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.5784,
+      "shadow_mask_circle_fraction": 0.5782,
       "confidence": 0.8309051394462585,
       "x1": 433,
       "y1": 193,
@@ -1047,15 +1046,15 @@
      },
      {
       "crater_id": "CR-05",
-      "shadow_length_px": null,
+      "shadow_length_px": 57.591,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": null,
-      "slope_estimate_deg": null,
-      "measurable": false,
-      "not_measurable_reason": "shadow mask covers 60.2% of the crater area (> 60%): ROI histogram was not bimodal",
-      "shadow_mask_circle_fraction": 0.6017,
+      "depth_m": 40.326,
+      "slope_estimate_deg": 49.658,
+      "measurable": true,
+      "not_measurable_reason": null,
+      "shadow_mask_circle_fraction": 0.5997,
       "confidence": 0.7589907646179199,
       "x1": 361,
       "y1": 266,
@@ -1067,9 +1066,9 @@
       "radius_px": 34,
       "diameter_m": 68.5,
       "neighbor_count": 1,
-      "safety_score": 69.07,
-      "depth_penalty": null,
-      "zone": "UNKNOWN"
+      "safety_score": 32.28,
+      "depth_penalty": 36.79,
+      "zone": "HAZARD"
      },
      {
       "crater_id": "CR-06",
@@ -1081,7 +1080,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.573,
+      "shadow_mask_circle_fraction": 0.5728,
       "confidence": 0.7225830554962158,
       "x1": 268,
       "y1": 135,
@@ -1107,7 +1106,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.5601,
+      "shadow_mask_circle_fraction": 0.5431,
       "confidence": 0.7092379927635193,
       "x1": 253,
       "y1": 426,
@@ -1133,7 +1132,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.4346,
+      "shadow_mask_circle_fraction": 0.4337,
       "confidence": 0.6920771598815918,
       "x1": 373,
       "y1": 241,
@@ -1159,7 +1158,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.4573,
+      "shadow_mask_circle_fraction": 0.4628,
       "confidence": 0.6427695751190186,
       "x1": 389,
       "y1": 371,
@@ -1185,7 +1184,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.4541,
+      "shadow_mask_circle_fraction": 0.4518,
       "confidence": 0.5229388475418091,
       "x1": 484,
       "y1": 91,
@@ -1205,16 +1204,16 @@
     "summary": {
      "safe": 0,
      "caution": 0,
-     "hazard": 0,
-     "unknown": 10
+     "hazard": 1,
+     "unknown": 9
     },
-    "overall": 73.08,
+    "overall": 69.4,
     "scores": {
      "n": 10,
-     "min": 67.74,
+     "min": 32.28,
      "median": 73.15,
      "max": 79.44,
-     "mean": 73.08
+     "mean": 69.401
     }
    },
    "yolo_paths": {
@@ -1242,7 +1241,7 @@
     "goal_crater_id": "CR-10",
     "goal_zone": "UNKNOWN",
     "hazard_craters_crossed": [],
-    "hazard_craters_other_than_goal": 0
+    "hazard_craters_other_than_goal": 1
    },
    "synthetic_meta_depth_rows": [
     {
@@ -1255,7 +1254,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.4194,
+     "shadow_mask_circle_fraction": 0.4284,
      "confidence": null,
      "x1": 388,
      "y1": 370,
@@ -1276,7 +1275,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.4141,
+     "shadow_mask_circle_fraction": 0.4137,
      "confidence": null,
      "x1": 155,
      "y1": 274,
@@ -1297,7 +1296,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.5546,
+     "shadow_mask_circle_fraction": 0.5542,
      "confidence": null,
      "x1": 432,
      "y1": 193,
@@ -1318,7 +1317,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.56,
+     "shadow_mask_circle_fraction": 0.5597,
      "confidence": null,
      "x1": 39,
      "y1": 432,
@@ -1339,7 +1338,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.4226,
+     "shadow_mask_circle_fraction": 0.4225,
      "confidence": null,
      "x1": 256,
      "y1": 124,
@@ -1360,7 +1359,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.5419,
+     "shadow_mask_circle_fraction": 0.5418,
      "confidence": null,
      "x1": 11,
      "y1": 77,
@@ -1381,7 +1380,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.4366,
+     "shadow_mask_circle_fraction": 0.4364,
      "confidence": null,
      "x1": 381,
      "y1": 247,
@@ -1394,15 +1393,15 @@
     },
     {
      "crater_id": "CR-08",
-     "shadow_length_px": null,
+     "shadow_length_px": 54.971,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": null,
-     "slope_estimate_deg": null,
-     "measurable": false,
-     "not_measurable_reason": "shadow component touches the ROI boundary, so its length is a lower bound, not a measurement",
-     "shadow_mask_circle_fraction": 0.544,
+     "depth_m": 38.491,
+     "slope_estimate_deg": 47.72,
+     "measurable": true,
+     "not_measurable_reason": null,
+     "shadow_mask_circle_fraction": 0.5437,
      "confidence": null,
      "x1": 357,
      "y1": 260,
@@ -1423,7 +1422,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.4739,
+     "shadow_mask_circle_fraction": 0.4939,
      "confidence": null,
      "x1": 254,
      "y1": 426,
@@ -1440,10 +1439,10 @@
      "crater_id": "CR-01",
      "roi_w": 34,
      "roi_h": 34,
-     "otsu_threshold": 135.0,
-     "shadow_px_before_morph": 456,
-     "shadow_px_after_morph": 377,
-     "shadow_length_px_unrounded": 20.89092720960057,
+     "otsu_threshold": 148.0,
+     "shadow_px_before_morph": 568,
+     "shadow_px_after_morph": 386,
+     "shadow_length_px_unrounded": 21.299653205001306,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -1452,10 +1451,10 @@
      "crater_id": "CR-02",
      "roi_w": 54,
      "roi_h": 54,
-     "otsu_threshold": 158.0,
-     "shadow_px_before_morph": 1209,
+     "otsu_threshold": 165.0,
+     "shadow_px_before_morph": 1419,
      "shadow_px_after_morph": 947,
-     "shadow_length_px_unrounded": 35.63736406028994,
+     "shadow_length_px_unrounded": 35.63736406028993,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -1464,8 +1463,8 @@
      "crater_id": "CR-03",
      "roi_w": 58,
      "roi_h": 58,
-     "otsu_threshold": 173.0,
-     "shadow_px_before_morph": 1574,
+     "otsu_threshold": 175.0,
+     "shadow_px_before_morph": 2206,
      "shadow_px_after_morph": 1457,
      "shadow_length_px_unrounded": 43.17458289984118,
      "depth_m": null,
@@ -1477,7 +1476,7 @@
      "roi_w": 66,
      "roi_h": 66,
      "otsu_threshold": 179.0,
-     "shadow_px_before_morph": 2078,
+     "shadow_px_before_morph": 2079,
      "shadow_px_after_morph": 1908,
      "shadow_length_px_unrounded": 52.34840577448288,
      "depth_m": null,
@@ -1488,8 +1487,8 @@
      "crater_id": "CR-05",
      "roi_w": 112,
      "roi_h": 112,
-     "otsu_threshold": 137.0,
-     "shadow_px_before_morph": 5190,
+     "otsu_threshold": 147.0,
+     "shadow_px_before_morph": 6078,
      "shadow_px_after_morph": 4160,
      "shadow_length_px_unrounded": 75.94236472488836,
      "depth_m": null,
@@ -1501,9 +1500,9 @@
      "roi_w": 116,
      "roi_h": 116,
      "otsu_threshold": 177.0,
-     "shadow_px_before_morph": 6286,
+     "shadow_px_before_morph": 6287,
      "shadow_px_after_morph": 5720,
-     "shadow_length_px_unrounded": 91.83425439479231,
+     "shadow_length_px_unrounded": 91.8342543947923,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -1512,10 +1511,10 @@
      "crater_id": "CR-07",
      "roi_w": 112,
      "roi_h": 112,
-     "otsu_threshold": 131.0,
-     "shadow_px_before_morph": 5193,
-     "shadow_px_after_morph": 4297,
-     "shadow_length_px_unrounded": 80.85897704410984,
+     "otsu_threshold": 140.0,
+     "shadow_px_before_morph": 6796,
+     "shadow_px_after_morph": 4296,
+     "shadow_length_px_unrounded": 80.85897704410985,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -1524,22 +1523,21 @@
      "crater_id": "CR-08",
      "roi_w": 70,
      "roi_h": 70,
-     "otsu_threshold": 100.0,
-     "shadow_px_before_morph": 2302,
+     "otsu_threshold": 120.0,
+     "shadow_px_before_morph": 3817,
      "shadow_px_after_morph": 2095,
-     "shadow_length_px_unrounded": 54.970712348300154,
-     "depth_m": null,
-     "measurable": false,
-     "reason": "shadow component touches the ROI boundary, so its length is a lower bound, not a measurement"
+     "shadow_length_px_unrounded": 54.97071234830016,
+     "depth_m": 38.491,
+     "measurable": true
     },
     {
      "crater_id": "CR-09",
      "roi_w": 34,
      "roi_h": 34,
-     "otsu_threshold": 175.0,
-     "shadow_px_before_morph": 471,
-     "shadow_px_after_morph": 426,
-     "shadow_length_px_unrounded": 26.051415083272467,
+     "otsu_threshold": 179.0,
+     "shadow_px_before_morph": 527,
+     "shadow_px_after_morph": 445,
+     "shadow_length_px_unrounded": 26.62499151962351,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -1557,7 +1555,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.4194,
+      "shadow_mask_circle_fraction": 0.4284,
       "confidence": null,
       "x1": 388,
       "y1": 370,
@@ -1583,7 +1581,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.4141,
+      "shadow_mask_circle_fraction": 0.4137,
       "confidence": null,
       "x1": 155,
       "y1": 274,
@@ -1609,7 +1607,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.5546,
+      "shadow_mask_circle_fraction": 0.5542,
       "confidence": null,
       "x1": 432,
       "y1": 193,
@@ -1635,7 +1633,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.56,
+      "shadow_mask_circle_fraction": 0.5597,
       "confidence": null,
       "x1": 39,
       "y1": 432,
@@ -1661,7 +1659,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.4226,
+      "shadow_mask_circle_fraction": 0.4225,
       "confidence": null,
       "x1": 256,
       "y1": 124,
@@ -1687,7 +1685,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.5419,
+      "shadow_mask_circle_fraction": 0.5418,
       "confidence": null,
       "x1": 11,
       "y1": 77,
@@ -1713,7 +1711,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.4366,
+      "shadow_mask_circle_fraction": 0.4364,
       "confidence": null,
       "x1": 381,
       "y1": 247,
@@ -1731,15 +1729,15 @@
      },
      {
       "crater_id": "CR-08",
-      "shadow_length_px": null,
+      "shadow_length_px": 54.971,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": null,
-      "slope_estimate_deg": null,
-      "measurable": false,
-      "not_measurable_reason": "shadow component touches the ROI boundary, so its length is a lower bound, not a measurement",
-      "shadow_mask_circle_fraction": 0.544,
+      "depth_m": 38.491,
+      "slope_estimate_deg": 47.72,
+      "measurable": true,
+      "not_measurable_reason": null,
+      "shadow_mask_circle_fraction": 0.5437,
       "confidence": null,
       "x1": 357,
       "y1": 260,
@@ -1751,9 +1749,9 @@
       "radius_px": 35,
       "diameter_m": 70.0,
       "neighbor_count": 1,
-      "safety_score": 69.01,
-      "depth_penalty": null,
-      "zone": "UNKNOWN"
+      "safety_score": 32.54,
+      "depth_penalty": 36.47,
+      "zone": "HAZARD"
      },
      {
       "crater_id": "CR-09",
@@ -1765,7 +1763,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.4739,
+      "shadow_mask_circle_fraction": 0.4939,
       "confidence": null,
       "x1": 254,
       "y1": 426,
@@ -1785,26 +1783,26 @@
     "summary": {
      "safe": 0,
      "caution": 0,
-     "hazard": 0,
-     "unknown": 9
+     "hazard": 1,
+     "unknown": 8
     },
-    "overall": 71.61,
+    "overall": 67.56,
     "scores": {
      "n": 9,
-     "min": 63.95,
+     "min": 32.54,
      "median": 71.95,
      "max": 75.6,
-     "mean": 71.61333333333333
+     "mean": 67.5611111111111
     }
    },
    "synthetic_meta_paths": {
     "route_found": true,
-    "path_length_m": 445.86,
-    "path_nodes": 136,
+    "path_length_m": 469.58,
+    "path_nodes": 150,
     "alternatives_succeeded": 3,
     "alt_nodes": [
-     142,
-     146,
+     145,
+     161,
      150
     ],
     "start": [
@@ -1822,7 +1820,7 @@
     "goal_crater_id": "CR-01",
     "goal_zone": "UNKNOWN",
     "hazard_craters_crossed": [],
-    "hazard_craters_other_than_goal": 0
+    "hazard_craters_other_than_goal": 1
    }
   },
   "7": {
@@ -2303,7 +2301,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.5867,
+     "shadow_mask_circle_fraction": 0.5851,
      "confidence": 0.830994188785553,
      "x1": 239,
      "y1": 269,
@@ -2324,7 +2322,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.3444,
+     "shadow_mask_circle_fraction": 0.3443,
      "confidence": 0.8197442889213562,
      "x1": 47,
      "y1": 353,
@@ -2345,7 +2343,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.4307,
+     "shadow_mask_circle_fraction": 0.4296,
      "confidence": 0.7965309023857117,
      "x1": 206,
      "y1": 267,
@@ -2366,7 +2364,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.4991,
+     "shadow_mask_circle_fraction": 0.4963,
      "confidence": 0.7688679695129395,
      "x1": 341,
      "y1": 357,
@@ -2387,7 +2385,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.3859,
+     "shadow_mask_circle_fraction": 0.3837,
      "confidence": 0.688071072101593,
      "x1": 152,
      "y1": 164,
@@ -2408,7 +2406,7 @@
      "slope_estimate_deg": 41.199,
      "measurable": true,
      "not_measurable_reason": null,
-     "shadow_mask_circle_fraction": 0.3598,
+     "shadow_mask_circle_fraction": 0.3596,
      "confidence": 0.6053634285926819,
      "x1": 34,
      "y1": 54,
@@ -2446,10 +2444,10 @@
      "crater_id": "CR-01",
      "roi_w": 110,
      "roi_h": 111,
-     "otsu_threshold": 184.0,
-     "shadow_px_before_morph": 5415,
+     "otsu_threshold": 185.0,
+     "shadow_px_before_morph": 5518,
      "shadow_px_after_morph": 5230,
-     "shadow_length_px_unrounded": 85.36516331444305,
+     "shadow_length_px_unrounded": 85.36516331444307,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -2458,10 +2456,10 @@
      "crater_id": "CR-02",
      "roi_w": 67,
      "roi_h": 68,
-     "otsu_threshold": 195.0,
-     "shadow_px_before_morph": 2001,
-     "shadow_px_after_morph": 2125,
-     "shadow_length_px_unrounded": 53.66040908813528,
+     "otsu_threshold": 190.0,
+     "shadow_px_before_morph": 2144,
+     "shadow_px_after_morph": 2121,
+     "shadow_length_px_unrounded": 53.660409088135275,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -2470,10 +2468,10 @@
      "crater_id": "CR-03",
      "roi_w": 113,
      "roi_h": 113,
-     "otsu_threshold": 172.0,
-     "shadow_px_before_morph": 3451,
+     "otsu_threshold": 176.0,
+     "shadow_px_before_morph": 3695,
      "shadow_px_after_morph": 3390,
-     "shadow_length_px_unrounded": 66.27569058088325,
+     "shadow_length_px_unrounded": 66.27569058088326,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -2482,10 +2480,10 @@
      "crater_id": "CR-04",
      "roi_w": 38,
      "roi_h": 37,
-     "otsu_threshold": 158.0,
-     "shadow_px_before_morph": 534,
+     "otsu_threshold": 164.0,
+     "shadow_px_before_morph": 593,
      "shadow_px_after_morph": 485,
-     "shadow_length_px_unrounded": 25.232263038983476,
+     "shadow_length_px_unrounded": 25.232263038983472,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -2494,8 +2492,8 @@
      "crater_id": "CR-05",
      "roi_w": 65,
      "roi_h": 66,
-     "otsu_threshold": 179.0,
-     "shadow_px_before_morph": 1841,
+     "otsu_threshold": 184.0,
+     "shadow_px_before_morph": 2079,
      "shadow_px_after_morph": 1692,
      "shadow_length_px_unrounded": 47.84221950414966,
      "depth_m": null,
@@ -2506,10 +2504,10 @@
      "crater_id": "CR-06",
      "roi_w": 25,
      "roi_h": 26,
-     "otsu_threshold": 165.0,
-     "shadow_px_before_morph": 215,
+     "otsu_threshold": 173.0,
+     "shadow_px_before_morph": 250,
      "shadow_px_after_morph": 203,
-     "shadow_length_px_unrounded": 15.811164502916307,
+     "shadow_length_px_unrounded": 15.811164502916306,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -2518,8 +2516,8 @@
      "crater_id": "CR-07",
      "roi_w": 78,
      "roi_h": 79,
-     "otsu_threshold": 150.0,
-     "shadow_px_before_morph": 1880,
+     "otsu_threshold": 159.0,
+     "shadow_px_before_morph": 2123,
      "shadow_px_after_morph": 1718,
      "shadow_length_px_unrounded": 49.070097543839395,
      "depth_m": 34.359,
@@ -2529,8 +2527,8 @@
      "crater_id": "CR-08",
      "roi_w": 96,
      "roi_h": 97,
-     "otsu_threshold": 152.0,
-     "shadow_px_before_morph": 2461,
+     "otsu_threshold": 160.0,
+     "shadow_px_before_morph": 2927,
      "shadow_px_after_morph": 2295,
      "shadow_length_px_unrounded": 50.874952126855206,
      "depth_m": 35.623,
@@ -2575,7 +2573,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.5867,
+      "shadow_mask_circle_fraction": 0.5851,
       "confidence": 0.830994188785553,
       "x1": 239,
       "y1": 269,
@@ -2601,7 +2599,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.3444,
+      "shadow_mask_circle_fraction": 0.3443,
       "confidence": 0.8197442889213562,
       "x1": 47,
       "y1": 353,
@@ -2627,7 +2625,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.4307,
+      "shadow_mask_circle_fraction": 0.4296,
       "confidence": 0.7965309023857117,
       "x1": 206,
       "y1": 267,
@@ -2653,7 +2651,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.4991,
+      "shadow_mask_circle_fraction": 0.4963,
       "confidence": 0.7688679695129395,
       "x1": 341,
       "y1": 357,
@@ -2679,7 +2677,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.3859,
+      "shadow_mask_circle_fraction": 0.3837,
       "confidence": 0.688071072101593,
       "x1": 152,
       "y1": 164,
@@ -2705,7 +2703,7 @@
       "slope_estimate_deg": 41.199,
       "measurable": true,
       "not_measurable_reason": null,
-      "shadow_mask_circle_fraction": 0.3598,
+      "shadow_mask_circle_fraction": 0.3596,
       "confidence": 0.6053634285926819,
       "x1": 34,
       "y1": 54,
@@ -2801,7 +2799,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.4276,
+     "shadow_mask_circle_fraction": 0.4271,
      "confidence": null,
      "x1": 58,
      "y1": 63,
@@ -2822,7 +2820,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.5207,
+     "shadow_mask_circle_fraction": 0.5204,
      "confidence": null,
      "x1": 237,
      "y1": 269,
@@ -2835,15 +2833,15 @@
     },
     {
      "crater_id": "CR-03",
-     "shadow_length_px": 43.255,
+     "shadow_length_px": 43.829,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": 30.288,
-     "slope_estimate_deg": 42.546,
+     "depth_m": 30.689,
+     "slope_estimate_deg": 42.922,
      "measurable": true,
      "not_measurable_reason": null,
-     "shadow_mask_circle_fraction": 0.41,
+     "shadow_mask_circle_fraction": 0.4157,
      "confidence": null,
      "x1": 37,
      "y1": 59,
@@ -2864,7 +2862,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.3826,
+     "shadow_mask_circle_fraction": 0.3824,
      "confidence": null,
      "x1": 50,
      "y1": 359,
@@ -2885,7 +2883,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.4912,
+     "shadow_mask_circle_fraction": 0.4911,
      "confidence": null,
      "x1": 335,
      "y1": 132,
@@ -2906,7 +2904,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.477,
+     "shadow_mask_circle_fraction": 0.4762,
      "confidence": null,
      "x1": 107,
      "y1": 223,
@@ -2919,15 +2917,15 @@
     },
     {
      "crater_id": "CR-07",
-     "shadow_length_px": null,
+     "shadow_length_px": 43.994,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": null,
-     "slope_estimate_deg": null,
-     "measurable": false,
-     "not_measurable_reason": "shadow component touches the ROI boundary, so its length is a lower bound, not a measurement",
-     "shadow_mask_circle_fraction": 0.3916,
+     "depth_m": 30.805,
+     "slope_estimate_deg": 41.352,
+     "measurable": true,
+     "not_measurable_reason": null,
+     "shadow_mask_circle_fraction": 0.3911,
      "confidence": null,
      "x1": 100,
      "y1": 189,
@@ -2948,7 +2946,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.4107,
+     "shadow_mask_circle_fraction": 0.4271,
      "confidence": null,
      "x1": 153,
      "y1": 166,
@@ -2969,7 +2967,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.425,
+     "shadow_mask_circle_fraction": 0.4242,
      "confidence": null,
      "x1": 206,
      "y1": 267,
@@ -2990,7 +2988,7 @@
      "slope_estimate_deg": 45.05,
      "measurable": true,
      "not_measurable_reason": null,
-     "shadow_mask_circle_fraction": 0.4649,
+     "shadow_mask_circle_fraction": 0.4647,
      "confidence": null,
      "x1": 60,
      "y1": 345,
@@ -3011,7 +3009,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.4315,
+     "shadow_mask_circle_fraction": 0.4312,
      "confidence": null,
      "x1": 337,
      "y1": 355,
@@ -3028,9 +3026,9 @@
      "crater_id": "CR-01",
      "roi_w": 66,
      "roi_h": 66,
-     "otsu_threshold": 147.0,
-     "shadow_px_before_morph": 1634,
-     "shadow_px_after_morph": 1457,
+     "otsu_threshold": 157.0,
+     "shadow_px_before_morph": 2064,
+     "shadow_px_after_morph": 1456,
      "shadow_length_px_unrounded": 41.12585276237493,
      "depth_m": null,
      "measurable": false,
@@ -3040,10 +3038,10 @@
      "crater_id": "CR-02",
      "roi_w": 64,
      "roi_h": 64,
-     "otsu_threshold": 193.0,
-     "shadow_px_before_morph": 1939,
+     "otsu_threshold": 190.0,
+     "shadow_px_before_morph": 2144,
      "shadow_px_after_morph": 1670,
-     "shadow_length_px_unrounded": 50.8749521268552,
+     "shadow_length_px_unrounded": 50.874952126855206,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -3052,21 +3050,21 @@
      "crater_id": "CR-03",
      "roi_w": 66,
      "roi_h": 66,
-     "otsu_threshold": 142.0,
-     "shadow_px_before_morph": 1666,
-     "shadow_px_after_morph": 1397,
-     "shadow_length_px_unrounded": 43.2553080668288,
-     "depth_m": 30.288,
+     "otsu_threshold": 155.0,
+     "shadow_px_before_morph": 2006,
+     "shadow_px_after_morph": 1417,
+     "shadow_length_px_unrounded": 43.82888450317985,
+     "depth_m": 30.689,
      "measurable": true
     },
     {
      "crater_id": "CR-04",
      "roi_w": 100,
      "roi_h": 100,
-     "otsu_threshold": 170.0,
-     "shadow_px_before_morph": 3345,
-     "shadow_px_after_morph": 3001,
-     "shadow_length_px_unrounded": 62.67108157531419,
+     "otsu_threshold": 174.0,
+     "shadow_px_before_morph": 3570,
+     "shadow_px_after_morph": 3000,
+     "shadow_length_px_unrounded": 62.6710815753142,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -3075,8 +3073,8 @@
      "crater_id": "CR-05",
      "roi_w": 108,
      "roi_h": 108,
-     "otsu_threshold": 182.0,
-     "shadow_px_before_morph": 5233,
+     "otsu_threshold": 185.0,
+     "shadow_px_before_morph": 5518,
      "shadow_px_after_morph": 4491,
      "shadow_length_px_unrounded": 79.46794861695732,
      "depth_m": null,
@@ -3087,10 +3085,10 @@
      "crater_id": "CR-06",
      "roi_w": 54,
      "roi_h": 54,
-     "otsu_threshold": 126.0,
-     "shadow_px_before_morph": 1265,
-     "shadow_px_after_morph": 1091,
-     "shadow_length_px_unrounded": 37.68439414426866,
+     "otsu_threshold": 148.0,
+     "shadow_px_before_morph": 2127,
+     "shadow_px_after_morph": 1090,
+     "shadow_length_px_unrounded": 37.684394144268666,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -3099,22 +3097,21 @@
      "crater_id": "CR-07",
      "roi_w": 70,
      "roi_h": 70,
-     "otsu_threshold": 136.0,
-     "shadow_px_before_morph": 1791,
-     "shadow_px_after_morph": 1508,
-     "shadow_length_px_unrounded": 43.99373494413017,
-     "depth_m": null,
-     "measurable": false,
-     "reason": "shadow component touches the ROI boundary, so its length is a lower bound, not a measurement"
+     "otsu_threshold": 152.0,
+     "shadow_px_before_morph": 2569,
+     "shadow_px_after_morph": 1507,
+     "shadow_length_px_unrounded": 43.993734944130175,
+     "depth_m": 30.805,
+     "measurable": true
     },
     {
      "crater_id": "CR-08",
      "roi_w": 22,
      "roi_h": 22,
-     "otsu_threshold": 158.0,
-     "shadow_px_before_morph": 183,
-     "shadow_px_after_morph": 154,
-     "shadow_length_px_unrounded": 14.090435193863168,
+     "otsu_threshold": 170.0,
+     "shadow_px_before_morph": 236,
+     "shadow_px_after_morph": 161,
+     "shadow_length_px_unrounded": 14.090435193863172,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -3123,8 +3120,8 @@
      "crater_id": "CR-09",
      "roi_w": 36,
      "roi_h": 36,
-     "otsu_threshold": 156.0,
-     "shadow_px_before_morph": 516,
+     "otsu_threshold": 164.0,
+     "shadow_px_before_morph": 593,
      "shadow_px_after_morph": 428,
      "shadow_length_px_unrounded": 23.593958950405487,
      "depth_m": null,
@@ -3135,10 +3132,10 @@
      "crater_id": "CR-10",
      "roi_w": 82,
      "roi_h": 82,
-     "otsu_threshold": 160.0,
-     "shadow_px_before_morph": 2748,
+     "otsu_threshold": 171.0,
+     "shadow_px_before_morph": 3400,
      "shadow_px_after_morph": 2445,
-     "shadow_length_px_unrounded": 58.65604652085687,
+     "shadow_length_px_unrounded": 58.65604652085686,
      "depth_m": 41.071,
      "measurable": true
     },
@@ -3146,8 +3143,8 @@
      "crater_id": "CR-11",
      "roi_w": 66,
      "roi_h": 66,
-     "otsu_threshold": 177.0,
-     "shadow_px_before_morph": 1740,
+     "otsu_threshold": 184.0,
+     "shadow_px_before_morph": 2079,
      "shadow_px_after_morph": 1470,
      "shadow_length_px_unrounded": 43.25360801334129,
      "depth_m": null,
@@ -3167,7 +3164,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.4276,
+      "shadow_mask_circle_fraction": 0.4271,
       "confidence": null,
       "x1": 58,
       "y1": 63,
@@ -3193,7 +3190,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.5207,
+      "shadow_mask_circle_fraction": 0.5204,
       "confidence": null,
       "x1": 237,
       "y1": 269,
@@ -3211,15 +3208,15 @@
      },
      {
       "crater_id": "CR-03",
-      "shadow_length_px": 43.255,
+      "shadow_length_px": 43.829,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": 30.288,
-      "slope_estimate_deg": 42.546,
+      "depth_m": 30.689,
+      "slope_estimate_deg": 42.922,
       "measurable": true,
       "not_measurable_reason": null,
-      "shadow_mask_circle_fraction": 0.41,
+      "shadow_mask_circle_fraction": 0.4157,
       "confidence": null,
       "x1": 37,
       "y1": 59,
@@ -3231,8 +3228,8 @@
       "radius_px": 33,
       "diameter_m": 66.0,
       "neighbor_count": 1,
-      "safety_score": 34.48,
-      "depth_penalty": 34.69,
+      "safety_score": 34.38,
+      "depth_penalty": 34.8,
       "zone": "HAZARD"
      },
      {
@@ -3245,7 +3242,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.3826,
+      "shadow_mask_circle_fraction": 0.3824,
       "confidence": null,
       "x1": 50,
       "y1": 359,
@@ -3271,7 +3268,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.4912,
+      "shadow_mask_circle_fraction": 0.4911,
       "confidence": null,
       "x1": 335,
       "y1": 132,
@@ -3297,7 +3294,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.477,
+      "shadow_mask_circle_fraction": 0.4762,
       "confidence": null,
       "x1": 107,
       "y1": 223,
@@ -3315,15 +3312,15 @@
      },
      {
       "crater_id": "CR-07",
-      "shadow_length_px": null,
+      "shadow_length_px": 43.994,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": null,
-      "slope_estimate_deg": null,
-      "measurable": false,
-      "not_measurable_reason": "shadow component touches the ROI boundary, so its length is a lower bound, not a measurement",
-      "shadow_mask_circle_fraction": 0.3916,
+      "depth_m": 30.805,
+      "slope_estimate_deg": 41.352,
+      "measurable": true,
+      "not_measurable_reason": null,
+      "shadow_mask_circle_fraction": 0.3911,
       "confidence": null,
       "x1": 100,
       "y1": 189,
@@ -3335,9 +3332,9 @@
       "radius_px": 35,
       "diameter_m": 70.0,
       "neighbor_count": 2,
-      "safety_score": 65.01,
-      "depth_penalty": null,
-      "zone": "UNKNOWN"
+      "safety_score": 30.18,
+      "depth_penalty": 34.83,
+      "zone": "HAZARD"
      },
      {
       "crater_id": "CR-08",
@@ -3349,7 +3346,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.4107,
+      "shadow_mask_circle_fraction": 0.4271,
       "confidence": null,
       "x1": 153,
       "y1": 166,
@@ -3375,7 +3372,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.425,
+      "shadow_mask_circle_fraction": 0.4242,
       "confidence": null,
       "x1": 206,
       "y1": 267,
@@ -3401,7 +3398,7 @@
       "slope_estimate_deg": 45.05,
       "measurable": true,
       "not_measurable_reason": null,
-      "shadow_mask_circle_fraction": 0.4649,
+      "shadow_mask_circle_fraction": 0.4647,
       "confidence": null,
       "x1": 60,
       "y1": 345,
@@ -3427,7 +3424,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.4315,
+      "shadow_mask_circle_fraction": 0.4312,
       "confidence": null,
       "x1": 337,
       "y1": 355,
@@ -3447,16 +3444,16 @@
     "summary": {
      "safe": 0,
      "caution": 0,
-     "hazard": 2,
-     "unknown": 9
+     "hazard": 3,
+     "unknown": 8
     },
-    "overall": 62.72,
+    "overall": 59.55,
     "scores": {
      "n": 11,
-     "min": 31.69,
+     "min": 30.18,
      "median": 69.17,
      "max": 73.17,
-     "mean": 62.722727272727276
+     "mean": 59.54727272727273
     }
    },
    "synthetic_meta_paths": {
@@ -3484,7 +3481,7 @@
     "goal_crater_id": "CR-11",
     "goal_zone": "UNKNOWN",
     "hazard_craters_crossed": [],
-    "hazard_craters_other_than_goal": 2
+    "hazard_craters_other_than_goal": 3
    }
   },
   "123": {
@@ -3959,7 +3956,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.493,
+     "shadow_mask_circle_fraction": 0.4913,
      "confidence": 0.8704314231872559,
      "x1": 184,
      "y1": 337,
@@ -3980,7 +3977,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.4869,
+     "shadow_mask_circle_fraction": 0.4868,
      "confidence": 0.823901891708374,
      "x1": 98,
      "y1": 136,
@@ -4001,7 +3998,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.5006,
+     "shadow_mask_circle_fraction": 0.5003,
      "confidence": 0.8200227618217468,
      "x1": 382,
      "y1": 50,
@@ -4022,7 +4019,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.5502,
+     "shadow_mask_circle_fraction": 0.5474,
      "confidence": 0.7639997005462646,
      "x1": 249,
      "y1": 109,
@@ -4043,7 +4040,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.4429,
+     "shadow_mask_circle_fraction": 0.4308,
      "confidence": 0.6841952800750732,
      "x1": 233,
      "y1": 40,
@@ -4056,15 +4053,15 @@
     },
     {
      "crater_id": "CR-06",
-     "shadow_length_px": null,
+     "shadow_length_px": 54.399,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": null,
-     "slope_estimate_deg": null,
-     "measurable": false,
-     "not_measurable_reason": "shadow component touches the ROI boundary, so its length is a lower bound, not a measurement",
-     "shadow_mask_circle_fraction": 0.5121,
+     "depth_m": 38.09,
+     "slope_estimate_deg": 46.815,
+     "measurable": true,
+     "not_measurable_reason": null,
+     "shadow_mask_circle_fraction": 0.511,
      "confidence": 0.6821051239967346,
      "x1": 420,
      "y1": 140,
@@ -4085,7 +4082,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.4341,
+     "shadow_mask_circle_fraction": 0.4335,
      "confidence": 0.6674696207046509,
      "x1": 394,
      "y1": 417,
@@ -4106,7 +4103,7 @@
      "slope_estimate_deg": 39.402,
      "measurable": true,
      "not_measurable_reason": null,
-     "shadow_mask_circle_fraction": 0.349,
+     "shadow_mask_circle_fraction": 0.3484,
      "confidence": 0.6488872766494751,
      "x1": 285,
      "y1": 12,
@@ -4127,7 +4124,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.568,
+     "shadow_mask_circle_fraction": 0.565,
      "confidence": 0.5586980581283569,
      "x1": 442,
      "y1": 222,
@@ -4148,7 +4145,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.5925,
+     "shadow_mask_circle_fraction": 0.5911,
      "confidence": 0.5181504487991333,
      "x1": 437,
      "y1": 192,
@@ -4165,10 +4162,10 @@
      "crater_id": "CR-01",
      "roi_w": 131,
      "roi_h": 131,
-     "otsu_threshold": 154.0,
-     "shadow_px_before_morph": 6623,
+     "otsu_threshold": 155.0,
+     "shadow_px_before_morph": 6715,
      "shadow_px_after_morph": 6717,
-     "shadow_length_px_unrounded": 96.42286588560069,
+     "shadow_length_px_unrounded": 96.42286588560067,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -4180,7 +4177,7 @@
      "otsu_threshold": 159.0,
      "shadow_px_before_morph": 1564,
      "shadow_px_after_morph": 1562,
-     "shadow_length_px_unrounded": 45.3864634247702,
+     "shadow_length_px_unrounded": 45.38646342477021,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -4189,10 +4186,10 @@
      "crater_id": "CR-03",
      "roi_w": 74,
      "roi_h": 74,
-     "otsu_threshold": 151.0,
-     "shadow_px_before_morph": 2404,
+     "otsu_threshold": 156.0,
+     "shadow_px_before_morph": 2625,
      "shadow_px_after_morph": 2148,
-     "shadow_length_px_unrounded": 54.97071234830017,
+     "shadow_length_px_unrounded": 54.970712348300154,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -4201,10 +4198,10 @@
      "crater_id": "CR-04",
      "roi_w": 103,
      "roi_h": 103,
-     "otsu_threshold": 166.0,
-     "shadow_px_before_morph": 4687,
+     "otsu_threshold": 167.0,
+     "shadow_px_before_morph": 4804,
      "shadow_px_after_morph": 4651,
-     "shadow_length_px_unrounded": 80.61510148965941,
+     "shadow_length_px_unrounded": 80.6151014896594,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -4213,9 +4210,9 @@
      "crater_id": "CR-05",
      "roi_w": 23,
      "roi_h": 24,
-     "otsu_threshold": 155.0,
-     "shadow_px_before_morph": 196,
-     "shadow_px_after_morph": 194,
+     "otsu_threshold": 157.0,
+     "shadow_px_before_morph": 201,
+     "shadow_px_after_morph": 190,
      "shadow_length_px_unrounded": 14.172860414338325,
      "depth_m": null,
      "measurable": false,
@@ -4225,20 +4222,19 @@
      "crater_id": "CR-06",
      "roi_w": 72,
      "roi_h": 71,
-     "otsu_threshold": 150.0,
-     "shadow_px_before_morph": 2203,
-     "shadow_px_after_morph": 2066,
-     "shadow_length_px_unrounded": 54.39883596543663,
-     "depth_m": null,
-     "measurable": false,
-     "reason": "shadow component touches the ROI boundary, so its length is a lower bound, not a measurement"
+     "otsu_threshold": 155.0,
+     "shadow_px_before_morph": 2996,
+     "shadow_px_after_morph": 2071,
+     "shadow_length_px_unrounded": 54.39883596543664,
+     "depth_m": 38.09,
+     "measurable": true
     },
     {
      "crater_id": "CR-07",
      "roi_w": 59,
      "roi_h": 59,
-     "otsu_threshold": 141.0,
-     "shadow_px_before_morph": 1305,
+     "otsu_threshold": 146.0,
+     "shadow_px_before_morph": 1383,
      "shadow_px_after_morph": 1223,
      "shadow_length_px_unrounded": 40.880277154436996,
      "depth_m": null,
@@ -4249,8 +4245,8 @@
      "crater_id": "CR-08",
      "roi_w": 41,
      "roi_h": 40,
-     "otsu_threshold": 136.0,
-     "shadow_px_before_morph": 496,
+     "otsu_threshold": 144.0,
+     "shadow_px_before_morph": 562,
      "shadow_px_after_morph": 438,
      "shadow_length_px_unrounded": 23.757109337868282,
      "depth_m": 16.635,
@@ -4260,8 +4256,8 @@
      "crater_id": "CR-09",
      "roi_w": 22,
      "roi_h": 22,
-     "otsu_threshold": 142.0,
-     "shadow_px_before_morph": 280,
+     "otsu_threshold": 148.0,
+     "shadow_px_before_morph": 464,
      "shadow_px_after_morph": 213,
      "shadow_length_px_unrounded": 16.056740110854257,
      "depth_m": null,
@@ -4272,10 +4268,10 @@
      "crater_id": "CR-10",
      "roi_w": 54,
      "roi_h": 55,
-     "otsu_threshold": 161.0,
-     "shadow_px_before_morph": 1583,
-     "shadow_px_after_morph": 1355,
-     "shadow_length_px_unrounded": 40.96100232142462,
+     "otsu_threshold": 158.0,
+     "shadow_px_before_morph": 1995,
+     "shadow_px_after_morph": 1353,
+     "shadow_length_px_unrounded": 40.96100232142463,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -4293,7 +4289,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.493,
+      "shadow_mask_circle_fraction": 0.4913,
       "confidence": 0.8704314231872559,
       "x1": 184,
       "y1": 337,
@@ -4319,7 +4315,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.4869,
+      "shadow_mask_circle_fraction": 0.4868,
       "confidence": 0.823901891708374,
       "x1": 98,
       "y1": 136,
@@ -4345,7 +4341,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.5006,
+      "shadow_mask_circle_fraction": 0.5003,
       "confidence": 0.8200227618217468,
       "x1": 382,
       "y1": 50,
@@ -4371,7 +4367,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.5502,
+      "shadow_mask_circle_fraction": 0.5474,
       "confidence": 0.7639997005462646,
       "x1": 249,
       "y1": 109,
@@ -4397,7 +4393,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.4429,
+      "shadow_mask_circle_fraction": 0.4308,
       "confidence": 0.6841952800750732,
       "x1": 233,
       "y1": 40,
@@ -4415,15 +4411,15 @@
      },
      {
       "crater_id": "CR-06",
-      "shadow_length_px": null,
+      "shadow_length_px": 54.399,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": null,
-      "slope_estimate_deg": null,
-      "measurable": false,
-      "not_measurable_reason": "shadow component touches the ROI boundary, so its length is a lower bound, not a measurement",
-      "shadow_mask_circle_fraction": 0.5121,
+      "depth_m": 38.09,
+      "slope_estimate_deg": 46.815,
+      "measurable": true,
+      "not_measurable_reason": null,
+      "shadow_mask_circle_fraction": 0.511,
       "confidence": 0.6821051239967346,
       "x1": 420,
       "y1": 140,
@@ -4435,9 +4431,9 @@
       "radius_px": 36,
       "diameter_m": 71.5,
       "neighbor_count": 2,
-      "safety_score": 64.95,
-      "depth_penalty": null,
-      "zone": "UNKNOWN"
+      "safety_score": 28.55,
+      "depth_penalty": 36.4,
+      "zone": "HAZARD"
      },
      {
       "crater_id": "CR-07",
@@ -4449,7 +4445,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.4341,
+      "shadow_mask_circle_fraction": 0.4335,
       "confidence": 0.6674696207046509,
       "x1": 394,
       "y1": 417,
@@ -4475,7 +4471,7 @@
       "slope_estimate_deg": 39.402,
       "measurable": true,
       "not_measurable_reason": null,
-      "shadow_mask_circle_fraction": 0.349,
+      "shadow_mask_circle_fraction": 0.3484,
       "confidence": 0.6488872766494751,
       "x1": 285,
       "y1": 12,
@@ -4501,7 +4497,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.568,
+      "shadow_mask_circle_fraction": 0.565,
       "confidence": 0.5586980581283569,
       "x1": 442,
       "y1": 222,
@@ -4527,7 +4523,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.5925,
+      "shadow_mask_circle_fraction": 0.5911,
       "confidence": 0.5181504487991333,
       "x1": 437,
       "y1": 192,
@@ -4547,16 +4543,16 @@
     "summary": {
      "safe": 0,
      "caution": 1,
-     "hazard": 0,
-     "unknown": 9
+     "hazard": 1,
+     "unknown": 8
     },
-    "overall": 67.91,
+    "overall": 64.27,
     "scores": {
      "n": 10,
-     "min": 41.64,
+     "min": 28.55,
      "median": 71.9,
      "max": 73.5,
-     "mean": 67.908
+     "mean": 64.268
     }
    },
    "yolo_paths": {
@@ -4584,7 +4580,7 @@
     "goal_crater_id": "CR-08",
     "goal_zone": "CAUTION",
     "hazard_craters_crossed": [],
-    "hazard_craters_other_than_goal": 0
+    "hazard_craters_other_than_goal": 1
    },
    "synthetic_meta_depth_rows": [
     {
@@ -4597,7 +4593,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.3585,
+     "shadow_mask_circle_fraction": 0.3664,
      "confidence": null,
      "x1": 292,
      "y1": 18,
@@ -4618,7 +4614,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.519,
+     "shadow_mask_circle_fraction": 0.5181,
      "confidence": null,
      "x1": 433,
      "y1": 188,
@@ -4639,7 +4635,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.4623,
+     "shadow_mask_circle_fraction": 0.4622,
      "confidence": null,
      "x1": 245,
      "y1": 108,
@@ -4660,7 +4656,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.481,
+     "shadow_mask_circle_fraction": 0.4808,
      "confidence": null,
      "x1": 381,
      "y1": 49,
@@ -4681,7 +4677,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.5191,
+     "shadow_mask_circle_fraction": 0.519,
      "confidence": null,
      "x1": 187,
      "y1": 340,
@@ -4701,8 +4697,8 @@
      "depth_m": null,
      "slope_estimate_deg": null,
      "measurable": false,
-     "not_measurable_reason": "shadow mask covers 60.6% of the crater area (> 60%): ROI histogram was not bimodal",
-     "shadow_mask_circle_fraction": 0.6063,
+     "not_measurable_reason": "shadow mask covers 65.9% of the crater area (> 60%): ROI histogram was not bimodal",
+     "shadow_mask_circle_fraction": 0.6593,
      "confidence": null,
      "x1": 442,
      "y1": 221,
@@ -4715,15 +4711,15 @@
     },
     {
      "crater_id": "CR-07",
-     "shadow_length_px": null,
+     "shadow_length_px": 51.285,
      "solar_angle_deg": 35.0,
      "solar_elevation_deg": 35.0,
      "solar_azimuth_deg": 35.0,
-     "depth_m": null,
-     "slope_estimate_deg": null,
-     "measurable": false,
-     "not_measurable_reason": "shadow component touches the ROI boundary, so its length is a lower bound, not a measurement",
-     "shadow_mask_circle_fraction": 0.5371,
+     "depth_m": 35.91,
+     "slope_estimate_deg": 47.418,
+     "measurable": true,
+     "not_measurable_reason": null,
+     "shadow_mask_circle_fraction": 0.5368,
      "confidence": null,
      "x1": 423,
      "y1": 144,
@@ -4744,7 +4740,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.384,
+     "shadow_mask_circle_fraction": 0.382,
      "confidence": null,
      "x1": 232,
      "y1": 40,
@@ -4765,7 +4761,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.4683,
+     "shadow_mask_circle_fraction": 0.4679,
      "confidence": null,
      "x1": 395,
      "y1": 419,
@@ -4786,7 +4782,7 @@
      "slope_estimate_deg": null,
      "measurable": false,
      "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-     "shadow_mask_circle_fraction": 0.5116,
+     "shadow_mask_circle_fraction": 0.5112,
      "confidence": null,
      "x1": 99,
      "y1": 139,
@@ -4803,10 +4799,10 @@
      "crater_id": "CR-01",
      "roi_w": 32,
      "roi_h": 32,
-     "otsu_threshold": 121.0,
-     "shadow_px_before_morph": 375,
-     "shadow_px_after_morph": 285,
-     "shadow_length_px_unrounded": 18.84219707213433,
+     "otsu_threshold": 141.0,
+     "shadow_px_before_morph": 539,
+     "shadow_px_after_morph": 292,
+     "shadow_length_px_unrounded": 19.415773508485376,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -4815,10 +4811,10 @@
      "crater_id": "CR-02",
      "roi_w": 56,
      "roi_h": 56,
-     "otsu_threshold": 157.0,
-     "shadow_px_before_morph": 1673,
-     "shadow_px_after_morph": 1272,
-     "shadow_length_px_unrounded": 40.469851105548734,
+     "otsu_threshold": 156.0,
+     "shadow_px_before_morph": 2237,
+     "shadow_px_after_morph": 1271,
+     "shadow_length_px_unrounded": 40.46985110554874,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -4827,8 +4823,8 @@
      "crater_id": "CR-03",
      "roi_w": 98,
      "roi_h": 98,
-     "otsu_threshold": 163.0,
-     "shadow_px_before_morph": 4337,
+     "otsu_threshold": 166.0,
+     "shadow_px_before_morph": 4684,
      "shadow_px_after_morph": 3478,
      "shadow_length_px_unrounded": 73.31835809758357,
      "depth_m": null,
@@ -4839,10 +4835,10 @@
      "crater_id": "CR-04",
      "roi_w": 74,
      "roi_h": 74,
-     "otsu_threshold": 151.0,
-     "shadow_px_before_morph": 2404,
+     "otsu_threshold": 156.0,
+     "shadow_px_before_morph": 2625,
      "shadow_px_after_morph": 2064,
-     "shadow_length_px_unrounded": 52.75883182337113,
+     "shadow_length_px_unrounded": 52.758831823371125,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -4851,8 +4847,8 @@
      "crater_id": "CR-05",
      "roi_w": 118,
      "roi_h": 118,
-     "otsu_threshold": 151.0,
-     "shadow_px_before_morph": 6376,
+     "otsu_threshold": 154.0,
+     "shadow_px_before_morph": 6623,
      "shadow_px_after_morph": 5664,
      "shadow_length_px_unrounded": 88.88734709953697,
      "depth_m": null,
@@ -4863,34 +4859,33 @@
      "crater_id": "CR-06",
      "roi_w": 20,
      "roi_h": 20,
-     "otsu_threshold": 126.0,
-     "shadow_px_before_morph": 245,
-     "shadow_px_after_morph": 191,
-     "shadow_length_px_unrounded": 14.992012458627318,
+     "otsu_threshold": 145.0,
+     "shadow_px_before_morph": 428,
+     "shadow_px_after_morph": 209,
+     "shadow_length_px_unrounded": 16.384740939267356,
      "depth_m": null,
      "measurable": false,
-     "reason": "shadow mask covers 60.6% of the crater area (> 60%): ROI histogram was not bimodal"
+     "reason": "shadow mask covers 65.9% of the crater area (> 60%): ROI histogram was not bimodal"
     },
     {
      "crater_id": "CR-07",
      "roi_w": 66,
      "roi_h": 66,
-     "otsu_threshold": 147.0,
-     "shadow_px_before_morph": 2075,
+     "otsu_threshold": 154.0,
+     "shadow_px_before_morph": 2871,
      "shadow_px_after_morph": 1830,
-     "shadow_length_px_unrounded": 51.28537817574345,
-     "depth_m": null,
-     "measurable": false,
-     "reason": "shadow component touches the ROI boundary, so its length is a lower bound, not a measurement"
+     "shadow_length_px_unrounded": 51.28537817574347,
+     "depth_m": 35.91,
+     "measurable": true
     },
     {
      "crater_id": "CR-08",
      "roi_w": 22,
      "roi_h": 22,
-     "otsu_threshold": 149.0,
-     "shadow_px_before_morph": 171,
+     "otsu_threshold": 156.0,
+     "shadow_px_before_morph": 198,
      "shadow_px_after_morph": 144,
-     "shadow_length_px_unrounded": 11.960979889409295,
+     "shadow_length_px_unrounded": 11.960979889409296,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -4899,10 +4894,10 @@
      "crater_id": "CR-09",
      "roi_w": 54,
      "roi_h": 54,
-     "otsu_threshold": 136.0,
-     "shadow_px_before_morph": 1211,
+     "otsu_threshold": 145.0,
+     "shadow_px_before_morph": 1363,
      "shadow_px_after_morph": 1071,
-     "shadow_length_px_unrounded": 37.84924458521897,
+     "shadow_length_px_unrounded": 37.849244585218976,
      "depth_m": null,
      "measurable": false,
      "reason": "no shadow component against the up-sun rim of the crater"
@@ -4911,8 +4906,8 @@
      "crater_id": "CR-10",
      "roi_w": 58,
      "roi_h": 58,
-     "otsu_threshold": 156.0,
-     "shadow_px_before_morph": 1489,
+     "otsu_threshold": 158.0,
+     "shadow_px_before_morph": 1539,
      "shadow_px_after_morph": 1344,
      "shadow_length_px_unrounded": 42.43615602253982,
      "depth_m": null,
@@ -4932,7 +4927,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.3585,
+      "shadow_mask_circle_fraction": 0.3664,
       "confidence": null,
       "x1": 292,
       "y1": 18,
@@ -4958,7 +4953,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.519,
+      "shadow_mask_circle_fraction": 0.5181,
       "confidence": null,
       "x1": 433,
       "y1": 188,
@@ -4984,7 +4979,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.4623,
+      "shadow_mask_circle_fraction": 0.4622,
       "confidence": null,
       "x1": 245,
       "y1": 108,
@@ -5010,7 +5005,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.481,
+      "shadow_mask_circle_fraction": 0.4808,
       "confidence": null,
       "x1": 381,
       "y1": 49,
@@ -5036,7 +5031,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.5191,
+      "shadow_mask_circle_fraction": 0.519,
       "confidence": null,
       "x1": 187,
       "y1": 340,
@@ -5061,8 +5056,8 @@
       "depth_m": null,
       "slope_estimate_deg": null,
       "measurable": false,
-      "not_measurable_reason": "shadow mask covers 60.6% of the crater area (> 60%): ROI histogram was not bimodal",
-      "shadow_mask_circle_fraction": 0.6063,
+      "not_measurable_reason": "shadow mask covers 65.9% of the crater area (> 60%): ROI histogram was not bimodal",
+      "shadow_mask_circle_fraction": 0.6593,
       "confidence": null,
       "x1": 442,
       "y1": 221,
@@ -5080,15 +5075,15 @@
      },
      {
       "crater_id": "CR-07",
-      "shadow_length_px": null,
+      "shadow_length_px": 51.285,
       "solar_angle_deg": 35.0,
       "solar_elevation_deg": 35.0,
       "solar_azimuth_deg": 35.0,
-      "depth_m": null,
-      "slope_estimate_deg": null,
-      "measurable": false,
-      "not_measurable_reason": "shadow component touches the ROI boundary, so its length is a lower bound, not a measurement",
-      "shadow_mask_circle_fraction": 0.5371,
+      "depth_m": 35.91,
+      "slope_estimate_deg": 47.418,
+      "measurable": true,
+      "not_measurable_reason": null,
+      "shadow_mask_circle_fraction": 0.5368,
       "confidence": null,
       "x1": 423,
       "y1": 144,
@@ -5100,9 +5095,9 @@
       "radius_px": 33,
       "diameter_m": 66.0,
       "neighbor_count": 2,
-      "safety_score": 65.17,
-      "depth_penalty": null,
-      "zone": "UNKNOWN"
+      "safety_score": 29.19,
+      "depth_penalty": 35.98,
+      "zone": "HAZARD"
      },
      {
       "crater_id": "CR-08",
@@ -5114,7 +5109,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.384,
+      "shadow_mask_circle_fraction": 0.382,
       "confidence": null,
       "x1": 232,
       "y1": 40,
@@ -5140,7 +5135,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.4683,
+      "shadow_mask_circle_fraction": 0.4679,
       "confidence": null,
       "x1": 395,
       "y1": 419,
@@ -5166,7 +5161,7 @@
       "slope_estimate_deg": null,
       "measurable": false,
       "not_measurable_reason": "no shadow component against the up-sun rim of the crater",
-      "shadow_mask_circle_fraction": 0.5116,
+      "shadow_mask_circle_fraction": 0.5112,
       "confidence": null,
       "x1": 99,
       "y1": 139,
@@ -5186,16 +5181,16 @@
     "summary": {
      "safe": 0,
      "caution": 0,
-     "hazard": 0,
-     "unknown": 10
+     "hazard": 1,
+     "unknown": 9
     },
-    "overall": 71.13,
+    "overall": 67.53,
     "scores": {
      "n": 10,
-     "min": 65.17,
+     "min": 29.19,
      "median": 72.04499999999999,
      "max": 73.85,
-     "mean": 71.127
+     "mean": 67.529
     }
    },
    "synthetic_meta_paths": {
@@ -5223,17 +5218,17 @@
     "goal_crater_id": "CR-08",
     "goal_zone": "UNKNOWN",
     "hazard_craters_crossed": [],
-    "hazard_craters_other_than_goal": 0
+    "hazard_craters_other_than_goal": 1
    }
   }
  },
  "not_measurable_pooled": {
   "yolo": {
-   "not_measurable": 25,
+   "not_measurable": 23,
    "rows": 28
   },
   "synthetic_meta": {
-   "not_measurable": 28,
+   "not_measurable": 25,
    "rows": 30
   }
  },
@@ -5242,175 +5237,195 @@
    {
     "theta": 5,
     "tan": 0.08748866352592401,
-    "mean_depth_tan_code": null,
-    "mean_depth_inverse_tan": null,
-    "mean_shadow_length_px": null,
+    "mean_depth_tan_code": 4.809,
+    "mean_depth_inverse_tan": 628.318,
+    "mean_shadow_length_px": 54.971,
     "n": 9,
-    "n_measurable": 0
+    "n_measurable": 1
    },
    {
     "theta": 15,
     "tan": 0.2679491924311227,
-    "mean_depth_tan_code": null,
-    "mean_depth_inverse_tan": null,
-    "mean_shadow_length_px": null,
+    "mean_depth_tan_code": 14.729,
+    "mean_depth_inverse_tan": 205.153,
+    "mean_shadow_length_px": 54.971,
     "n": 9,
-    "n_measurable": 0
+    "n_measurable": 1
    },
    {
     "theta": 25,
     "tan": 0.4663076581549986,
-    "mean_depth_tan_code": null,
-    "mean_depth_inverse_tan": null,
-    "mean_shadow_length_px": null,
+    "mean_depth_tan_code": 25.633,
+    "mean_depth_inverse_tan": 117.885,
+    "mean_shadow_length_px": 54.971,
     "n": 9,
-    "n_measurable": 0
+    "n_measurable": 1
    },
    {
     "theta": 35,
     "tan": 0.7002075382097097,
-    "mean_depth_tan_code": null,
-    "mean_depth_inverse_tan": null,
-    "mean_shadow_length_px": null,
+    "mean_depth_tan_code": 38.491,
+    "mean_depth_inverse_tan": 78.506,
+    "mean_shadow_length_px": 54.971,
     "n": 9,
-    "n_measurable": 0
+    "n_measurable": 1
    },
    {
     "theta": 45,
     "tan": 0.9999999999999999,
-    "mean_depth_tan_code": null,
-    "mean_depth_inverse_tan": null,
-    "mean_shadow_length_px": null,
+    "mean_depth_tan_code": 54.971,
+    "mean_depth_inverse_tan": 54.971,
+    "mean_shadow_length_px": 54.971,
     "n": 9,
-    "n_measurable": 0
+    "n_measurable": 1
    },
    {
     "theta": 55,
     "tan": 1.4281480067421144,
-    "mean_depth_tan_code": null,
-    "mean_depth_inverse_tan": null,
-    "mean_shadow_length_px": null,
+    "mean_depth_tan_code": 78.506,
+    "mean_depth_inverse_tan": 38.491,
+    "mean_shadow_length_px": 54.971,
     "n": 9,
-    "n_measurable": 0
+    "n_measurable": 1
    },
    {
     "theta": 65,
     "tan": 2.1445069205095586,
-    "mean_depth_tan_code": null,
-    "mean_depth_inverse_tan": null,
-    "mean_shadow_length_px": null,
+    "mean_depth_tan_code": 117.885,
+    "mean_depth_inverse_tan": 25.633,
+    "mean_shadow_length_px": 54.971,
     "n": 9,
-    "n_measurable": 0
+    "n_measurable": 1
    },
    {
     "theta": 75,
     "tan": 3.7320508075688776,
-    "mean_depth_tan_code": null,
-    "mean_depth_inverse_tan": null,
-    "mean_shadow_length_px": null,
+    "mean_depth_tan_code": 205.153,
+    "mean_depth_inverse_tan": 14.729,
+    "mean_shadow_length_px": 54.971,
     "n": 9,
-    "n_measurable": 0
+    "n_measurable": 1
    },
    {
     "theta": 85,
     "tan": 11.430052302761348,
-    "mean_depth_tan_code": null,
-    "mean_depth_inverse_tan": null,
-    "mean_shadow_length_px": null,
+    "mean_depth_tan_code": 628.318,
+    "mean_depth_inverse_tan": 4.809,
+    "mean_shadow_length_px": 54.971,
     "n": 9,
-    "n_measurable": 0
+    "n_measurable": 1
    }
   ],
   "yolo": [
    {
     "theta": 5,
     "tan": 0.08748866352592401,
-    "mean_depth_tan_code": null,
-    "mean_depth_inverse_tan": null,
-    "mean_shadow_length_px": null,
+    "mean_depth_tan_code": 5.039,
+    "mean_depth_inverse_tan": 658.272,
+    "mean_shadow_length_px": 57.591,
     "n": 10,
-    "n_measurable": 0
+    "n_measurable": 1
    },
    {
     "theta": 15,
     "tan": 0.2679491924311227,
-    "mean_depth_tan_code": null,
-    "mean_depth_inverse_tan": null,
-    "mean_shadow_length_px": null,
+    "mean_depth_tan_code": 15.432,
+    "mean_depth_inverse_tan": 214.934,
+    "mean_shadow_length_px": 57.591,
     "n": 10,
-    "n_measurable": 0
+    "n_measurable": 1
    },
    {
     "theta": 25,
     "tan": 0.4663076581549986,
-    "mean_depth_tan_code": null,
-    "mean_depth_inverse_tan": null,
-    "mean_shadow_length_px": null,
+    "mean_depth_tan_code": 26.855,
+    "mean_depth_inverse_tan": 123.505,
+    "mean_shadow_length_px": 57.591,
     "n": 10,
-    "n_measurable": 0
+    "n_measurable": 1
    },
    {
     "theta": 35,
     "tan": 0.7002075382097097,
-    "mean_depth_tan_code": null,
-    "mean_depth_inverse_tan": null,
-    "mean_shadow_length_px": null,
+    "mean_depth_tan_code": 40.326,
+    "mean_depth_inverse_tan": 82.249,
+    "mean_shadow_length_px": 57.591,
     "n": 10,
-    "n_measurable": 0
+    "n_measurable": 1
    },
    {
     "theta": 45,
     "tan": 0.9999999999999999,
-    "mean_depth_tan_code": null,
-    "mean_depth_inverse_tan": null,
-    "mean_shadow_length_px": null,
+    "mean_depth_tan_code": 57.591,
+    "mean_depth_inverse_tan": 57.591,
+    "mean_shadow_length_px": 57.591,
     "n": 10,
-    "n_measurable": 0
+    "n_measurable": 1
    },
    {
     "theta": 55,
     "tan": 1.4281480067421144,
-    "mean_depth_tan_code": null,
-    "mean_depth_inverse_tan": null,
-    "mean_shadow_length_px": null,
+    "mean_depth_tan_code": 82.249,
+    "mean_depth_inverse_tan": 40.326,
+    "mean_shadow_length_px": 57.591,
     "n": 10,
-    "n_measurable": 0
+    "n_measurable": 1
    },
    {
     "theta": 65,
     "tan": 2.1445069205095586,
-    "mean_depth_tan_code": null,
-    "mean_depth_inverse_tan": null,
-    "mean_shadow_length_px": null,
+    "mean_depth_tan_code": 123.505,
+    "mean_depth_inverse_tan": 26.855,
+    "mean_shadow_length_px": 57.591,
     "n": 10,
-    "n_measurable": 0
+    "n_measurable": 1
    },
    {
     "theta": 75,
     "tan": 3.7320508075688776,
-    "mean_depth_tan_code": null,
-    "mean_depth_inverse_tan": null,
-    "mean_shadow_length_px": null,
+    "mean_depth_tan_code": 214.934,
+    "mean_depth_inverse_tan": 15.432,
+    "mean_shadow_length_px": 57.591,
     "n": 10,
-    "n_measurable": 0
+    "n_measurable": 1
    },
    {
     "theta": 85,
     "tan": 11.430052302761348,
-    "mean_depth_tan_code": null,
-    "mean_depth_inverse_tan": null,
-    "mean_shadow_length_px": null,
+    "mean_depth_tan_code": 658.272,
+    "mean_depth_inverse_tan": 5.039,
+    "mean_shadow_length_px": 57.591,
     "n": 10,
-    "n_measurable": 0
+    "n_measurable": 1
    }
   ]
  },
  "C2": {
   "replay_verified_bitwise_equal_height_map": true,
+  "craters_skipped_not_measurable": 8,
   "returned_true_depth_equals_replay": true,
-  "craters_skipped_not_measurable": 9,
-  "rows": [],
-  "note": "no crater on this scene produced a measurable shadow, so no error statistics exist"
+  "rows": [
+   {
+    "crater_id": "CR-08",
+    "radius_px": 35,
+    "gt_depth_scale": 50.598478071510016,
+    "gt_rim_to_floor_relief": 66.78636932373047,
+    "est_depth_m": 38.491,
+    "shadow_length_px": 54.971,
+    "error_vs_depth_scale": -12.107478071510016,
+    "abs_error_vs_depth_scale": 12.107478071510016,
+    "error_vs_relief": -28.29536932373047
+   }
+  ],
+  "MAE_vs_depth_scale": 12.107478071510016,
+  "mean_signed_error_vs_depth_scale": -12.107478071510016,
+  "n_over": 0,
+  "n_under": 1,
+  "MAE_vs_rim_to_floor_relief": 28.29536932373047,
+  "mean_signed_error_vs_relief": -28.29536932373047,
+  "pearson_est_vs_depth_scale": NaN,
+  "pearson_est_vs_radius_px": NaN,
+  "pearson_shadow_len_vs_radius_px": NaN
  },
  "C2b": {
   "seeds": [
@@ -5419,13 +5434,13 @@
    123
   ],
   "rows": 30,
-  "not_measurable": 28,
-  "pearson_est_vs_true_depth": -0.9999999999999999,
-  "pearson_est_vs_radius_px": 0.9999999999999999,
-  "slope_min_deg": 42.546,
-  "slope_max_deg": 45.05,
-  "slope_std_deg": 1.251999999999999,
-  "L_equals_(side-1)(cos+sin)": "0/2"
+  "not_measurable": 25,
+  "pearson_est_vs_true_depth": -0.39861994556559466,
+  "pearson_est_vs_radius_px": 0.6992320833316884,
+  "slope_min_deg": 41.352,
+  "slope_max_deg": 47.72,
+  "slope_std_deg": 2.4825681541500537,
+  "L_equals_(side-1)(cos+sin)": "0/5"
  },
  "C3": {
   "synthetic_meta": {
@@ -5434,276 +5449,276 @@
      0.5,
      0,
      0,
-     0
+     1
     ],
     [
      0.6,
      0,
      0,
-     0
+     1
     ],
     [
      0.7,
      0,
      0,
-     0
+     1
     ],
     [
      0.8,
      0,
      0,
-     0
+     1
     ],
     [
      0.9,
      0,
      0,
-     0
+     1
     ],
     [
      1.0,
      0,
      0,
-     0
+     1
     ],
     [
      1.1,
      0,
      0,
-     0
+     1
     ],
     [
      1.2,
      0,
      0,
-     0
+     1
     ],
     [
      1.3,
      0,
      0,
-     0
+     1
     ],
     [
      1.4,
      0,
      0,
-     0
+     1
     ],
     [
      1.5,
      0,
      0,
-     0
+     1
     ],
     [
      1.6,
      0,
      0,
-     0
+     1
     ],
     [
      1.7,
      0,
      0,
-     0
+     1
     ],
     [
      1.8,
      0,
      0,
-     0
+     1
     ],
     [
      1.9,
      0,
      0,
-     0
+     1
     ],
     [
      2.0,
      0,
      0,
-     0
+     1
     ],
     [
      2.1,
      0,
      0,
-     0
+     1
     ],
     [
      2.2,
      0,
      0,
-     0
+     1
     ],
     [
      2.3,
      0,
      0,
-     0
+     1
     ],
     [
      2.4,
      0,
      0,
-     0
+     1
     ],
     [
      2.5,
      0,
      0,
-     0
+     1
     ],
     [
      2.6,
      0,
      0,
-     0
+     1
     ],
     [
      2.7,
      0,
      0,
-     0
+     1
     ],
     [
      2.8,
      0,
      0,
-     0
+     1
     ],
     [
      2.9,
      0,
      0,
-     0
+     1
     ],
     [
      3.0,
      0,
      0,
-     0
+     1
     ],
     [
      3.1,
      0,
      0,
-     0
+     1
     ],
     [
      3.2,
      0,
      0,
-     0
+     1
     ],
     [
      3.3,
      0,
      0,
-     0
+     1
     ],
     [
      3.4,
      0,
      0,
-     0
+     1
     ],
     [
      3.5,
      0,
      0,
-     0
+     1
     ],
     [
      3.6,
      0,
      0,
-     0
+     1
     ],
     [
      3.7,
      0,
      0,
-     0
+     1
     ],
     [
      3.8,
      0,
      0,
-     0
+     1
     ],
     [
      3.9,
      0,
      0,
-     0
+     1
     ],
     [
      4.0,
      0,
      0,
-     0
+     1
     ],
     [
      4.1,
      0,
      0,
-     0
+     1
     ],
     [
      4.2,
      0,
      0,
-     0
+     1
     ],
     [
      4.3,
      0,
-     0,
+     1,
      0
     ],
     [
      4.4,
      0,
-     0,
+     1,
      0
     ],
     [
      4.5,
      0,
-     0,
+     1,
      0
     ],
     [
      4.6,
      0,
-     0,
+     1,
      0
     ],
     [
      4.7,
      0,
-     0,
+     1,
      0
     ],
     [
      4.8,
      0,
-     0,
+     1,
      0
     ],
     [
      4.9,
      0,
-     0,
+     1,
      0
     ],
     [
      5.0,
      0,
-     0,
+     1,
      0
     ]
    ],
@@ -5712,253 +5727,258 @@
      1.0,
      0,
      0,
-     0
+     1
     ],
     [
      1.1,
      0,
      0,
-     0
+     1
     ],
     [
      1.2,
      0,
      0,
-     0
+     1
     ],
     [
      1.3,
      0,
      0,
-     0
+     1
     ],
     [
      1.4,
      0,
      0,
-     0
+     1
     ],
     [
      1.5,
      0,
      0,
-     0
+     1
     ],
     [
      1.6,
      0,
      0,
-     0
+     1
     ],
     [
      1.7,
      0,
      0,
-     0
+     1
     ],
     [
      1.8,
      0,
      0,
-     0
+     1
     ],
     [
      1.9,
      0,
      0,
-     0
+     1
     ],
     [
      2.0,
      0,
      0,
-     0
+     1
     ],
     [
      2.1,
      0,
      0,
-     0
+     1
     ],
     [
      2.2,
      0,
      0,
-     0
+     1
     ],
     [
      2.3,
      0,
      0,
-     0
+     1
     ],
     [
      2.4,
      0,
      0,
-     0
+     1
     ],
     [
      2.5,
      0,
      0,
-     0
+     1
     ],
     [
      2.6,
      0,
      0,
-     0
+     1
     ],
     [
      2.7,
      0,
      0,
-     0
+     1
     ],
     [
      2.8,
      0,
      0,
-     0
+     1
     ],
     [
      2.9,
      0,
      0,
-     0
+     1
     ],
     [
      3.0,
      0,
      0,
-     0
+     1
     ],
     [
      3.1,
      0,
      0,
-     0
+     1
     ],
     [
      3.2,
      0,
      0,
-     0
+     1
     ],
     [
      3.3,
      0,
      0,
-     0
+     1
     ],
     [
      3.4,
      0,
      0,
-     0
+     1
     ],
     [
      3.5,
      0,
      0,
-     0
+     1
     ],
     [
      3.6,
      0,
      0,
-     0
+     1
     ],
     [
      3.7,
      0,
      0,
-     0
+     1
     ],
     [
      3.8,
      0,
      0,
-     0
+     1
     ],
     [
      3.9,
      0,
      0,
-     0
+     1
     ],
     [
      4.0,
      0,
      0,
-     0
+     1
     ],
     [
      4.1,
      0,
      0,
-     0
+     1
     ],
     [
      4.2,
      0,
      0,
-     0
+     1
     ],
     [
      4.3,
      0,
      0,
-     0
+     1
     ],
     [
      4.4,
      0,
      0,
-     0
+     1
     ],
     [
      4.5,
      0,
      0,
-     0
+     1
     ],
     [
      4.6,
      0,
      0,
-     0
+     1
     ],
     [
      4.7,
      0,
      0,
-     0
+     1
     ],
     [
      4.8,
      0,
      0,
-     0
+     1
     ],
     [
      4.9,
      0,
      0,
-     0
+     1
     ],
     [
      5.0,
      0,
      0,
-     0
+     1
     ]
    ],
    "grid_distinct_outcomes": [
     [
      0,
      0,
+     1
+    ],
+    [
+     0,
+     1,
      0
     ]
    ],
@@ -5966,21 +5986,21 @@
     "td=0.5,gear=1.0": [
      0,
      0,
-     0
+     1
     ],
     "td=0.5,gear=5.0": [
      0,
      0,
-     0
+     1
     ],
     "td=5.0,gear=1.0": [
      0,
      0,
-     0
+     1
     ],
     "td=5.0,gear=5.0": [
      0,
-     0,
+     1,
      0
     ]
    }
@@ -5991,276 +6011,276 @@
      0.5,
      0,
      0,
-     0
+     1
     ],
     [
      0.6,
      0,
      0,
-     0
+     1
     ],
     [
      0.7,
      0,
      0,
-     0
+     1
     ],
     [
      0.8,
      0,
      0,
-     0
+     1
     ],
     [
      0.9,
      0,
      0,
-     0
+     1
     ],
     [
      1.0,
      0,
      0,
-     0
+     1
     ],
     [
      1.1,
      0,
      0,
-     0
+     1
     ],
     [
      1.2,
      0,
      0,
-     0
+     1
     ],
     [
      1.3,
      0,
      0,
-     0
+     1
     ],
     [
      1.4,
      0,
      0,
-     0
+     1
     ],
     [
      1.5,
      0,
      0,
-     0
+     1
     ],
     [
      1.6,
      0,
      0,
-     0
+     1
     ],
     [
      1.7,
      0,
      0,
-     0
+     1
     ],
     [
      1.8,
      0,
      0,
-     0
+     1
     ],
     [
      1.9,
      0,
      0,
-     0
+     1
     ],
     [
      2.0,
      0,
      0,
-     0
+     1
     ],
     [
      2.1,
      0,
      0,
-     0
+     1
     ],
     [
      2.2,
      0,
      0,
-     0
+     1
     ],
     [
      2.3,
      0,
      0,
-     0
+     1
     ],
     [
      2.4,
      0,
      0,
-     0
+     1
     ],
     [
      2.5,
      0,
      0,
-     0
+     1
     ],
     [
      2.6,
      0,
      0,
-     0
+     1
     ],
     [
      2.7,
      0,
      0,
-     0
+     1
     ],
     [
      2.8,
      0,
      0,
-     0
+     1
     ],
     [
      2.9,
      0,
      0,
-     0
+     1
     ],
     [
      3.0,
      0,
      0,
-     0
+     1
     ],
     [
      3.1,
      0,
      0,
-     0
+     1
     ],
     [
      3.2,
      0,
      0,
-     0
+     1
     ],
     [
      3.3,
      0,
      0,
-     0
+     1
     ],
     [
      3.4,
      0,
      0,
-     0
+     1
     ],
     [
      3.5,
      0,
      0,
-     0
+     1
     ],
     [
      3.6,
      0,
      0,
-     0
+     1
     ],
     [
      3.7,
      0,
      0,
-     0
+     1
     ],
     [
      3.8,
      0,
      0,
-     0
+     1
     ],
     [
      3.9,
      0,
      0,
-     0
+     1
     ],
     [
      4.0,
      0,
      0,
-     0
+     1
     ],
     [
      4.1,
      0,
      0,
-     0
+     1
     ],
     [
      4.2,
      0,
      0,
-     0
+     1
     ],
     [
      4.3,
      0,
      0,
-     0
+     1
     ],
     [
      4.4,
      0,
      0,
-     0
+     1
     ],
     [
      4.5,
      0,
-     0,
+     1,
      0
     ],
     [
      4.6,
      0,
-     0,
+     1,
      0
     ],
     [
      4.7,
      0,
-     0,
+     1,
      0
     ],
     [
      4.8,
      0,
-     0,
+     1,
      0
     ],
     [
      4.9,
      0,
-     0,
+     1,
      0
     ],
     [
      5.0,
      0,
-     0,
+     1,
      0
     ]
    ],
@@ -6269,253 +6289,258 @@
      1.0,
      0,
      0,
-     0
+     1
     ],
     [
      1.1,
      0,
      0,
-     0
+     1
     ],
     [
      1.2,
      0,
      0,
-     0
+     1
     ],
     [
      1.3,
      0,
      0,
-     0
+     1
     ],
     [
      1.4,
      0,
      0,
-     0
+     1
     ],
     [
      1.5,
      0,
      0,
-     0
+     1
     ],
     [
      1.6,
      0,
      0,
-     0
+     1
     ],
     [
      1.7,
      0,
      0,
-     0
+     1
     ],
     [
      1.8,
      0,
      0,
-     0
+     1
     ],
     [
      1.9,
      0,
      0,
-     0
+     1
     ],
     [
      2.0,
      0,
      0,
-     0
+     1
     ],
     [
      2.1,
      0,
      0,
-     0
+     1
     ],
     [
      2.2,
      0,
      0,
-     0
+     1
     ],
     [
      2.3,
      0,
      0,
-     0
+     1
     ],
     [
      2.4,
      0,
      0,
-     0
+     1
     ],
     [
      2.5,
      0,
      0,
-     0
+     1
     ],
     [
      2.6,
      0,
      0,
-     0
+     1
     ],
     [
      2.7,
      0,
      0,
-     0
+     1
     ],
     [
      2.8,
      0,
      0,
-     0
+     1
     ],
     [
      2.9,
      0,
      0,
-     0
+     1
     ],
     [
      3.0,
      0,
      0,
-     0
+     1
     ],
     [
      3.1,
      0,
      0,
-     0
+     1
     ],
     [
      3.2,
      0,
      0,
-     0
+     1
     ],
     [
      3.3,
      0,
      0,
-     0
+     1
     ],
     [
      3.4,
      0,
      0,
-     0
+     1
     ],
     [
      3.5,
      0,
      0,
-     0
+     1
     ],
     [
      3.6,
      0,
      0,
-     0
+     1
     ],
     [
      3.7,
      0,
      0,
-     0
+     1
     ],
     [
      3.8,
      0,
      0,
-     0
+     1
     ],
     [
      3.9,
      0,
      0,
-     0
+     1
     ],
     [
      4.0,
      0,
      0,
-     0
+     1
     ],
     [
      4.1,
      0,
      0,
-     0
+     1
     ],
     [
      4.2,
      0,
      0,
-     0
+     1
     ],
     [
      4.3,
      0,
      0,
-     0
+     1
     ],
     [
      4.4,
      0,
      0,
-     0
+     1
     ],
     [
      4.5,
      0,
      0,
-     0
+     1
     ],
     [
      4.6,
      0,
      0,
-     0
+     1
     ],
     [
      4.7,
      0,
      0,
-     0
+     1
     ],
     [
      4.8,
      0,
      0,
-     0
+     1
     ],
     [
      4.9,
      0,
      0,
-     0
+     1
     ],
     [
      5.0,
      0,
      0,
-     0
+     1
     ]
    ],
    "grid_distinct_outcomes": [
     [
      0,
      0,
+     1
+    ],
+    [
+     0,
+     1,
      0
     ]
    ],
@@ -6523,21 +6548,21 @@
     "td=0.5,gear=1.0": [
      0,
      0,
-     0
+     1
     ],
     "td=0.5,gear=5.0": [
      0,
      0,
-     0
+     1
     ],
     "td=5.0,gear=1.0": [
      0,
      0,
-     0
+     1
     ],
     "td=5.0,gear=5.0": [
      0,
-     0,
+     1,
      0
     ]
    }
@@ -6546,47 +6571,53 @@
  "C4": {
   "sun_elevation_deg": 20.0,
   "ground_truth": {
-   "craters": 30,
-   "measured": 2,
-   "not_measurable": 28,
+   "craters_detected": 30,
+   "measured": 19,
+   "not_measurable": 11,
+   "coverage": 0.6333333333333333,
    "rejection_reasons": {
-    "shadow component touches the ROI boundary": 16,
-    "MEASURED": 2,
-    "shadow mask covers 65.2% of the crater area (> 60%)": 1,
-    "shadow mask covers 64.2% of the crater area (> 60%)": 1,
-    "shadow mask covers 63.5% of the crater area (> 60%)": 1,
-    "shadow mask covers 77.2% of the crater area (> 60%)": 1,
-    "shadow mask covers 82.4% of the crater area (> 60%)": 1,
-    "shadow mask covers 71.7% of the crater area (> 60%)": 1,
-    "shadow mask covers 73.6% of the crater area (> 60%)": 1,
-    "shadow mask covers 65.4% of the crater area (> 60%)": 1,
-    "shadow mask covers 68.3% of the crater area (> 60%)": 1,
-    "shadow mask covers 76.2% of the crater area (> 60%)": 1,
-    "shadow mask covers 63.2% of the crater area (> 60%)": 1,
-    "shadow mask covers 62.0% of the crater area (> 60%)": 1
+    "MEASURED": 19,
+    "shadow mask covers 63.9% of the crater area (> 60%)": 2,
+    "shadow mask covers 63.8% of the crater area (> 60%)": 1,
+    "shadow mask covers 61.4% of the crater area (> 60%)": 1,
+    "shadow mask covers 76.7% of the crater area (> 60%)": 1,
+    "shadow mask covers 81.7% of the crater area (> 60%)": 1,
+    "shadow mask covers 68.7% of the crater area (> 60%)": 1,
+    "shadow mask covers 72.2% of the crater area (> 60%)": 1,
+    "shadow mask covers 67.3% of the crater area (> 60%)": 1,
+    "shadow mask covers 72.6% of the crater area (> 60%)": 1,
+    "shadow mask covers 60.9% of the crater area (> 60%)": 1
    },
-   "pearson_est_vs_true_depth": null,
-   "pearson_est_vs_radius_px": null,
-   "slope_min_deg": 20.457,
-   "slope_max_deg": 20.957,
-   "slope_std_deg": 0.25
+   "pearson_est_vs_true_depth": 0.831326618316996,
+   "radius_only_r_on_measured_subset": 0.8291224217811244,
+   "shadow_minus_radius_only": 0.002204196535871561,
+   "partial_r_est_vs_depth_given_radius": 0.28108858022093575,
+   "radius_only_r_on_all_detected": 0.8636430715431034,
+   "pearson_est_vs_radius_px": 0.935883721633158,
+   "slope_min_deg": 19.167,
+   "slope_max_deg": 28.091,
+   "slope_std_deg": 2.421941150459294
   },
   "yolo": {
-   "craters": 26,
-   "measured": 18,
-   "not_measurable": 8,
+   "craters_detected": 26,
+   "measured": 23,
+   "not_measurable": 3,
+   "coverage": 0.8846153846153846,
    "rejection_reasons": {
-    "MEASURED": 18,
-    "shadow component touches the ROI boundary": 5,
+    "MEASURED": 23,
     "shadow mask covers 62.2% of the crater area (> 60%)": 1,
-    "shadow mask covers 74.2% of the crater area (> 60%)": 1,
-    "shadow mask covers 71.6% of the crater area (> 60%)": 1
+    "shadow mask covers 74.1% of the crater area (> 60%)": 1,
+    "shadow mask covers 71.2% of the crater area (> 60%)": 1
    },
-   "pearson_est_vs_true_depth": 0.8995673087987358,
-   "pearson_est_vs_radius_px": 0.9694402063001051,
+   "pearson_est_vs_true_depth": 0.8346772504506572,
+   "radius_only_r_on_measured_subset": 0.8730120392220289,
+   "shadow_minus_radius_only": -0.03833478877137164,
+   "partial_r_est_vs_depth_given_radius": 0.11117415494370325,
+   "radius_only_r_on_all_detected": 0.8764990870379938,
+   "pearson_est_vs_radius_px": 0.9338808312128057,
    "slope_min_deg": 18.496,
-   "slope_max_deg": 26.648,
-   "slope_std_deg": 2.1958330437838023
+   "slope_max_deg": 32.841,
+   "slope_std_deg": 3.002132295149623
   }
  },
  "C5": {
@@ -6594,14 +6625,14 @@
    "zone_summary": {
     "safe": 0,
     "caution": 0,
-    "hazard": 0,
-    "unknown": 10
+    "hazard": 1,
+    "unknown": 9
    },
    "constant_82": {
-    "score_map_min": 67.73999786376953,
-    "score_map_mean": 77.93296813964844,
+    "score_map_min": 32.279998779296875,
+    "score_map_mean": 77.04219055175781,
     "score_map_max": 81.99793243408203,
-    "score_map_std": 3.6558799743652344,
+    "score_map_std": 6.5487260818481445,
     "path_length_m": 274.24,
     "path_nodes": 83,
     "goal": [
@@ -6612,9 +6643,9 @@
    },
    "roughness": {
     "score_map_min": 0.0,
-    "score_map_mean": 76.8014907836914,
+    "score_map_mean": 76.51841735839844,
     "score_map_max": 99.99482727050781,
-    "score_map_std": 27.787796020507812,
+    "score_map_std": 27.896108627319336,
     "path_length_m": 273.52,
     "path_nodes": 83,
     "goal": [
@@ -6662,14 +6693,14 @@
    "zone_summary": {
     "safe": 0,
     "caution": 1,
-    "hazard": 0,
-    "unknown": 9
+    "hazard": 1,
+    "unknown": 8
    },
    "constant_82": {
-    "score_map_min": 41.63999938964844,
-    "score_map_mean": 77.80872344970703,
+    "score_map_min": 28.549999237060547,
+    "score_map_mean": 76.57450103759766,
     "score_map_max": 82.0,
-    "score_map_std": 4.4072418212890625,
+    "score_map_std": 7.733401298522949,
     "path_length_m": 59.74,
     "path_nodes": 18,
     "goal": [
@@ -6680,9 +6711,9 @@
    },
    "roughness": {
     "score_map_min": 0.0,
-    "score_map_mean": 78.11991882324219,
+    "score_map_mean": 77.44236755371094,
     "score_map_max": 99.99996948242188,
-    "score_map_std": 26.460041046142578,
+    "score_map_std": 26.74580192565918,
     "path_length_m": 63.03,
     "path_nodes": 20,
     "goal": [
