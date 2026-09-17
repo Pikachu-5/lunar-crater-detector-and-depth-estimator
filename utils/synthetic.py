@@ -102,7 +102,10 @@ def generate_synthetic_lunar_surface(
         Dictionary containing:
         - image: uint8 grayscale image of shape (size, size)
         - height_map: float32 relative elevation map
-        - craters: list of crater descriptors
+        - craters: list of crater descriptors. Each includes ``true_depth``
+          (amplitude of the Gaussian bowl written into ``height_map``) and
+          ``rim_height`` (rim amplitude). Both are in height_map units; the
+          generator defines no metric scale, so they are not metres.
         - stats: mean/std/min/max intensity summary
     """
 
@@ -138,6 +141,8 @@ def generate_synthetic_lunar_surface(
                 "center_y": crater.cy,
                 "radius_px": crater.radius,
                 "sun_angle_deg": sun_angle_deg,
+                "true_depth": crater.depth_scale,
+                "rim_height": crater.rim_scale,
             }
         )
 

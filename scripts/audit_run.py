@@ -443,14 +443,18 @@ def main() -> None:
     replay_ok = verify_replay(syn, specs)
     rows = estimate_crater_depths(syn["image"], det_sets["synthetic_meta"], THETA, AZIMUTH, PIXEL_SCALE)["rows"]
     c2_rows, errs, rel_errs, signed = [], [], [], []
-    for s, r in zip(specs, rows):
+    # Ground truth comes straight from the generator's metadata (utils/synthetic.py
+    # "true_depth"); the RNG replay is kept only as an independent cross-check.
+    true_depths = [c["true_depth"] for c in syn["craters"]]
+    returned_equals_replay = true_depths == [s.depth_scale for s in specs]
+    for s, r, gt_depth in zip(specs, rows, true_depths):
         assert s.crater_id == r["crater_id"]
         relief = rim_to_floor_relief(syn["height_map"], s)
-        e = r["depth_m"] - s.depth_scale
+        e = r["depth_m"] - gt_depth
         errs.append(abs(e))
         signed.append(e)
         rel_errs.append(abs(r["depth_m"] - relief))
-        c2_rows.append({"crater_id": s.crater_id, "radius_px": s.radius, "gt_depth_scale": s.depth_scale,
+        c2_rows.append({"crater_id": s.crater_id, "radius_px": s.radius, "gt_depth_scale": gt_depth,
                         "gt_rim_to_floor_relief": relief, "est_depth_m": r["depth_m"],
                         "shadow_length_px": r["shadow_length_px"], "error_vs_depth_scale": e,
                         "abs_error_vs_depth_scale": abs(e), "error_vs_relief": r["depth_m"] - relief})
@@ -460,6 +464,7 @@ def main() -> None:
     shadow = np.array([r["shadow_length_px"] for r in c2_rows])
     c2 = {
         "replay_verified_bitwise_equal_height_map": replay_ok,
+        "returned_true_depth_equals_replay": returned_equals_replay,
         "rows": c2_rows,
         "MAE_vs_depth_scale": statistics.fmean(errs),
         "mean_signed_error_vs_depth_scale": statistics.fmean(signed),
@@ -479,6 +484,42 @@ def main() -> None:
                          r["est_depth_m"], repr(r["error_vs_depth_scale"]), repr(r["abs_error_vs_depth_scale"]),
                          repr(r["error_vs_relief"])] for r in c2_rows]))
     md.append("\n" + "\n".join(f"- {k}: {v!r}" for k, v in c2.items() if k != "rows"))
+
+    # ---------------- C2b depth estimator validity (pooled seeds, ground-truth boxes) ----------------
+    factor = math.cos(math.radians(AZIMUTH)) + math.sin(math.radians(AZIMUTH))
+    pool = {"est": [], "gt": [], "rad": [], "slope": []}
+    n_box_formula, n_rows, n_unmeasurable = 0, 0, 0
+    for seed in SEEDS:
+        sy = synths[seed]
+        spp = preprocess_pipeline(sy["image"], clip_limit=CLIP, tile_grid_size=(GRID, GRID), sigma=SIGMA)
+        gdets = detect_craters(spp["smoothed"], CONF, hint_craters=sy["craters"])["detections"]
+        gt_by_id = {f"CR-{i + 1:02d}": c for i, c in enumerate(sy["craters"])}
+        for r in estimate_crater_depths(sy["image"], gdets, THETA, AZIMUTH, PIXEL_SCALE)["rows"]:
+            n_rows += 1
+            if r["depth_m"] is None or not math.isfinite(r["depth_m"]):
+                n_unmeasurable += 1
+                continue
+            side = r["x2"] - r["x1"]
+            if abs(r["shadow_length_px"] - round((side - 1) * factor, 3)) < 0.0015:
+                n_box_formula += 1
+            pool["est"].append(r["depth_m"])
+            pool["gt"].append(gt_by_id[r["crater_id"]]["true_depth"])
+            pool["rad"].append(gt_by_id[r["crater_id"]]["radius_px"])
+            pool["slope"].append(r["slope_estimate_deg"])
+    c2b = {
+        "seeds": SEEDS,
+        "rows": n_rows,
+        "not_measurable": n_unmeasurable,
+        "pearson_est_vs_true_depth": float(np.corrcoef(pool["est"], pool["gt"])[0, 1]),
+        "pearson_est_vs_radius_px": float(np.corrcoef(pool["est"], pool["rad"])[0, 1]),
+        "slope_min_deg": min(pool["slope"]),
+        "slope_max_deg": max(pool["slope"]),
+        "slope_std_deg": float(np.std(pool["slope"])),
+        "L_equals_(side-1)(cos+sin)": f"{n_box_formula}/{n_rows - n_unmeasurable}",
+    }
+    results["C2b"] = c2b
+    md.append("\n### C2b depth estimator validity (seeds 42/7/123 pooled, ground-truth boxes, theta 35, azimuth 35)\n")
+    md.append("\n".join(f"- {k}: {v!r}" for k, v in c2b.items()))
 
     # ---------------- C3 parameter sensitivity ----------------
     td_vals = [round(0.5 + 0.1 * i, 1) for i in range(46)]
