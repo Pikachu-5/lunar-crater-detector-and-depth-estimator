@@ -1,9 +1,15 @@
-"""
-YOLO11s Crater Detection Training Script — Intel Arc GPU (XPU)
+r"""
+YOLO11m Crater Detection Training Script — Intel Arc GPU (XPU)
 ==============================================================
 
-This script trains YOLO11s on the Impact Moon Craters (LU3M6TGT) dataset
+This script trains YOLO11m on the Impact Moon Craters (LU3M6TGT) dataset
 using an Intel Arc GPU via native PyTorch XPU support.
+
+NOTE: this script did NOT produce the shipped best.pt. The training settings
+embedded in best.pt (train_args) are: data /kaggle/working/crater_data.yaml,
+device '0,1' (two GPUs), epochs 200, patience 40, degrees 180.0, hsv_h 0.0,
+hsv_s 0.0, hsv_v 0.3, copy_paste 0.1, run name crater_detector_SOTA. The
+hyperparameters below differ (epochs 150, patience 30, degrees 15.0, ...).
 
 Usage:
     .venv_train\Scripts\python train_crater_yolo.py
@@ -58,7 +64,7 @@ def detect_device() -> torch.device:
 # 2. Training configuration — tuned for max accuracy on 416x416 crater images
 # ---------------------------------------------------------------------------
 DATA_YAML    = str(Path(__file__).parent / "LU3M6TGT_yolo_format" / "data.yaml")
-BASE_MODEL   = "yolo11s.pt"           # Start from COCO-pretrained YOLO11s (9.4M params, 47% mAP)
+BASE_MODEL   = "yolo11m.pt"           # Same variant as the shipped best.pt (YOLO11m; 20,053,779 params with 1 class)
 PROJECT_NAME = "runs"
 RUN_NAME     = "crater_detector"
 
@@ -108,7 +114,7 @@ TRAIN_CONFIG = dict(
 # 3. Main
 # ---------------------------------------------------------------------------
 def main() -> None:
-    """Run YOLO11s training pipeline."""
+    """Run YOLO11m training pipeline."""
 
     # Validate dataset exists
     if not os.path.isfile(DATA_YAML):

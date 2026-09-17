@@ -55,8 +55,10 @@ def apply_gaussian_smoothing(image: np.ndarray, sigma: float = 1.2) -> np.ndarra
     Mathematical formulation:
     G(x, y) = (1 / (2 * pi * sigma^2)) * exp(-(x^2 + y^2) / (2 * sigma^2))
 
-    The kernel size is automatically derived from sigma by OpenCV:
-    ksize = round(sigma * 4.5) | 1  (rounded up to nearest odd integer)
+    The kernel size is derived from sigma by OpenCV (ksize=(0, 0)). For 8-bit
+    input it is ksize = round(6 * sigma + 1) | 1; this reproduces
+    cv2.GaussianBlur(..., (0, 0), sigma) exactly for every slider value
+    sigma = 0.5..4.0 (step 0.1) on the synthetic scene. See gaussian_kernel_size().
 
     Convolution: smoothed(x,y) = sum over (u,v) of image(x-u, y-v) * G(u, v)
 
@@ -69,6 +71,12 @@ def apply_gaussian_smoothing(image: np.ndarray, sigma: float = 1.2) -> np.ndarra
     """
 
     return cv2.GaussianBlur(image, (0, 0), sigmaX=sigma, sigmaY=sigma)
+
+
+def gaussian_kernel_size(sigma: float) -> int:
+    """Kernel side length OpenCV uses for 8-bit input when ksize=(0, 0)."""
+
+    return int(round(sigma * 6.0 + 1.0)) | 1
 
 
 def preprocess_pipeline(

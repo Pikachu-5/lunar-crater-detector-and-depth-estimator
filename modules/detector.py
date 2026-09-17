@@ -1,4 +1,9 @@
-"""Crater detection module with trained YOLO11m and CV hybrid comparison."""
+"""Crater detection module with trained YOLO11m and CV hybrid comparison.
+
+The shipped detector ``best.pt`` is YOLO11m (20,053,779 parameters, one class,
+input size 416). Its single class is stored in the checkpoint under the name
+"0"; CLASS_DISPLAY_NAMES maps it to "crater" for display.
+"""
 
 from __future__ import annotations
 
@@ -21,6 +26,15 @@ except Exception:  # pragma: no cover - optional runtime dependency behavior
 # --- Path to the trained crater detector weights ---
 _PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULT_MODEL_PATH = os.path.join(_PROJECT_ROOT, "best.pt")
+
+# The checkpoint names its only class "0"; show it as "crater".
+CLASS_DISPLAY_NAMES = {"0": "crater"}
+
+
+def display_class_name(raw_name: str) -> str:
+    """Map a checkpoint class name to its display name."""
+
+    return CLASS_DISPLAY_NAMES.get(str(raw_name), str(raw_name))
 
 
 @lru_cache(maxsize=1)
@@ -45,6 +59,35 @@ def load_yolo_model(model_path: str = DEFAULT_MODEL_PATH) -> tuple[Any | None, s
         return model, f"Loaded crater detector: {os.path.basename(model_path)}"
     except Exception as exc:  # pragma: no cover - weight/env dependent
         return None, f"Failed to load {model_path}: {exc}"
+
+
+def checkpoint_reported_metrics(model_path: str = DEFAULT_MODEL_PATH) -> dict[str, float] | None:
+    """Read the validation metrics stored inside the checkpoint at training time.
+
+    These numbers were written by the training run on its own validation split.
+    They are NOT measured on the image being analysed and must be labelled as
+    "reported by the checkpoint from training".
+
+    Args:
+        model_path: Path to the trained .pt checkpoint.
+
+    Returns:
+        Dict with precision, recall, map50, map50_95, or None if unavailable.
+    """
+
+    model, _ = load_yolo_model(model_path=model_path)
+    ckpt = getattr(model, "ckpt", None) if model is not None else None
+    metrics = ckpt.get("train_metrics") if isinstance(ckpt, dict) else None
+    if not metrics:
+        return None
+    keys = {
+        "precision": "metrics/precision(B)",
+        "recall": "metrics/recall(B)",
+        "map50": "metrics/mAP50(B)",
+        "map50_95": "metrics/mAP50-95(B)",
+    }
+    out = {name: float(metrics[k]) for name, k in keys.items() if k in metrics}
+    return out or None
 
 
 def _to_detection_record(
@@ -140,9 +183,11 @@ def _yolo_inference(
 
     xyxy = boxes.xyxy.cpu().numpy() if boxes.xyxy is not None else np.empty((0, 4))
     confs = boxes.conf.cpu().numpy() if boxes.conf is not None else np.empty((0,))
+    classes = boxes.cls.cpu().numpy().astype(int) if getattr(boxes, "cls", None) is not None else np.zeros(len(confs), int)
+    names = getattr(model, "names", {}) or {}
     h, w = image.shape[:2]
 
-    for idx, (box, conf) in enumerate(zip(xyxy, confs), start=1):
+    for idx, (box, conf, cls) in enumerate(zip(xyxy, confs, classes), start=1):
         x1, y1, x2, y2 = box.tolist()
         ww = max(1.0, x2 - x1)
         hh = max(1.0, y2 - y1)
@@ -156,6 +201,7 @@ def _yolo_inference(
             source="yolo",
             shape=(h, w),
         )
+        det["class_name"] = display_class_name(names.get(int(cls), str(int(cls))))
         detections.append(det)
 
     return detections, f"{model_status}; boxes={len(detections)}"
@@ -437,34 +483,35 @@ def _rescale_detections(
     return out
 
 
-def _synthetic_hint_detections(image_shape: tuple[int, int], hint_craters: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Convert known synthetic crater metadata into detection rows.
+def ground_truth_detections(image_shape: tuple[int, int], craters: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Convert synthetic generator metadata into ground-truth box records.
 
-    Educational note:
-    In synthetic demo mode we know ground-truth crater geometry. Exposing these
-    as detections keeps the pipeline deterministic for teaching and debugging.
+    These are the generator's known crater positions, NOT model output. They
+    carry no confidence (``confidence`` is None) and must never be merged into a
+    detection list or a confidence plot; use them only as a separately labelled
+    ground-truth overlay or for evaluation.
 
     Args:
         image_shape: Image shape as (height, width).
-        hint_craters: Synthetic crater metadata list.
+        craters: Crater metadata from ``generate_synthetic_lunar_surface``.
 
     Returns:
-        Canonical detection rows.
+        Box records in the detection-record layout with source "ground-truth".
     """
 
     out: list[dict[str, Any]] = []
-    for idx, c in enumerate(hint_craters, start=1):
-        out.append(
-            _to_detection_record(
-                crater_id=f"CR-{idx:02d}",
-                cx=float(c["center_x"]),
-                cy=float(c["center_y"]),
-                r=float(c["radius_px"]),
-                confidence=0.98,
-                source="synthetic-meta",
-                shape=image_shape,
-            )
+    for idx, c in enumerate(craters, start=1):
+        rec = _to_detection_record(
+            crater_id=f"CR-{idx:02d}",
+            cx=float(c["center_x"]),
+            cy=float(c["center_y"]),
+            r=float(c["radius_px"]),
+            confidence=1.0,
+            source="ground-truth",
+            shape=image_shape,
         )
+        rec["confidence"] = None
+        out.append(rec)
     return out
 
 
@@ -477,37 +524,25 @@ def detect_craters(
     image: np.ndarray,
     conf_threshold: float = 0.35,
     model_path: str = DEFAULT_MODEL_PATH,
-    hint_craters: list[dict[str, Any]] | None = None,
     max_detection_dim: int = 896,
 ) -> dict[str, Any]:
     """Detect craters using the trained YOLO11m model.
 
     This is the primary detection function used by the pipeline. It runs
-    YOLO inference exclusively (no CV fallback).
+    YOLO inference for every image, synthetic or uploaded (no CV fallback and
+    no ground-truth substitution).
 
     Args:
         image: Preprocessed grayscale image.
         conf_threshold: YOLO confidence threshold.
         model_path: Path to trained .pt weights.
-        hint_craters: Optional known crater metadata for synthetic mode.
-        max_detection_dim: Max image dimension for detection.
+        max_detection_dim: Unused; kept for call compatibility.
 
     Returns:
         Dictionary with detections, source type, elapsed time, and status text.
     """
 
     start = time.perf_counter()
-
-    if hint_craters:
-        hints = _synthetic_hint_detections(image.shape, hint_craters)
-        elapsed = time.perf_counter() - start
-        return {
-            "detections": hints,
-            "source": "synthetic-meta",
-            "elapsed_s": elapsed,
-            "status": f"Loaded synthetic crater metadata: {len(hints)} craters",
-            "map50_proxy": 0.99,
-        }
 
     yolo_detections, yolo_status = _yolo_inference(
         image=image,
@@ -525,7 +560,6 @@ def detect_craters(
         "source": "yolo",
         "elapsed_s": elapsed,
         "status": f"{yolo_status} | conf>={conf_threshold:.2f}",
-        "map50_proxy": 0.847,
     }
 
 
@@ -572,7 +606,6 @@ def detect_craters_cv(
         "source": "cv-hybrid",
         "elapsed_s": elapsed,
         "status": f"CV hybrid: Hough+LoG | craters={len(detections)} | scale={scale:.3f}",
-        "map50_proxy": 0.82,
     }
 
 
@@ -580,6 +613,7 @@ def draw_detections(
     image: np.ndarray,
     detections: list[dict[str, Any]],
     color: tuple[int, int, int] = (0, 255, 159),
+    show_confidence: bool = True,
 ) -> np.ndarray:
     """Render detection boxes and labels for operator inspection.
 
@@ -587,6 +621,8 @@ def draw_detections(
         image: Input grayscale or RGB image.
         detections: Crater detection records.
         color: RGB box color.
+        show_confidence: Append the confidence to each label. Disable for
+            scores that are not model probabilities (e.g. CV heuristics).
 
     Returns:
         RGB image with overlays.
@@ -600,7 +636,8 @@ def draw_detections(
     for det in detections:
         x1, y1, x2, y2 = det["x1"], det["y1"], det["x2"], det["y2"]
         cv2.rectangle(canvas, (x1, y1), (x2, y2), color, 2)
-        label = f"{det['crater_id']} {det['confidence']:.2f}"
+        conf = det.get("confidence")
+        label = det["crater_id"] if conf is None or not show_confidence else f"{det['crater_id']} {conf:.2f}"
         cv2.putText(
             canvas,
             label,

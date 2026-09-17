@@ -63,29 +63,22 @@ Image bytes are decoded with:
 - data = np.frombuffer(file_bytes, dtype=np.uint8)
 - img = cv2.imdecode(data, cv2.IMREAD_GRAYSCALE)
 
-### 4.2 Keep Original vs Auto-Resize toggle
+### 4.2 Automatic resize of large uploads
 
-The sidebar toggle Keep Original Upload Resolution controls whether large uploads are resized.
-
-- Keep Original ON: decode and preserve full upload resolution.
-- Keep Original OFF: if pixel count exceeds threshold, image is resized for stability.
-
-Current resize threshold logic:
+There is no user control for this: every upload larger than the threshold is resized (`decode_upload_to_gray` in app.py).
 
 - max_pixels = 14,000,000
 - if H * W > max_pixels:
   - scale = sqrt(max_pixels / (H * W))
-  - new_w = round(W * scale)
-  - new_h = round(H * scale)
+  - new_w = max(1024, round(W * scale))
+  - new_h = max(1024, round(H * scale))
   - cv2.resize(..., interpolation=cv2.INTER_AREA)
-
-The app caches uploaded bytes and filename, then re-decodes from cache when this toggle changes, followed by downstream reset from step 3.
 
 ## 5) Step-by-Step Technical Computation
 
 ## Step 1: Mission briefing and image source
 
-- Either uses synthetic image generator or uploaded file.
+- Either uses synthetic image generator or uploaded file. The first synthetic scene uses seed 42; "Regenerate Synthetic Surface" draws a fresh random seed, which is displayed in the sidebar and feed caption.
 - On upload change, downstream artifacts are invalidated from preprocessing onward.
 
 ## Step 2: Raw acquisition and instrumentation
@@ -129,7 +122,8 @@ Computation concept:
 Why this helps:
 
 - Lunar rims and shadow boundaries are local features; global equalization is weaker.
-- CLAHE boosts local separability for both YOLO/CV detection and shadow segmentation.
+- CLAHE boosts local separability for YOLO/CV detection, which run on the smoothed image.
+- It does NOT affect shadow segmentation: depth estimation reads the RAW image (app.py passes st.session_state.raw_image to estimate_crater_depths), so CLAHE and the Gaussian blur do not change measured shadow lengths.
 
 ### 5.3.2 Gaussian blur
 
@@ -160,7 +154,8 @@ Two independent buttons run two detector families.
 ### 5.4.1 YOLO path
 
 - Uses ultralytics YOLO model loaded from `best.pt` in the project root.
-- Inference settings include imgsz=416, CPU execution, confidence threshold.
+- Inference settings include imgsz=416, CPU execution, and the sidebar "Detection Confidence Threshold" (default 0.35).
+- YOLO runs on synthetic images too. Synthetic ground-truth boxes are only shown as a separate overlay labelled "ground truth, not model output".
 - Produces xyxy boxes and confidence arrays.
 - Boxes are converted into normalized crater records with center, radius, diameter.
 
@@ -218,11 +213,11 @@ Shadow length in pixels:
 
 ### 5.5.3 Depth formula
 
-- depth_m = shadow_length_px * pixel_scale_m / tan(theta_incidence)
+- depth_m = shadow_length_px * pixel_scale_m * tan(theta_elevation)
 
 Where:
 
-- theta is solar incidence angle from surface normal (depth scale control)
+- theta is the solar elevation angle measured up from the local horizontal (slider "Solar Elevation Angle (above horizontal)"). For an incidence angle i measured from the surface normal the equivalent relation would be L / tan(i); the code does not use incidence.
 - azimuth controls arrow direction and projection axis
 
 Also computes slope:
@@ -326,8 +321,8 @@ The report includes score summary and recommended landing coordinates.
 
 ## 6) Slider-to-Computation Mapping
 
-- Solar Incidence Angle theta
-- Affects 1/tan(theta) term in depth formula.
+- Solar Elevation Angle (above horizontal) theta
+- Affects the tan(theta) factor in the depth formula.
 - Impacts depth, slope, terrain map, scoring, path.
 
 - Solar Azimuth phi
@@ -348,11 +343,10 @@ The report includes score summary and recommended landing coordinates.
 - Affects neighbor counts and density penalty in scoring.
 
 - 3D Terrain Memory Profile
-- Affects 3D surface target mesh size and rendering memory footprint.
+- Affects 3D surface target mesh size (memory use is not measured).
 
-- Keep Original Upload Resolution
-- Controls whether very large uploads are resized before the full pipeline.
-- Triggers downstream recomputation when changed.
+- Detection Confidence Threshold
+- Minimum YOLO confidence for a box to be kept; changing it clears detections.
 
 ## 7) Cache Invalidation and Recompute Rules
 
@@ -364,7 +358,7 @@ Examples:
 - Preprocess parameter change -> reset from step 4.
 - Depth-related slider change -> reset from step 5.
 - Scoring-related slider change -> reset from step 7.
-- Upload resolution mode toggle -> re-decode cached upload bytes and reset from step 3.
+- Detection confidence change (after detections exist) -> reset from step 4.
 
 This prevents stale visuals and stale metrics.
 

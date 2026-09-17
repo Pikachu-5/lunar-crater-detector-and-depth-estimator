@@ -1,0 +1,28 @@
+
+===== scene: legacy (estimator theta = 35.0 deg) =====
+  pooled true depth range 25.144366415639617..59.90220415236256; r(true depth, radius) = -0.1992216940923165
+  a radius-only estimator scores r_gt = r(true depth, radius); partial removes that shared trend
+  shipped   n= 2/30 seed42_r_gt=nan (n=0) pooled_r_gt=nan r_radius=nan partial=nan slope=42.55-45.05 (std 1.252)
+  shipped_nofrac n= 2/30 seed42_r_gt=nan (n=0) pooled_r_gt=nan r_radius=nan partial=nan slope=42.55-45.05 (std 1.252)
+  a0_full   n=30/30 seed42_r_gt=0.245477872703009 (n=9) pooled_r_gt=-0.2158916720208762 r_radius=0.9698242018678418 partial=-0.09493485014907108 slope=40.37-55.15 (std 3.316)
+  a_otsu    n= 5/30 seed42_r_gt=nan (n=1) pooled_r_gt=-0.39019814992326834 r_radius=0.6992676815434097 partial=-0.0813928893142179 slope=41.35-47.72 (std 2.546)
+  b_p15     n= 4/30 seed42_r_gt=nan (n=1) pooled_r_gt=0.734548403463181 r_radius=-0.9677046730910552 partial=0.9039355564821463 slope=3.28-33.25 (std 12.011)
+  b_p20     n= 5/30 seed42_r_gt=nan (n=2) pooled_r_gt=0.44877203965305923 r_radius=-0.9534013829247115 partial=0.987668463501849 slope=2.75-34.60 (std 15.070)
+  b_p25     n= 5/30 seed42_r_gt=0.9911909127402052 (n=3) pooled_r_gt=0.9778939828044846 r_radius=-0.5832245016915668 partial=0.9835059691003913 slope=2.32-36.95 (std 15.780)
+  b_p30     n= 5/30 seed42_r_gt=nan (n=1) pooled_r_gt=0.44937816683223597 r_radius=-0.7787437700580623 partial=0.8797542962863327 slope=3.28-42.00 (std 14.627)
+  c_k0.5    n= 4/30 seed42_r_gt=nan (n=1) pooled_r_gt=0.03829816888973939 r_radius=0.15265310717371341 partial=-0.24969579294438848 slope=38.60-43.56 (std 2.031)
+  c_k1.0    n= 5/30 seed42_r_gt=nan (n=1) pooled_r_gt=0.7612812448492672 r_radius=-0.5219462742645686 partial=0.9640933033062761 slope=2.28-35.49 (std 15.157)
+
+===== scene: raycast (estimator theta = 20.0 deg) =====
+  pooled true depth range 5.037960621316776..40.03356357671399; r(true depth, radius) = 0.8636430715431034
+  a radius-only estimator scores r_gt = r(true depth, radius); partial removes that shared trend
+  shipped   n= 2/30 seed42_r_gt=nan (n=1) pooled_r_gt=nan r_radius=nan partial=nan slope=20.46-20.96 (std 0.250)
+  shipped_nofrac n= 2/30 seed42_r_gt=nan (n=1) pooled_r_gt=nan r_radius=nan partial=nan slope=20.46-20.96 (std 0.250)
+  a0_full   n=30/30 seed42_r_gt=0.6809962023635832 (n=9) pooled_r_gt=0.6386696275860081 r_radius=0.6905352049523888 partial=0.11599460437788794 slope=20.46-43.66 (std 7.301)
+  a_otsu    n=18/30 seed42_r_gt=0.8895107060223886 (n=6) pooled_r_gt=0.7913936514414457 r_radius=0.9176248646313153 partial=0.27656299082098945 slope=19.17-28.09 (std 2.416)
+  b_p15     n=25/30 seed42_r_gt=0.23187317387065343 (n=9) pooled_r_gt=0.5215603402413567 r_radius=0.7583735288908031 partial=-0.5040749790174073 slope=2.50-17.48 (std 4.537)
+  b_p20     n=26/30 seed42_r_gt=0.8488314099107275 (n=9) pooled_r_gt=0.7746891919981528 r_radius=0.9185517371884986 partial=-0.20343587973595326 slope=2.15-20.16 (std 3.916)
+  b_p25     n=27/30 seed42_r_gt=0.8872325018331964 (n=8) pooled_r_gt=0.8211903626304242 r_radius=0.8114449867600044 partial=0.4083662197626925 slope=1.16-22.47 (std 4.464)
+  b_p30     n=27/30 seed42_r_gt=0.3226126104593227 (n=9) pooled_r_gt=0.5924227495583875 r_radius=0.6587532016199084 partial=0.04198498051816391 slope=1.04-23.29 (std 4.691)
+  c_k0.5    n=28/30 seed42_r_gt=0.9199145730058701 (n=9) pooled_r_gt=0.8721562895417037 r_radius=0.9292661777667388 partial=0.32747935936426675 slope=14.15-30.92 (std 3.229)
+  c_k1.0    n=17/30 seed42_r_gt=-0.19844917595675138 (n=6) pooled_r_gt=0.18245758087910938 r_radius=0.40090538324343744 partial=-0.22868991734017144 slope=2.96-24.05 (std 6.327)

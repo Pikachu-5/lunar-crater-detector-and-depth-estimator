@@ -14,11 +14,23 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 from modules.depth import estimate_crater_depths, fuse_depth_estimates
-from modules.detector import detect_craters, detect_craters_cv, draw_detections
+from modules.detector import (
+    checkpoint_reported_metrics,
+    detect_craters,
+    detect_craters_cv,
+    draw_detections,
+    ground_truth_detections,
+)
 from modules.pathfinder import draw_paths_on_map, plan_descent_paths
-from modules.preprocess import compute_histogram, image_stats, preprocess_pipeline
+from modules.preprocess import compute_histogram, gaussian_kernel_size, image_stats, preprocess_pipeline
 from modules.reporter import build_mission_pdf, crater_rows_to_csv, image_to_png_bytes
-from modules.scorer import annotate_hazard_map, build_safety_gauge, build_score_map, score_landing_safety
+from modules.scorer import (
+    NON_CRATER_TERRAIN_SCORE,
+    annotate_hazard_map,
+    build_safety_gauge,
+    build_score_map,
+    score_landing_safety,
+)
 from modules.terrain3d import build_depth_map, make_contour_figure, make_heatmap_figure, make_surface_figure
 from utils.synthetic import generate_secondary_solar_view, generate_synthetic_lunar_surface
 from utils.ui_components import (
@@ -42,6 +54,7 @@ except Exception as exc:  # pragma: no cover
 
 
 TOTAL_STEPS = 9
+NOT_MEASURABLE = "not measurable"
 MISSION_ID = "DIP"
 
 
@@ -80,7 +93,13 @@ def init_state() -> None:
         st.session_state.terminal_logs = []
 
     if "raw_image" not in st.session_state:
-        synth = generate_synthetic_lunar_surface(size=512)
+        # Initial synthetic scene uses seed 42 (reproducible default); Regenerate draws a fresh seed.
+        # Shadows are ray-cast by occlusion over the height field, so shadow-based
+        # depth estimation has something physical to recover.
+        synth = generate_synthetic_lunar_surface(
+            size=512, seed=42, cast_shadows=True, sun_angle_deg=35.0, sun_elevation_deg=35.0
+        )
+        st.session_state.synthetic_seed = 42
         st.session_state.raw_image = synth["image"]
         st.session_state.synthetic_meta = synth
         st.session_state.image_name = "SYNTHETIC_LUNAR_FEED"
@@ -131,7 +150,7 @@ def init_state() -> None:
         st.session_state.pp_sigma = 1.2
 
     if "terrain_profile" not in st.session_state:
-        st.session_state.terrain_profile = "High Fidelity (512 MB)"
+        st.session_state.terrain_profile = "High Fidelity"
 
     if "depth_signature" not in st.session_state:
         st.session_state.depth_signature = None
@@ -141,6 +160,16 @@ def init_state() -> None:
 
     if "last_score_slider_signature" not in st.session_state:
         st.session_state.last_score_slider_signature = None
+
+    if "synthetic_seed" not in st.session_state:
+        st.session_state.synthetic_seed = None
+
+    if "last_conf_threshold" not in st.session_state:
+        st.session_state.last_conf_threshold = None
+
+    for key in ("terrain_signature", "scoring_signature", "paths_signature", "upload_signature"):
+        if key not in st.session_state:
+            st.session_state[key] = None
 
 
 def append_log(message: str) -> None:
@@ -219,12 +248,15 @@ def reset_downstream(start_step: int) -> None:
         st.session_state.depth_signature = None
     if start_step <= 6:
         st.session_state.terrain = None
+        st.session_state.terrain_signature = None
     if start_step <= 7:
         st.session_state.scoring = None
+        st.session_state.scoring_signature = None
         st.session_state.hazard_map = None
         st.session_state.last_score_slider_signature = None
     if start_step <= 8:
         st.session_state.paths = None
+        st.session_state.paths_signature = None
 
 
 def _on_step_change() -> None:
@@ -265,10 +297,11 @@ def mission_status_from_findings() -> str:
     safe = int(summary.get("safe", 0))
     caution = int(summary.get("caution", 0))
     hazard = int(summary.get("hazard", 0))
+    unknown = int(summary.get("unknown", 0))
 
     if hazard > max(safe, 0):
         return "RED"
-    if hazard > 0 or caution > 0:
+    if hazard > 0 or caution > 0 or unknown > 0:
         return "AMBER"
     return "GREEN"
 
@@ -317,25 +350,23 @@ def ensure_preprocess() -> None:
         )
 
 
-def run_detection() -> None:
-    """Execute YOLO crater detection and cache results."""
+def run_detection(conf_threshold: float) -> None:
+    """Execute YOLO crater detection and cache results.
+
+    Args:
+        conf_threshold: Minimum YOLO confidence for a box to be kept.
+    """
 
     ensure_preprocess()
     smoothed = st.session_state.preprocess["smoothed"]
 
-    hint_craters = None
-    if (
-        st.session_state.image_name == "SYNTHETIC_LUNAR_FEED"
-        and st.session_state.get("synthetic_meta")
-        and st.session_state.synthetic_meta.get("craters")
-    ):
-        hint_craters = st.session_state.synthetic_meta["craters"]
-
+    # YOLO runs on every image, synthetic included. Synthetic ground truth is
+    # never substituted for model output (see synthetic_ground_truth()).
     detection = detect_craters(
         smoothed,
-        conf_threshold=0.35,
-        hint_craters=hint_craters,
+        conf_threshold=conf_threshold,
     )
+    st.session_state.last_conf_threshold = conf_threshold
 
     overlay = draw_detections(st.session_state.raw_image, detection["detections"])
     detection["overlay"] = overlay
@@ -346,9 +377,22 @@ def run_detection() -> None:
         "step4_detected",
         "[DETECTOR] >> "
         f"Source: {detection['source']} | Craters detected: {len(detection['detections'])} "
-        f"| mAP@0.5: {detection['map50_proxy']:.3f} | Time: {detection['elapsed_s']:.2f}s",
+        f"| Time: {detection['elapsed_s']:.2f}s",
     )
     append_log(f"[DETECTOR-DETAIL] >> {detection['status']}")
+
+
+def synthetic_ground_truth() -> list[dict[str, Any]] | None:
+    """Return generator ground-truth boxes for the synthetic feed, else None.
+
+    These boxes are for a separately labelled overlay only; they are never
+    merged into the detection list or used downstream.
+    """
+
+    meta = st.session_state.get("synthetic_meta")
+    if st.session_state.image_name != "SYNTHETIC_LUNAR_FEED" or not meta or not meta.get("craters"):
+        return None
+    return ground_truth_detections(st.session_state.raw_image.shape, meta["craters"])
 
 
 def run_cv_detection() -> None:
@@ -362,6 +406,7 @@ def run_cv_detection() -> None:
         st.session_state.raw_image,
         cv_det["detections"],
         color=(255, 179, 0),
+        show_confidence=False,
     )
     cv_det["overlay"] = cv_overlay
     st.session_state.cv_detection = cv_det
@@ -376,7 +421,7 @@ def ensure_depth(theta_deg: float, pixel_scale_m: float, solar_azimuth_deg: floa
     """Run crater depth estimation from current detections.
 
     Args:
-        theta_deg: Solar incidence angle.
+        theta_deg: Solar elevation angle above the horizontal (degrees).
         pixel_scale_m: Pixel-to-meter scale.
         solar_azimuth_deg: Solar azimuth controlling shadow arrow direction.
     """
@@ -385,7 +430,7 @@ def ensure_depth(theta_deg: float, pixel_scale_m: float, solar_azimuth_deg: floa
         return False
 
     det = st.session_state.detection["detections"]
-    geom_key = tuple((d["x1"], d["y1"], d["x2"], d["y2"]) for d in det[:20])
+    geom_key = tuple((d["x1"], d["y1"], d["x2"], d["y2"]) for d in det)
     signature = (
         round(float(theta_deg), 3),
         round(float(pixel_scale_m), 4),
@@ -403,7 +448,7 @@ def ensure_depth(theta_deg: float, pixel_scale_m: float, solar_azimuth_deg: floa
     rows = estimate_crater_depths(
         image=st.session_state.raw_image,
         detections=det,
-        solar_incidence_angle_deg=theta_deg,
+        solar_elevation_angle_deg=theta_deg,
         solar_azimuth_deg=solar_azimuth_deg,
         pixel_scale_m=pixel_scale_m,
     )
@@ -426,48 +471,38 @@ def _terrain_profile_target_size(profile: str, shape: tuple[int, int]) -> int:
 
     h, w = shape
     max_dim = max(h, w)
-    if profile == "Balanced (256 MB)":
+    if profile == "Balanced":
         return int(np.clip(min(max_dim, 520), 320, 520))
-    if profile == "Max Fidelity (1 GB)":
+    if profile == "Max Fidelity":
         return int(np.clip(min(max_dim, 960), 420, 960))
     if profile == "Adaptive":
         return int(np.clip(min(max_dim, 760), 360, 760))
     return int(np.clip(min(max_dim, 720), 380, 720))
 
 
-def _estimate_surface_memory_mb(target_size: int) -> float:
-    """Estimate memory footprint for Plotly 3D mesh buffers.
-
-    Args:
-        target_size: Approximate max dimension of rendered surface grid.
-
-    Returns:
-        Estimated memory usage in MB.
-    """
-
-    points = float(target_size * target_size)
-    bytes_estimate = points * 48.0
-    return bytes_estimate / (1024.0 * 1024.0)
-
-
 def ensure_terrain(profile: str) -> None:
-    """Build terrain depth-map artifacts from crater depth table."""
+    """Build terrain depth-map artifacts from crater depth table (cached)."""
 
     if st.session_state.depth is None:
         return
 
+    signature = (profile, st.session_state.depth_signature)
+    if st.session_state.terrain is not None and st.session_state.terrain_signature == signature:
+        return
+
     depth_map = build_depth_map(st.session_state.raw_image.shape, st.session_state.depth["rows"])
     target_size = _terrain_profile_target_size(profile, depth_map.shape)
-    est_mb = _estimate_surface_memory_mb(target_size)
+    surface_fig = make_surface_figure(depth_map, downsample=True, target_size=target_size)
     st.session_state.terrain = {
         "depth_map": depth_map,
         "heatmap_fig": make_heatmap_figure(depth_map),
-        "surface_fig": make_surface_figure(depth_map, downsample=True, target_size=target_size),
+        "surface_fig": surface_fig,
         "contour_fig": make_contour_figure(depth_map),
         "surface_target_size": target_size,
-        "surface_memory_est_mb": est_mb,
+        "surface_grid_shape": tuple(np.shape(surface_fig.data[0].z)),
         "surface_profile": profile,
     }
+    st.session_state.terrain_signature = signature
     st.session_state.completed_steps.add(6)
 
 
@@ -484,6 +519,16 @@ def ensure_scoring(td: float, gear_span_m: float, density_radius_px: int, pixel_
     if st.session_state.depth is None:
         return
 
+    signature = (
+        round(float(td), 3),
+        round(float(gear_span_m), 3),
+        int(density_radius_px),
+        round(float(pixel_scale_m), 4),
+        st.session_state.depth_signature,
+    )
+    if st.session_state.scoring is not None and st.session_state.scoring_signature == signature:
+        return
+
     scoring = score_landing_safety(
         depth_rows=st.session_state.depth["rows"],
         depth_threshold_m=td,
@@ -493,10 +538,15 @@ def ensure_scoring(td: float, gear_span_m: float, density_radius_px: int, pixel_
     )
 
     hazard_map = annotate_hazard_map(st.session_state.raw_image, scoring["rows"])
-    score_map = build_score_map(st.session_state.raw_image.shape, scoring["rows"])
+    # Terrain away from craters is scored from measured local roughness, not a
+    # fixed constant (AUDIT.md A3 #13).
+    score_map = build_score_map(
+        st.session_state.raw_image.shape, scoring["rows"], image=st.session_state.raw_image
+    )
 
     scoring["score_map"] = score_map
     st.session_state.scoring = scoring
+    st.session_state.scoring_signature = signature
     st.session_state.hazard_map = hazard_map
     st.session_state.completed_steps.add(7)
 
@@ -509,6 +559,10 @@ def ensure_paths(pixel_scale_m: float) -> None:
     """
 
     if not st.session_state.scoring:
+        return
+
+    signature = (round(float(pixel_scale_m), 4), st.session_state.scoring_signature)
+    if st.session_state.paths is not None and st.session_state.paths_signature == signature:
         return
 
     paths = plan_descent_paths(
@@ -525,6 +579,7 @@ def ensure_paths(pixel_scale_m: float) -> None:
     paths["overlay"] = overlay
 
     st.session_state.paths = paths
+    st.session_state.paths_signature = signature
     st.session_state.completed_steps.add(8)
 
 
@@ -552,11 +607,25 @@ def render_sidebar() -> dict[str, Any]:
 
         st.markdown("#### Mission Parameters")
 
-        theta = st.slider("Solar Incidence Angle θ", min_value=10, max_value=80, value=35, step=1)
+        theta = st.slider(
+            "Solar Elevation Angle (above horizontal)",
+            min_value=10,
+            max_value=80,
+            value=35,
+            step=1,
+            help="Angle of the Sun above the local horizon: 0° grazing, 90° overhead. Depth is computed as "
+            "shadow length × pixel scale × tan(angle), which is the correct relation for elevation "
+            "(not incidence from the surface normal). For the same measured shadow, a higher Sun "
+            "implies a deeper crater.",
+        )
         st.caption("Controls illumination geometry for shadow-based depth. Larger angles usually increase estimated depth.")
 
         solar_azimuth = st.slider("Solar Azimuth φ", min_value=0, max_value=359, value=35, step=1)
-        st.caption("Controls shadow direction in ROI diagnostics. This rotates the depth arrow annotation.")
+        st.caption(
+            "Direction towards the sun. It sets the axis the shadow is projected onto and which side of "
+            "the crater a shadow is accepted on, so it changes the measured shadow length and depth — "
+            "not just the arrow drawn in the ROI panels."
+        )
 
         td = st.slider("Depth Safety Threshold Td (m)", min_value=0.5, max_value=5.0, value=1.8, step=0.1)
         st.caption("Maximum crater depth considered landing-safe. Lower values make safety scoring stricter.")
@@ -570,11 +639,21 @@ def render_sidebar() -> dict[str, Any]:
         pixel_scale = st.slider("Pixel Scale (m/px)", min_value=0.2, max_value=4.0, value=1.0, step=0.1)
         st.caption("Converts pixel distances to meters for depth, path length, and safety calculations.")
 
+        conf_threshold = st.slider(
+            "Detection Confidence Threshold",
+            min_value=0.05,
+            max_value=0.95,
+            value=0.35,
+            step=0.05,
+            help="Minimum YOLO confidence for a box to be kept. Changing it clears detections; re-run Step 4.",
+        )
+        st.caption("YOLO boxes below this confidence are discarded before depth estimation.")
+
         with st.expander("What this controls"):
             st.markdown(
                 """
-                - Solar incidence angle changes shadow-to-depth conversion sensitivity.
-                - Solar azimuth rotates shadow-direction arrows used for ROI diagnostics.
+                - Solar elevation angle (above horizontal) scales depth by tan(angle).
+                - Solar azimuth sets the shadow projection axis and the accepted shadow side, so it changes measured depth.
                 - Depth threshold shifts SAFE vs HAZARD boundaries.
                 - Gear span affects diameter-based landing feasibility.
                 - Density radius controls how strongly crater clustering is penalized.
@@ -585,13 +664,14 @@ def render_sidebar() -> dict[str, Any]:
         st.markdown("---")
         terrain_profile = st.selectbox(
             "3D Terrain Memory Profile",
-            options=["Balanced (256 MB)", "High Fidelity (512 MB)", "Max Fidelity (1 GB)", "Adaptive"],
-            index=["Balanced (256 MB)", "High Fidelity (512 MB)", "Max Fidelity (1 GB)", "Adaptive"].index(
+            options=["Balanced", "High Fidelity", "Max Fidelity", "Adaptive"],
+            index=["Balanced", "High Fidelity", "Max Fidelity", "Adaptive"].index(
                 st.session_state.terrain_profile
-                if st.session_state.terrain_profile in {"Balanced (256 MB)", "High Fidelity (512 MB)", "Max Fidelity (1 GB)", "Adaptive"}
-                else "High Fidelity (512 MB)"
+                if st.session_state.terrain_profile in {"Balanced", "High Fidelity", "Max Fidelity", "Adaptive"}
+                else "High Fidelity"
             ),
-            help="Raises 3D mesh capacity beyond the legacy 200-size render path. Higher fidelity needs more RAM/VRAM.",
+            help="Sets the 3D surface mesh's maximum dimension: Balanced 520 px, High Fidelity 720 px, "
+            "Adaptive 760 px, Max Fidelity 960 px (never above the image size). Memory use is not measured.",
         )
         if terrain_profile != st.session_state.terrain_profile:
             st.session_state.terrain_profile = terrain_profile
@@ -606,6 +686,15 @@ def render_sidebar() -> dict[str, Any]:
             st.warning(
                 f"Current Streamlit limits are upload={upload_limit} MB and message={msg_limit} MB. "
                 "Restart Streamlit after config changes to apply the 210 MB minimum limits."
+            )
+
+        prev_conf = st.session_state.last_conf_threshold
+        if prev_conf is not None and abs(prev_conf - conf_threshold) > 1e-9 and st.session_state.detection is not None:
+            reset_downstream(start_step=4)
+            st.session_state.last_conf_threshold = None
+            append_log(
+                f"[PARAM] >> Detection confidence changed {prev_conf:.2f} -> {conf_threshold:.2f}; "
+                "detections cleared, re-run YOLO detection."
             )
 
         depth_slider_signature = (
@@ -643,13 +732,40 @@ def render_sidebar() -> dict[str, Any]:
 
         st.markdown("---")
         if st.button("↻ Regenerate Synthetic Surface", use_container_width=True):
-            synth = generate_synthetic_lunar_surface(size=512)
+            seed = int(np.random.default_rng().integers(0, 2**31 - 1))
+            synth = generate_synthetic_lunar_surface(
+                size=512,
+                seed=seed,
+                cast_shadows=True,
+                sun_angle_deg=float(solar_azimuth),
+                sun_elevation_deg=float(theta),
+            )
+            st.session_state.synthetic_seed = seed
             st.session_state.raw_image = synth["image"]
             st.session_state.synthetic_meta = synth
             st.session_state.image_name = "SYNTHETIC_LUNAR_FEED"
             st.session_state.file_size_bytes = None
             reset_downstream(start_step=3)
-            append_log("[SYNTH] >> Regenerated synthetic lunar surface with crater metadata")
+            append_log(
+                f"[SYNTH] >> Regenerated synthetic lunar surface with seed={seed}, "
+                f"ray-cast shadows at elevation={theta} deg, azimuth={solar_azimuth} deg"
+            )
+        if st.session_state.image_name == "SYNTHETIC_LUNAR_FEED" and st.session_state.synthetic_seed is not None:
+            shadow_params = (st.session_state.get("synthetic_meta") or {}).get("shadow_params")
+            if shadow_params:
+                st.caption(
+                    f"Synthetic seed: {st.session_state.synthetic_seed}; ray-cast shadows at "
+                    f"elevation {shadow_params['sun_elevation_deg']:g} deg, azimuth "
+                    f"{shadow_params['sun_azimuth_deg']:g} deg. Reproduce with "
+                    f"generate_synthetic_lunar_surface(size=512, seed={st.session_state.synthetic_seed}, "
+                    f"cast_shadows=True, sun_angle_deg={shadow_params['sun_azimuth_deg']:g}, "
+                    f"sun_elevation_deg={shadow_params['sun_elevation_deg']:g})"
+                )
+            else:
+                st.caption(
+                    f"Synthetic seed: {st.session_state.synthetic_seed} — reproduce with "
+                    f"generate_synthetic_lunar_surface(size=512, seed={st.session_state.synthetic_seed})"
+                )
 
     return {
         "theta": theta,
@@ -658,6 +774,7 @@ def render_sidebar() -> dict[str, Any]:
         "gear_span": gear_span,
         "density_radius": density_radius,
         "pixel_scale": pixel_scale,
+        "conf_threshold": float(conf_threshold),
         "enable_fusion": enable_fusion,
         "terrain_profile": terrain_profile,
     }
@@ -681,13 +798,16 @@ def step_01_briefing() -> None:
         key="primary_upload",
     )
 
-    if uploader is not None:
+    upload_signature = None if uploader is None else (uploader.name, getattr(uploader, "size", None))
+    if uploader is not None and upload_signature != st.session_state.upload_signature:
         try:
             img, size_bytes, resize_note = decode_upload_to_gray(uploader)
             st.session_state.raw_image = img
             st.session_state.image_name = uploader.name
             st.session_state.file_size_bytes = size_bytes
             st.session_state.synthetic_meta = None
+            st.session_state.synthetic_seed = None
+            st.session_state.upload_signature = upload_signature
             reset_downstream(start_step=3)
             append_log(f"[UPLOAD] >> New telemetry image acquired: {uploader.name}")
             if resize_note:
@@ -696,7 +816,10 @@ def step_01_briefing() -> None:
         except Exception as exc:
             st.error(f"Upload failed: {exc}")
 
-    st.image(st.session_state.raw_image, caption=f"Active Feed: {st.session_state.image_name}", use_container_width=True)
+    feed_caption = f"Active Feed: {st.session_state.image_name}"
+    if st.session_state.image_name == "SYNTHETIC_LUNAR_FEED" and st.session_state.synthetic_seed is not None:
+        feed_caption += f" (seed {st.session_state.synthetic_seed})"
+    st.image(st.session_state.raw_image, caption=feed_caption, use_container_width=True)
 
     if st.button("LAUNCH MISSION ►", use_container_width=True):
         st.session_state.mission_started = True
@@ -852,7 +975,7 @@ def step_03_preprocess() -> None:
         f"""
         <code>G(x,y) = (1 / 2πσ²) × exp(-(x² + y²) / 2σ²)</code><br/>
         σ = {sigma:.1f} px &nbsp;→&nbsp;
-        kernel ≈ {max(3, int(round(sigma * 4.5)) | 1)}×{max(3, int(round(sigma * 4.5)) | 1)} px
+        kernel = {gaussian_kernel_size(sigma)}×{gaussian_kernel_size(sigma)} px (OpenCV auto size for 8-bit: round(6σ+1) | 1)
         """,
     )
 
@@ -880,7 +1003,7 @@ def step_03_preprocess() -> None:
     st.session_state.completed_steps.add(3)
 
 
-def step_04_detection() -> None:
+def step_04_detection(params: dict[str, Any]) -> None:
     """Render crater detection with dual YOLO vs CV comparison."""
 
     initialization_animation("step04", "YOLO11m")
@@ -893,7 +1016,7 @@ def step_04_detection() -> None:
         if st.button("Run YOLO Detection", use_container_width=True):
             ensure_preprocess()
             with st.spinner("Running YOLO11m crater detection..."):
-                run_detection()
+                run_detection(params["conf_threshold"])
     with bc:
         if st.button("Run CV Detection", use_container_width=True):
             ensure_preprocess()
@@ -912,6 +1035,15 @@ def step_04_detection() -> None:
     cv_count = len(cv_detection["detections"]) if cv_detection else 0
 
     st.markdown("### Detection Results")
+
+    ckpt_metrics = checkpoint_reported_metrics()
+    if ckpt_metrics and "map50" in ckpt_metrics:
+        st.caption(
+            f"Reported by the checkpoint from training, not measured on this image: "
+            f"mAP@0.5 = {ckpt_metrics['map50']}"
+            + (f", mAP@0.5:0.95 = {ckpt_metrics['map50_95']}" if "map50_95" in ckpt_metrics else "")
+            + ". No detection accuracy is measured in this app."
+        )
 
     # Metric cards
     m1, m2, m3, m4 = st.columns(4)
@@ -963,12 +1095,23 @@ def step_04_detection() -> None:
         else:
             st.info("CV detection not yet run.")
 
+    # ── Synthetic ground truth (separate overlay, never merged into detections) ──
+    gt_boxes = synthetic_ground_truth()
+    if gt_boxes:
+        st.markdown("### Synthetic Ground Truth — generator metadata, not model output")
+        gt_overlay = draw_detections(st.session_state.raw_image, gt_boxes, color=(255, 255, 255))
+        st.image(
+            gt_overlay,
+            caption=f"GROUND TRUTH, NOT MODEL OUTPUT — {len(gt_boxes)} craters written by the synthetic generator",
+            use_container_width=True,
+        )
+
     # ── YOLO detection table (primary) ──
     if detection and yolo_count > 0:
         st.markdown("### YOLO Detection Table (used for downstream pipeline)")
         df = pd.DataFrame(detection["detections"])
         st.dataframe(
-            df[["crater_id", "x1", "y1", "x2", "y2", "confidence", "diameter_px"]],
+            df[["crater_id", "class_name", "x1", "y1", "x2", "y2", "confidence", "diameter_px"]],
             use_container_width=True,
             hide_index=True,
         )
@@ -995,7 +1138,7 @@ def step_05_depth(params: dict[str, Any]) -> None:
         if st.button("Run YOLO Detection Now", key="depth_run_yolo", use_container_width=True):
             ensure_preprocess()
             with st.spinner("Running YOLO11m crater detection..."):
-                run_detection()
+                run_detection(params["conf_threshold"])
             st.rerun()
         return
 
@@ -1031,16 +1174,31 @@ def step_05_depth(params: dict[str, Any]) -> None:
             with c3:
                 st.image(roi_bundle["annotated"], caption="Shadow Arrow Annotation", use_container_width=True)
 
-    df = pd.DataFrame(depth["rows"])
-    st.dataframe(
-        df[["crater_id", "shadow_length_px", "solar_incidence_deg", "solar_azimuth_deg", "depth_m", "slope_estimate_deg"]],
-        use_container_width=True,
-        hide_index=True,
-    )
+    n_bad = int(depth["n_not_measurable"])
+    n_all = int(depth["n_craters"])
+    if n_bad:
+        st.warning(
+            f"{n_bad} of {n_all} craters not measurable — their shadow failed the validity checks, so "
+            "no depth or slope is reported, they are excluded from the terrain model, and they are "
+            "scored without a depth term (zone UNKNOWN)."
+        )
+    else:
+        st.caption(f"0 of {n_all} craters not measurable: every crater passed the shadow validity checks.")
 
-    fig = go.Figure(data=go.Bar(x=df["crater_id"], y=df["depth_m"], marker_color="#f59e0b"))
+    df = pd.DataFrame(depth["rows"])
+    display = df[[
+        "crater_id", "shadow_length_px", "solar_elevation_deg", "solar_azimuth_deg",
+        "depth_m", "slope_estimate_deg", "not_measurable_reason",
+    ]].copy()
+    for col in ("shadow_length_px", "depth_m", "slope_estimate_deg"):
+        display[col] = [NOT_MEASURABLE if v is None else v for v in display[col]]
+    display["not_measurable_reason"] = ["" if v is None else v for v in display["not_measurable_reason"]]
+    st.dataframe(display, use_container_width=True, hide_index=True)
+
+    measured = df[df["depth_m"].notna()]
+    fig = go.Figure(data=go.Bar(x=measured["crater_id"], y=measured["depth_m"], marker_color="#f59e0b"))
     fig.update_layout(
-        title="Crater Depth Estimates",
+        title=f"Crater Depth Estimates (measurable craters only: {len(measured)} of {n_all})",
         paper_bgcolor="#0a0e1a",
         plot_bgcolor="#0a0e1a",
         font=dict(color="#dbe7f4", family="Courier New"),
@@ -1050,6 +1208,11 @@ def step_05_depth(params: dict[str, Any]) -> None:
 
     if params["enable_fusion"]:
         st.markdown("### Multi-Angle Depth Fusion")
+        st.caption(
+            "Second-view angles are ASSUMED, not observed: θ+15° (clipped to 10–80°) and φ+25°. "
+            "In synthetic mode the second view is SIMULATED — the same image with an added linear "
+            "brightness gradient, not a different illumination."
+        )
 
         second_image = None
         if st.session_state.image_name == "SYNTHETIC_LUNAR_FEED":
@@ -1068,23 +1231,12 @@ def step_05_depth(params: dict[str, Any]) -> None:
 
         if second_image is not None:
             second_pp = preprocess_pipeline(second_image)
-            second_hint_craters = None
-            if st.session_state.image_name == "SYNTHETIC_LUNAR_FEED" and st.session_state.get("synthetic_meta"):
-                second_hint_craters = st.session_state.synthetic_meta.get("craters")
-
-            if second_hint_craters:
-                second_det = detect_craters(
-                    second_pp["smoothed"],
-                    conf_threshold=0.35,
-                    hint_craters=second_hint_craters,
-                )
-            else:
-                second_det = detect_craters(second_pp["smoothed"], conf_threshold=0.35)
+            second_det = detect_craters(second_pp["smoothed"], conf_threshold=params["conf_threshold"])
 
             second_depth = estimate_crater_depths(
                 image=second_image,
                 detections=second_det["detections"],
-                solar_incidence_angle_deg=float(np.clip(params["theta"] + 15, 10, 80)),
+                solar_elevation_angle_deg=float(np.clip(params["theta"] + 15, 10, 80)),
                 solar_azimuth_deg=float((params["solar_azimuth"] + 25) % 360),
                 pixel_scale_m=params["pixel_scale"],
             )
@@ -1095,9 +1247,14 @@ def step_05_depth(params: dict[str, Any]) -> None:
             if len(fusion["rows"]) > 0:
                 fdf = pd.DataFrame(fusion["rows"])
                 st.dataframe(fdf, use_container_width=True, hide_index=True)
+                st.caption(
+                    f"Matched craters: {len(fusion['rows'])} | mean absolute depth difference between views: "
+                    f"{fusion['mean_abs_view_difference_m']:.3f} m"
+                )
                 log_once(
                     f"fusion_{params['theta']}",
-                    f"[FUSION] >> Depth uncertainty reduced by {fusion['uncertainty_reduction_pct']:.2f}%",
+                    f"[FUSION] >> Matched {len(fusion['rows'])} craters | mean |view1 - view2| depth = "
+                    f"{fusion['mean_abs_view_difference_m']:.3f} m",
                 )
             else:
                 st.info("Fusion attempted but no crater correspondences passed IoU threshold.")
@@ -1128,7 +1285,7 @@ def step_06_terrain(params: dict[str, Any]) -> None:
 
     st.caption(
         f"3D profile: {terrain['surface_profile']} | mesh target: {terrain['surface_target_size']} px | "
-        f"estimated render memory: {terrain['surface_memory_est_mb']:.1f} MB"
+        f"rendered surface grid: {terrain['surface_grid_shape'][0]}×{terrain['surface_grid_shape'][1]} points"
     )
 
     col1, col2 = st.columns([1.2, 1.0])
@@ -1177,6 +1334,8 @@ def _zone_style(zone: str) -> tuple[str, str]:
         return "#1a2a3f", "#7dd3fc"
     if zone == "CAUTION":
         return "#3a2a08", "#f59e0b"
+    if zone == "UNKNOWN":
+        return "#26262b", "#b8b8c0"
     return "#3b1010", "#ef4444"
 
 
@@ -1221,7 +1380,7 @@ def step_07_scoring(params: dict[str, Any]) -> None:
                 <div><b>{row['crater_id']}</b></div>
                 <div>Score: <b>{row['safety_score']:.1f}</b></div>
                 <div>Zone: {row['zone']}</div>
-                <div>Depth: {row['depth_m']:.2f} m</div>
+                <div>Depth: {(f"{row['depth_m']:.2f} m" if row['depth_m'] is not None else NOT_MEASURABLE)}</div>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -1236,6 +1395,8 @@ def step_07_scoring(params: dict[str, Any]) -> None:
             <span style='color:#f59e0b; font-size:1.2rem;'>{s['caution']} CAUTION ZONES</span>
             &nbsp; | &nbsp;
             <span style='color:#ef4444; font-size:1.2rem;'>{s['hazard']} HAZARD ZONES</span>
+            &nbsp; | &nbsp;
+            <span style='color:#b8b8c0; font-size:1.2rem;'>{s.get('unknown', 0)} UNKNOWN (depth not measurable)</span>
         </div>
         """,
         unsafe_allow_html=True,
@@ -1247,7 +1408,8 @@ def step_07_scoring(params: dict[str, Any]) -> None:
     log_once(
         f"score_{params['td']}_{params['gear_span']}_{params['density_radius']}",
         "[SCORER] >> "
-        f"safe={s['safe']} caution={s['caution']} hazard={s['hazard']} | overall={scoring['overall_score']:.1f}",
+        f"safe={s['safe']} caution={s['caution']} hazard={s['hazard']} "
+        f"unknown={s.get('unknown', 0)} | overall={scoring['overall_score']:.1f}",
     )
 
 
@@ -1378,25 +1540,34 @@ def step_08_path(params: dict[str, Any]) -> None:
             st.plotly_chart(fig, use_container_width=True)
 
     gx, gy = paths["goal"]
+    crossed_ids = f"({', '.join(paths['hazard_craters_crossed'])})" if paths["hazard_craters_crossed"] else ""
     st.markdown(
         f"""
         <div class='glow-panel'>
             <b>RECOMMENDED LANDING COORDINATES</b><br/>
-            Pixel: ({gx}, {gy})<br/>
-            Confidence: <span style='color:#7dd3fc'>{paths['landing_confidence']:.1f}%</span><br/>
-            Path Length: {paths['path_length_m']:.1f} m
+            Pixel: ({gx}, {gy}) — centre of {paths['goal_crater_id']} (zone: {paths['goal_zone']})<br/>
+            Path Length: {paths['path_length_m']:.1f} m<br/>
+            HAZARD craters the route passes through (excluding the goal crater):
+            {len(paths['hazard_craters_crossed'])} of {paths['hazard_craters_other_than_goal']}
+            {crossed_ids}
         </div>
         """,
         unsafe_allow_html=True,
     )
 
     st.image(paths["overlay"], caption="Path Overlay on Hazard Map", use_container_width=True)
+    st.caption(
+        f"Assumption: terrain away from detected craters is assigned a fixed safety score of "
+        f"{NON_CRATER_TERRAIN_SCORE:g} (not measured). The goal is the highest-scoring crater in the best "
+        f"available zone; no landing confidence is computed."
+    )
 
     log_once(
         "step8_path",
         "[PATHFINDER] >> A* complete | "
-        f"Path length: {paths['path_length_m']:.1f}m | Obstacles avoided: {paths['obstacles_avoided']} | "
-        f"LZ confidence: {paths['landing_confidence']:.0f}%",
+        f"Path length: {paths['path_length_m']:.1f}m | HAZARD craters crossed (excl. goal): "
+        f"{len(paths['hazard_craters_crossed'])}/{paths['hazard_craters_other_than_goal']} | "
+        f"goal zone: {paths['goal_zone']}",
     )
 
 
@@ -1545,7 +1716,7 @@ def main() -> None:
     elif step == 3:
         step_03_preprocess()
     elif step == 4:
-        step_04_detection()
+        step_04_detection(params)
     elif step == 5:
         step_05_depth(params)
     elif step == 6:

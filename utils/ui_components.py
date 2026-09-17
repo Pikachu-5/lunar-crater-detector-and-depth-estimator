@@ -462,7 +462,6 @@ def render_hud(step: int, total_steps: int, mission_status: str) -> None:
             <div class="hud-small">STEP {step:02d} / {total_steps:02d}</div>
             <div class="hud-small">UTC {now}</div>
             <div style="display:flex; align-items:center; justify-content:flex-end; gap:8px;">
-              <span class="telemetry-badge">TELEMETRY: NOMINAL</span>
               <span class="status-circle" style="background:{status_color}; box-shadow:0 0 10px {status_color};"></span>
               <span class="hud-small">MISSION STATUS</span>
             </div>
@@ -489,7 +488,8 @@ def render_pipeline_flow(current_step: int, total_steps: int, completed: set[int
     """
 
     labels = [
-        "Upload",
+        "Briefing",
+        "Acquire",
         "Preprocess",
         "Detect",
         "Depth",
