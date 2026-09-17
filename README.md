@@ -75,7 +75,7 @@ If you retrain the model and want to use a new checkpoint, copy the new weights 
 
 ## Controls That Matter
 
-- Solar Incidence Angle controls the shadow-to-depth conversion.
+- Solar Elevation Angle (above horizontal) controls the shadow-to-depth conversion: depth = shadow length × pixel scale × tan(angle).
 - Solar Azimuth rotates the shadow projection axis used in depth diagnostics.
 - Depth Safety Threshold changes the scoring penalty for deep craters.
 - Landing Gear Span changes the diameter penalty used in scoring.

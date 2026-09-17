@@ -72,33 +72,35 @@ def measure_shadow_length(mask: np.ndarray, solar_azimuth_deg: float) -> tuple[f
 
 def depth_from_shadow(
     shadow_length_px: float,
-    solar_incidence_angle_deg: float,
+    solar_elevation_angle_deg: float,
     pixel_scale_m: float,
 ) -> float:
     """Convert shadow length into crater depth using photometric geometry.
 
     Physics note:
     A simplified relation for local relief is
-    depth ~= shadow_length * tan(theta), where theta is solar incidence angle.
+    depth ~= shadow_length * tan(theta), where theta is the solar ELEVATION
+    angle measured up from the local horizontal (not incidence from the surface
+    normal; for incidence i the relation would be depth = L / tan(i)).
     Pixel length is converted to meters through image scale metadata.
 
     Args:
         shadow_length_px: Measured shadow length in pixels.
-        solar_incidence_angle_deg: Solar incidence angle in degrees.
+        solar_elevation_angle_deg: Solar elevation above the horizontal, degrees.
         pixel_scale_m: Meters represented by one pixel.
 
     Returns:
         Estimated depth in meters.
     """
 
-    theta = math.radians(np.clip(solar_incidence_angle_deg, 1.0, 89.0))
+    theta = math.radians(np.clip(solar_elevation_angle_deg, 1.0, 89.0))
     return float(shadow_length_px * pixel_scale_m * math.tan(theta))
 
 
 def estimate_crater_depths(
     image: np.ndarray,
     detections: list[dict[str, Any]],
-    solar_incidence_angle_deg: float,
+    solar_elevation_angle_deg: float,
     solar_azimuth_deg: float = 35.0,
     pixel_scale_m: float = 1.0,
 ) -> dict[str, Any]:
@@ -112,7 +114,7 @@ def estimate_crater_depths(
     Args:
         image: Grayscale scene image.
         detections: Crater detections with bbox fields.
-        solar_incidence_angle_deg: User-specified solar incidence angle.
+        solar_elevation_angle_deg: User-specified solar elevation above the horizontal.
         solar_azimuth_deg: User-specified solar azimuth for shadow direction.
         pixel_scale_m: Meters per pixel.
 
@@ -139,7 +141,7 @@ def estimate_crater_depths(
 
         depth_m = depth_from_shadow(
             shadow_length_px=shadow_len,
-            solar_incidence_angle_deg=solar_incidence_angle_deg,
+            solar_elevation_angle_deg=solar_elevation_angle_deg,
             pixel_scale_m=pixel_scale_m,
         )
 
@@ -162,8 +164,8 @@ def estimate_crater_depths(
         row = {
             "crater_id": det["crater_id"],
             "shadow_length_px": round(float(shadow_len), 3),
-            "solar_angle_deg": round(float(solar_incidence_angle_deg), 3),
-            "solar_incidence_deg": round(float(solar_incidence_angle_deg), 3),
+            "solar_angle_deg": round(float(solar_elevation_angle_deg), 3),
+            "solar_elevation_deg": round(float(solar_elevation_angle_deg), 3),
             "solar_azimuth_deg": round(float(solar_azimuth_deg), 3),
             "depth_m": round(float(depth_m), 3),
             "slope_estimate_deg": round(float(slope_deg), 3),

@@ -50,7 +50,7 @@ def main() -> int:
         print(f"--- step {step} exceptions:", [e.value for e in at.exception])
         for t in texts(at):
             if any(k in t for k in ("Confidence", "Obstacles", "uncertainty", "mAP", "not measurable",
-                                    "Elevation", "Incidence", "tan(", "Path Length")):
+                                    "Elevation", "Incidence", "incidence", "tan(", "Path Length")):
                 print(f"step {step} text:", " ".join(t.split())[:300])
     print("final log lines:", at.session_state["terminal_logs"][-6:])
 

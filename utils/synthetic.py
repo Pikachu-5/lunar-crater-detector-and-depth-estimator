@@ -38,7 +38,8 @@ def _apply_crater_signature(
     Physics note:
     A bowl-shaped crater is approximated as a Gaussian depression in the local
     height field. A thin ring-shaped Gaussian is added to mimic uplifted rim.
-    Brightness is modulated directionally to emulate sunlight incidence.
+    Brightness is modulated by sun azimuth only; there is no elevation term and
+    no cast shadow.
 
     Args:
         height_map: Continuous terrain elevation map updated in place.

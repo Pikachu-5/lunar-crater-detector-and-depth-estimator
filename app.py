@@ -395,7 +395,7 @@ def ensure_depth(theta_deg: float, pixel_scale_m: float, solar_azimuth_deg: floa
     """Run crater depth estimation from current detections.
 
     Args:
-        theta_deg: Solar incidence angle.
+        theta_deg: Solar elevation angle above the horizontal (degrees).
         pixel_scale_m: Pixel-to-meter scale.
         solar_azimuth_deg: Solar azimuth controlling shadow arrow direction.
     """
@@ -422,7 +422,7 @@ def ensure_depth(theta_deg: float, pixel_scale_m: float, solar_azimuth_deg: floa
     rows = estimate_crater_depths(
         image=st.session_state.raw_image,
         detections=det,
-        solar_incidence_angle_deg=theta_deg,
+        solar_elevation_angle_deg=theta_deg,
         solar_azimuth_deg=solar_azimuth_deg,
         pixel_scale_m=pixel_scale_m,
     )
@@ -556,7 +556,17 @@ def render_sidebar() -> dict[str, Any]:
 
         st.markdown("#### Mission Parameters")
 
-        theta = st.slider("Solar Incidence Angle θ", min_value=10, max_value=80, value=35, step=1)
+        theta = st.slider(
+            "Solar Elevation Angle (above horizontal)",
+            min_value=10,
+            max_value=80,
+            value=35,
+            step=1,
+            help="Angle of the Sun above the local horizon: 0° grazing, 90° overhead. Depth is computed as "
+            "shadow length × pixel scale × tan(angle), which is the correct relation for elevation "
+            "(not incidence from the surface normal). For the same measured shadow, a higher Sun "
+            "implies a deeper crater.",
+        )
         st.caption("Controls illumination geometry for shadow-based depth. Larger angles usually increase estimated depth.")
 
         solar_azimuth = st.slider("Solar Azimuth φ", min_value=0, max_value=359, value=35, step=1)
@@ -577,7 +587,7 @@ def render_sidebar() -> dict[str, Any]:
         with st.expander("What this controls"):
             st.markdown(
                 """
-                - Solar incidence angle changes shadow-to-depth conversion sensitivity.
+                - Solar elevation angle (above horizontal) scales depth by tan(angle).
                 - Solar azimuth rotates shadow-direction arrows used for ROI diagnostics.
                 - Depth threshold shifts SAFE vs HAZARD boundaries.
                 - Gear span affects diameter-based landing feasibility.
@@ -1058,7 +1068,7 @@ def step_05_depth(params: dict[str, Any]) -> None:
 
     df = pd.DataFrame(depth["rows"])
     st.dataframe(
-        df[["crater_id", "shadow_length_px", "solar_incidence_deg", "solar_azimuth_deg", "depth_m", "slope_estimate_deg"]],
+        df[["crater_id", "shadow_length_px", "solar_elevation_deg", "solar_azimuth_deg", "depth_m", "slope_estimate_deg"]],
         use_container_width=True,
         hide_index=True,
     )
@@ -1103,7 +1113,7 @@ def step_05_depth(params: dict[str, Any]) -> None:
             second_depth = estimate_crater_depths(
                 image=second_image,
                 detections=second_det["detections"],
-                solar_incidence_angle_deg=float(np.clip(params["theta"] + 15, 10, 80)),
+                solar_elevation_angle_deg=float(np.clip(params["theta"] + 15, 10, 80)),
                 solar_azimuth_deg=float((params["solar_azimuth"] + 25) % 360),
                 pixel_scale_m=params["pixel_scale"],
             )

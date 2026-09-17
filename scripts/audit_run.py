@@ -221,7 +221,7 @@ def run_pipeline(synth: dict[str, Any], use_hints: bool, timed: bool = True) -> 
     dets = det["detections"]
 
     t = t_now()
-    depth = estimate_crater_depths(raw, dets, solar_incidence_angle_deg=THETA, solar_azimuth_deg=AZIMUTH, pixel_scale_m=PIXEL_SCALE)
+    depth = estimate_crater_depths(raw, dets, solar_elevation_angle_deg=THETA, solar_azimuth_deg=AZIMUTH, pixel_scale_m=PIXEL_SCALE)
     tm["depth"] = t_now() - t
 
     t = t_now()
@@ -418,8 +418,8 @@ def main() -> None:
     }
     original_fn = depth_mod.depth_from_shadow
 
-    def inverse_tan(shadow_length_px: float, solar_incidence_angle_deg: float, pixel_scale_m: float) -> float:
-        theta = math.radians(np.clip(solar_incidence_angle_deg, 1.0, 89.0))
+    def inverse_tan(shadow_length_px: float, solar_elevation_angle_deg: float, pixel_scale_m: float) -> float:
+        theta = math.radians(np.clip(solar_elevation_angle_deg, 1.0, 89.0))
         return float(shadow_length_px * pixel_scale_m / math.tan(theta))
 
     c1: dict[str, list[dict[str, Any]]] = {}
