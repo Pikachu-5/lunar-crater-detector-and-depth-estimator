@@ -167,7 +167,7 @@ def estimate_crater_depths(
             "solar_azimuth_deg": round(float(solar_azimuth_deg), 3),
             "depth_m": round(float(depth_m), 3),
             "slope_estimate_deg": round(float(slope_deg), 3),
-            "confidence": float(det.get("confidence", 0.7)),
+            "confidence": None if det.get("confidence") is None else float(det["confidence"]),
             "x1": x1,
             "y1": y1,
             "x2": x2,

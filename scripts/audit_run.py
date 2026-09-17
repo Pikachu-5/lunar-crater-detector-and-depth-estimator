@@ -31,7 +31,7 @@ import numpy as np  # noqa: E402
 
 import modules.depth as depth_mod  # noqa: E402
 from modules.depth import compute_otsu_shadow_mask, estimate_crater_depths, measure_shadow_length  # noqa: E402
-from modules.detector import _to_detection_record, detect_craters, detect_craters_cv  # noqa: E402
+from modules.detector import _to_detection_record, detect_craters, detect_craters_cv, ground_truth_detections  # noqa: E402
 from modules.pathfinder import _downsample_score_map, plan_descent_paths  # noqa: E402
 from modules.preprocess import preprocess_pipeline  # noqa: E402
 from modules.scorer import annotate_hazard_map, build_score_map, score_landing_safety  # noqa: E402
@@ -56,6 +56,13 @@ N_TIMED_RUNS = 5
 
 OUT_JSON = os.path.join(ROOT, "scripts", "audit_results.json")
 OUT_MD = os.path.join(ROOT, "scripts", "audit_tables.md")
+
+
+def detect_ground_truth(image: np.ndarray, craters: list[dict[str, Any]]) -> dict[str, Any]:
+    """Ground-truth boxes from generator metadata (not model output); replaces the removed hint_craters path."""
+
+    return {"detections": ground_truth_detections(image.shape, craters), "source": "ground-truth",
+            "status": f"ground truth, not model output: {len(craters)} craters"}
 
 
 def t_now() -> float:
@@ -209,7 +216,7 @@ def run_pipeline(synth: dict[str, Any], use_hints: bool, timed: bool = True) -> 
     tm["preprocess"] = t_now() - t
 
     t = t_now()
-    det = detect_craters(pp["smoothed"], conf_threshold=CONF, hint_craters=synth["craters"] if use_hints else None)
+    det = detect_ground_truth(pp["smoothed"], synth["craters"]) if use_hints else detect_craters(pp["smoothed"], conf_threshold=CONF)
     tm["detection"] = t_now() - t
     dets = det["detections"]
 
@@ -314,7 +321,7 @@ def main() -> None:
         seed_res: dict[str, Any] = {"gt_crater_count": gt_n}
         for label, dets in (("yolo", ry["detection"]["detections"]), ("cv_hybrid", cv["detections"]),
                             ("synthetic_meta", rh["detection"]["detections"])):
-            confs = [d["confidence"] for d in dets]
+            confs = [d["confidence"] for d in dets if d["confidence"] is not None]
             diams = [d["diameter_px"] for d in dets]
             m = match_to_gt(dets, syn["craters"])
             seed_res[label] = {
@@ -404,7 +411,7 @@ def main() -> None:
     syn = synths[42]
     pp = preprocess_pipeline(syn["image"], clip_limit=CLIP, tile_grid_size=(GRID, GRID), sigma=SIGMA)
     det_sets = {
-        "synthetic_meta": detect_craters(pp["smoothed"], CONF, hint_craters=syn["craters"])["detections"],
+        "synthetic_meta": detect_ground_truth(pp["smoothed"], syn["craters"])["detections"],
         "yolo": detect_craters(pp["smoothed"], CONF)["detections"],
     }
     original_fn = depth_mod.depth_from_shadow
@@ -492,7 +499,7 @@ def main() -> None:
     for seed in SEEDS:
         sy = synths[seed]
         spp = preprocess_pipeline(sy["image"], clip_limit=CLIP, tile_grid_size=(GRID, GRID), sigma=SIGMA)
-        gdets = detect_craters(spp["smoothed"], CONF, hint_craters=sy["craters"])["detections"]
+        gdets = detect_ground_truth(spp["smoothed"], sy["craters"])["detections"]
         gt_by_id = {f"CR-{i + 1:02d}": c for i, c in enumerate(sy["craters"])}
         for r in estimate_crater_depths(sy["image"], gdets, THETA, AZIMUTH, PIXEL_SCALE)["rows"]:
             n_rows += 1

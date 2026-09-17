@@ -437,34 +437,35 @@ def _rescale_detections(
     return out
 
 
-def _synthetic_hint_detections(image_shape: tuple[int, int], hint_craters: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Convert known synthetic crater metadata into detection rows.
+def ground_truth_detections(image_shape: tuple[int, int], craters: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Convert synthetic generator metadata into ground-truth box records.
 
-    Educational note:
-    In synthetic demo mode we know ground-truth crater geometry. Exposing these
-    as detections keeps the pipeline deterministic for teaching and debugging.
+    These are the generator's known crater positions, NOT model output. They
+    carry no confidence (``confidence`` is None) and must never be merged into a
+    detection list or a confidence plot; use them only as a separately labelled
+    ground-truth overlay or for evaluation.
 
     Args:
         image_shape: Image shape as (height, width).
-        hint_craters: Synthetic crater metadata list.
+        craters: Crater metadata from ``generate_synthetic_lunar_surface``.
 
     Returns:
-        Canonical detection rows.
+        Box records in the detection-record layout with source "ground-truth".
     """
 
     out: list[dict[str, Any]] = []
-    for idx, c in enumerate(hint_craters, start=1):
-        out.append(
-            _to_detection_record(
-                crater_id=f"CR-{idx:02d}",
-                cx=float(c["center_x"]),
-                cy=float(c["center_y"]),
-                r=float(c["radius_px"]),
-                confidence=0.98,
-                source="synthetic-meta",
-                shape=image_shape,
-            )
+    for idx, c in enumerate(craters, start=1):
+        rec = _to_detection_record(
+            crater_id=f"CR-{idx:02d}",
+            cx=float(c["center_x"]),
+            cy=float(c["center_y"]),
+            r=float(c["radius_px"]),
+            confidence=1.0,
+            source="ground-truth",
+            shape=image_shape,
         )
+        rec["confidence"] = None
+        out.append(rec)
     return out
 
 
@@ -477,37 +478,25 @@ def detect_craters(
     image: np.ndarray,
     conf_threshold: float = 0.35,
     model_path: str = DEFAULT_MODEL_PATH,
-    hint_craters: list[dict[str, Any]] | None = None,
     max_detection_dim: int = 896,
 ) -> dict[str, Any]:
     """Detect craters using the trained YOLO11m model.
 
     This is the primary detection function used by the pipeline. It runs
-    YOLO inference exclusively (no CV fallback).
+    YOLO inference for every image, synthetic or uploaded (no CV fallback and
+    no ground-truth substitution).
 
     Args:
         image: Preprocessed grayscale image.
         conf_threshold: YOLO confidence threshold.
         model_path: Path to trained .pt weights.
-        hint_craters: Optional known crater metadata for synthetic mode.
-        max_detection_dim: Max image dimension for detection.
+        max_detection_dim: Unused; kept for call compatibility.
 
     Returns:
         Dictionary with detections, source type, elapsed time, and status text.
     """
 
     start = time.perf_counter()
-
-    if hint_craters:
-        hints = _synthetic_hint_detections(image.shape, hint_craters)
-        elapsed = time.perf_counter() - start
-        return {
-            "detections": hints,
-            "source": "synthetic-meta",
-            "elapsed_s": elapsed,
-            "status": f"Loaded synthetic crater metadata: {len(hints)} craters",
-            "map50_proxy": 0.99,
-        }
 
     yolo_detections, yolo_status = _yolo_inference(
         image=image,
@@ -600,7 +589,8 @@ def draw_detections(
     for det in detections:
         x1, y1, x2, y2 = det["x1"], det["y1"], det["x2"], det["y2"]
         cv2.rectangle(canvas, (x1, y1), (x2, y2), color, 2)
-        label = f"{det['crater_id']} {det['confidence']:.2f}"
+        conf = det.get("confidence")
+        label = det["crater_id"] if conf is None else f"{det['crater_id']} {conf:.2f}"
         cv2.putText(
             canvas,
             label,

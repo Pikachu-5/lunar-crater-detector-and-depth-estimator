@@ -14,7 +14,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 from modules.depth import estimate_crater_depths, fuse_depth_estimates
-from modules.detector import detect_craters, detect_craters_cv, draw_detections
+from modules.detector import detect_craters, detect_craters_cv, draw_detections, ground_truth_detections
 from modules.pathfinder import draw_paths_on_map, plan_descent_paths
 from modules.preprocess import compute_histogram, image_stats, preprocess_pipeline
 from modules.reporter import build_mission_pdf, crater_rows_to_csv, image_to_png_bytes
@@ -323,18 +323,11 @@ def run_detection() -> None:
     ensure_preprocess()
     smoothed = st.session_state.preprocess["smoothed"]
 
-    hint_craters = None
-    if (
-        st.session_state.image_name == "SYNTHETIC_LUNAR_FEED"
-        and st.session_state.get("synthetic_meta")
-        and st.session_state.synthetic_meta.get("craters")
-    ):
-        hint_craters = st.session_state.synthetic_meta["craters"]
-
+    # YOLO runs on every image, synthetic included. Synthetic ground truth is
+    # never substituted for model output (see synthetic_ground_truth()).
     detection = detect_craters(
         smoothed,
         conf_threshold=0.35,
-        hint_craters=hint_craters,
     )
 
     overlay = draw_detections(st.session_state.raw_image, detection["detections"])
@@ -349,6 +342,19 @@ def run_detection() -> None:
         f"| mAP@0.5: {detection['map50_proxy']:.3f} | Time: {detection['elapsed_s']:.2f}s",
     )
     append_log(f"[DETECTOR-DETAIL] >> {detection['status']}")
+
+
+def synthetic_ground_truth() -> list[dict[str, Any]] | None:
+    """Return generator ground-truth boxes for the synthetic feed, else None.
+
+    These boxes are for a separately labelled overlay only; they are never
+    merged into the detection list or used downstream.
+    """
+
+    meta = st.session_state.get("synthetic_meta")
+    if st.session_state.image_name != "SYNTHETIC_LUNAR_FEED" or not meta or not meta.get("craters"):
+        return None
+    return ground_truth_detections(st.session_state.raw_image.shape, meta["craters"])
 
 
 def run_cv_detection() -> None:
@@ -963,6 +969,17 @@ def step_04_detection() -> None:
         else:
             st.info("CV detection not yet run.")
 
+    # ── Synthetic ground truth (separate overlay, never merged into detections) ──
+    gt_boxes = synthetic_ground_truth()
+    if gt_boxes:
+        st.markdown("### Synthetic Ground Truth — generator metadata, not model output")
+        gt_overlay = draw_detections(st.session_state.raw_image, gt_boxes, color=(255, 255, 255))
+        st.image(
+            gt_overlay,
+            caption=f"GROUND TRUTH, NOT MODEL OUTPUT — {len(gt_boxes)} craters written by the synthetic generator",
+            use_container_width=True,
+        )
+
     # ── YOLO detection table (primary) ──
     if detection and yolo_count > 0:
         st.markdown("### YOLO Detection Table (used for downstream pipeline)")
@@ -1068,18 +1085,7 @@ def step_05_depth(params: dict[str, Any]) -> None:
 
         if second_image is not None:
             second_pp = preprocess_pipeline(second_image)
-            second_hint_craters = None
-            if st.session_state.image_name == "SYNTHETIC_LUNAR_FEED" and st.session_state.get("synthetic_meta"):
-                second_hint_craters = st.session_state.synthetic_meta.get("craters")
-
-            if second_hint_craters:
-                second_det = detect_craters(
-                    second_pp["smoothed"],
-                    conf_threshold=0.35,
-                    hint_craters=second_hint_craters,
-                )
-            else:
-                second_det = detect_craters(second_pp["smoothed"], conf_threshold=0.35)
+            second_det = detect_craters(second_pp["smoothed"], conf_threshold=0.35)
 
             second_depth = estimate_crater_depths(
                 image=second_image,

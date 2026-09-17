@@ -29,7 +29,7 @@ import numpy as np  # noqa: E402
 
 from audit_run import replay_crater_specs  # noqa: E402
 from modules.depth import compute_otsu_shadow_mask, measure_shadow_length  # noqa: E402
-from modules.detector import detect_craters  # noqa: E402
+from modules.detector import ground_truth_detections  # noqa: E402
 from modules.preprocess import preprocess_pipeline  # noqa: E402
 from utils.synthetic import generate_synthetic_lunar_surface  # noqa: E402
 
@@ -97,7 +97,7 @@ def evaluate(method: str) -> dict:
         syn = generate_synthetic_lunar_surface(size=512, seed=seed)
         specs = replay_crater_specs(seed)
         pp = preprocess_pipeline(syn["image"])
-        dets = detect_craters(pp["smoothed"], 0.35, hint_craters=syn["craters"])["detections"]
+        dets = ground_truth_detections(syn["image"].shape, syn["craters"])
         est, gt, rad, slope, Ls, boxL, fracs = [], [], [], [], [], [], []
         nan = 0
         for d, s in zip(dets, specs):
@@ -138,7 +138,7 @@ def dump_masks(method: str, seed: int = 42, ids=("CR-01", "CR-05", "CR-08")) -> 
     out = os.path.join(ROOT, "scripts", "audit_masks")
     os.makedirs(out, exist_ok=True)
     syn = generate_synthetic_lunar_surface(size=512, seed=seed)
-    dets = detect_craters(preprocess_pipeline(syn["image"])["smoothed"], 0.35, hint_craters=syn["craters"])["detections"]
+    dets = ground_truth_detections(syn["image"].shape, syn["craters"])
     for d in dets:
         if d["crater_id"] not in ids:
             continue
