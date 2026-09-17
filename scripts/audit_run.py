@@ -660,6 +660,42 @@ def main() -> None:
     md.append("\n### C4 shipped estimator on ray-cast shadow scenes (seeds 42/7/123, elevation 20, azimuth 35)\n")
     md.append("\n".join(f"- {k}: {v!r}" for k, v in c4.items()))
 
+    # ---------------- C5 non-crater terrain score: constant vs measured roughness ----------------
+    # Measured OUTSIDE the timed pipeline so B1 timings keep measuring the same work.
+    c5 = {}
+    for seed in SEEDS:
+        sy = synths[seed]
+        spp = preprocess_pipeline(sy["image"], clip_limit=CLIP, tile_grid_size=(GRID, GRID), sigma=SIGMA)
+        dets = detect_craters(spp["smoothed"], conf_threshold=CONF)["detections"]
+        drows = estimate_crater_depths(sy["image"], dets, THETA, AZIMUTH, PIXEL_SCALE)["rows"]
+        sc = score_landing_safety(drows, TD, GEAR, DENSITY, PIXEL_SCALE)
+        entry = {"zone_summary": sc["summary"]}
+        for mode, image in (("constant_82", None), ("roughness", sy["image"])):
+            smap = build_score_map(sy["image"].shape, sc["rows"], image=image)
+            paths = plan_descent_paths(smap, sc["rows"], PIXEL_SCALE)
+            non_crater = smap[smap > 0]
+            entry[mode] = {
+                "score_map_min": float(smap.min()),
+                "score_map_mean": float(smap.mean()),
+                "score_map_max": float(smap.max()),
+                "score_map_std": float(smap.std()),
+                "path_length_m": paths["path_length_m"],
+                "path_nodes": len(paths["primary_path"]),
+                "goal": list(paths["goal"]),
+                "hazard_crossed": len(paths["hazard_craters_crossed"] or []),
+            }
+        c5[seed] = entry
+    results["C5"] = c5
+    md.append("\n### C5 non-crater terrain score: constant 82 vs measured roughness (YOLO boxes)\n")
+    md.append(md_table(
+        ["seed", "mode", "score map min", "mean", "max", "std", "path length m", "path nodes", "goal px"],
+        [[seed, mode, repr(v["score_map_min"]), repr(v["score_map_mean"]), repr(v["score_map_max"]),
+          repr(v["score_map_std"]), repr(v["path_length_m"]), v["path_nodes"], tuple(v["goal"])]
+         for seed, entry in c5.items() for mode, v in entry.items() if mode != "zone_summary"],
+    ))
+    md.append("\nZone counts are unchanged by this: they come from per-crater scoring, not the terrain map. "
+              + "; ".join(f"seed {seed}: {entry['zone_summary']}" for seed, entry in c5.items()))
+
     with open(OUT_JSON, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=1, default=lambda o: o.item() if hasattr(o, "item") else str(o))
     with open(OUT_MD, "w", encoding="utf-8") as f:

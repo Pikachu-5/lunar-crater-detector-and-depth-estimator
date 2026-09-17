@@ -516,7 +516,11 @@ def ensure_scoring(td: float, gear_span_m: float, density_radius_px: int, pixel_
     )
 
     hazard_map = annotate_hazard_map(st.session_state.raw_image, scoring["rows"])
-    score_map = build_score_map(st.session_state.raw_image.shape, scoring["rows"])
+    # Terrain away from craters is scored from measured local roughness, not a
+    # fixed constant (AUDIT.md A3 #13).
+    score_map = build_score_map(
+        st.session_state.raw_image.shape, scoring["rows"], image=st.session_state.raw_image
+    )
 
     scoring["score_map"] = score_map
     st.session_state.scoring = scoring

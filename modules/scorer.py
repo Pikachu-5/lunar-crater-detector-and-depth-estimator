@@ -218,9 +218,48 @@ def build_safety_gauge(overall_score: float) -> go.Figure:
     return fig
 
 
+def terrain_roughness_score(image: np.ndarray, window_px: int | None = None) -> np.ndarray:
+    """Score terrain away from craters from its local texture roughness.
+
+    Risk model:
+    Rough ground is worse to land on than smooth ground, and roughness is
+    measurable from the image itself: the local standard deviation of intensity
+    over a sliding window. The result is normalised against this image's own 5th
+    and 95th percentile roughness, so the smoothest terrain present scores 100
+    and the roughest scores 0. Nothing here is a fixed assumed score.
+
+    Args:
+        image: Grayscale scene image.
+        window_px: Sliding window side length; derived from image size if None.
+
+    Returns:
+        Float32 score map in [0, 100], high where terrain is smooth.
+    """
+
+    h, w = image.shape[:2]
+    if window_px is None:
+        window_px = int(np.clip(int(min(h, w) * 0.06), 15, 51)) | 1
+    window = (int(window_px) | 1, int(window_px) | 1)
+
+    img = image.astype(np.float32)
+    mean = cv2.blur(img, window)
+    mean_sq = cv2.blur(img * img, window)
+    variance = np.maximum(mean_sq - mean * mean, 0.0)
+    roughness = np.sqrt(variance)
+
+    lo = float(np.percentile(roughness, 5))
+    hi = float(np.percentile(roughness, 95))
+    if hi - lo < 1e-6:
+        return np.full((h, w), 50.0, dtype=np.float32)
+
+    normalised = np.clip((roughness - lo) / (hi - lo), 0.0, 1.0)
+    return (100.0 * (1.0 - normalised)).astype(np.float32)
+
+
 def build_score_map(
     image_shape: tuple[int, int],
     scored_rows: list[dict[str, Any]],
+    image: np.ndarray | None = None,
 ) -> np.ndarray:
     """Rasterize crater scores into a per-pixel terrain score map.
 
@@ -231,13 +270,19 @@ def build_score_map(
     Args:
         image_shape: (height, width) scene size.
         scored_rows: Crater score records.
+        image: Scene image. When given, terrain away from craters is scored
+            from measured local roughness; otherwise the legacy constant
+            NON_CRATER_TERRAIN_SCORE is used (an unmeasured assumption).
 
     Returns:
         Float32 score map in [0, 100].
     """
 
     h, w = image_shape
-    score_map = np.full((h, w), NON_CRATER_TERRAIN_SCORE, dtype=np.float32)
+    if image is not None:
+        score_map = terrain_roughness_score(image).astype(np.float32)
+    else:
+        score_map = np.full((h, w), NON_CRATER_TERRAIN_SCORE, dtype=np.float32)
 
     yy, xx = np.mgrid[0:h, 0:w]
     for row in scored_rows:
