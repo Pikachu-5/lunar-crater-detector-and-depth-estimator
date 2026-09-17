@@ -67,9 +67,11 @@ The repository includes a training script for the crater detector:
 python train_crater_yolo.py
 ```
 
-The script expects the LU3M6TGT YOLO-format dataset inside the `LU3M6TGT_yolo_format` folder and trains a YOLO11s-based crater detector. The active app model path is:
+The script expects the LU3M6TGT YOLO-format dataset inside the `LU3M6TGT_yolo_format` folder and trains a YOLO11m-based crater detector. The active app model path is:
 
-- `best.pt`
+- `best.pt` — YOLO11m, 20,053,779 parameters, 1 class (stored in the checkpoint as `"0"`, displayed as `crater`), input size 416.
+
+**The shipped `best.pt` was not produced by `train_crater_yolo.py`.** The training settings embedded in the checkpoint (`train_args`) record a Kaggle run (`/kaggle/working/crater_data.yaml`) on two GPUs (`device '0,1'`) for 200 configured epochs (136 completed, patience 40) with 180-degree rotation augmentation (`degrees 180.0`). The script instead configures an Intel XPU/local run with 150 epochs, patience 30 and `degrees 15.0`, among other differences. The mAP values stored in the checkpoint come from that Kaggle run's validation split and have not been reproduced here.
 
 If you retrain the model and want to use a new checkpoint, copy the new weights to the root directory as `best.pt` or update `modules/detector.py`.
 

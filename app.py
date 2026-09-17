@@ -1003,7 +1003,7 @@ def step_04_detection() -> None:
         st.markdown("### YOLO Detection Table (used for downstream pipeline)")
         df = pd.DataFrame(detection["detections"])
         st.dataframe(
-            df[["crater_id", "x1", "y1", "x2", "y2", "confidence", "diameter_px"]],
+            df[["crater_id", "class_name", "x1", "y1", "x2", "y2", "confidence", "diameter_px"]],
             use_container_width=True,
             hide_index=True,
         )

@@ -1,4 +1,9 @@
-"""Crater detection module with trained YOLO11m and CV hybrid comparison."""
+"""Crater detection module with trained YOLO11m and CV hybrid comparison.
+
+The shipped detector ``best.pt`` is YOLO11m (20,053,779 parameters, one class,
+input size 416). Its single class is stored in the checkpoint under the name
+"0"; CLASS_DISPLAY_NAMES maps it to "crater" for display.
+"""
 
 from __future__ import annotations
 
@@ -21,6 +26,15 @@ except Exception:  # pragma: no cover - optional runtime dependency behavior
 # --- Path to the trained crater detector weights ---
 _PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULT_MODEL_PATH = os.path.join(_PROJECT_ROOT, "best.pt")
+
+# The checkpoint names its only class "0"; show it as "crater".
+CLASS_DISPLAY_NAMES = {"0": "crater"}
+
+
+def display_class_name(raw_name: str) -> str:
+    """Map a checkpoint class name to its display name."""
+
+    return CLASS_DISPLAY_NAMES.get(str(raw_name), str(raw_name))
 
 
 @lru_cache(maxsize=1)
@@ -169,9 +183,11 @@ def _yolo_inference(
 
     xyxy = boxes.xyxy.cpu().numpy() if boxes.xyxy is not None else np.empty((0, 4))
     confs = boxes.conf.cpu().numpy() if boxes.conf is not None else np.empty((0,))
+    classes = boxes.cls.cpu().numpy().astype(int) if getattr(boxes, "cls", None) is not None else np.zeros(len(confs), int)
+    names = getattr(model, "names", {}) or {}
     h, w = image.shape[:2]
 
-    for idx, (box, conf) in enumerate(zip(xyxy, confs), start=1):
+    for idx, (box, conf, cls) in enumerate(zip(xyxy, confs, classes), start=1):
         x1, y1, x2, y2 = box.tolist()
         ww = max(1.0, x2 - x1)
         hh = max(1.0, y2 - y1)
@@ -185,6 +201,7 @@ def _yolo_inference(
             source="yolo",
             shape=(h, w),
         )
+        det["class_name"] = display_class_name(names.get(int(cls), str(int(cls))))
         detections.append(det)
 
     return detections, f"{model_status}; boxes={len(detections)}"
