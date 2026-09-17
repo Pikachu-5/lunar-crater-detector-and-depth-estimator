@@ -491,11 +491,28 @@ def main() -> None:
                         "gt_rim_to_floor_relief": relief, "est_depth_m": r["depth_m"],
                         "shadow_length_px": r["shadow_length_px"], "error_vs_depth_scale": e,
                         "abs_error_vs_depth_scale": abs(e), "error_vs_relief": r["depth_m"] - relief})
-    est = np.array([r["est_depth_m"] for r in c2_rows])
-    gt = np.array([r["gt_depth_scale"] for r in c2_rows])
-    rad = np.array([r["radius_px"] for r in c2_rows], dtype=float)
-    shadow = np.array([r["shadow_length_px"] for r in c2_rows])
-    c2 = {
+    if not c2_rows:
+        c2 = {
+            "replay_verified_bitwise_equal_height_map": replay_ok,
+            "returned_true_depth_equals_replay": returned_equals_replay,
+            "craters_skipped_not_measurable": n_c2_skipped,
+            "rows": [],
+            "note": "no crater on this scene produced a measurable shadow, so no error statistics exist",
+        }
+        results["C2"] = c2
+        md.append(
+            "\n### C2 ground truth (seed 42, synthetic_meta detections, theta 35, 1.0 m/px) — "
+            f"replay verified: {replay_ok}\n"
+        )
+        md.append(
+            f"\nAll {n_c2_skipped} craters were reported NOT MEASURABLE, so no per-crater errors exist."
+        )
+    else:
+        est = np.array([r["est_depth_m"] for r in c2_rows])
+        gt = np.array([r["gt_depth_scale"] for r in c2_rows])
+        rad = np.array([r["radius_px"] for r in c2_rows], dtype=float)
+        shadow = np.array([r["shadow_length_px"] for r in c2_rows])
+        c2 = {
         "replay_verified_bitwise_equal_height_map": replay_ok,
         "craters_skipped_not_measurable": n_c2_skipped,
         "returned_true_depth_equals_replay": returned_equals_replay,
@@ -509,15 +526,15 @@ def main() -> None:
         "pearson_est_vs_depth_scale": float(np.corrcoef(est, gt)[0, 1]),
         "pearson_est_vs_radius_px": float(np.corrcoef(est, rad)[0, 1]),
         "pearson_shadow_len_vs_radius_px": float(np.corrcoef(shadow, rad)[0, 1]),
-    }
-    results["C2"] = c2
-    md.append(f"\n### C2 ground truth (seed 42, synthetic_meta detections, theta 35, 1.0 m/px) — replay verified: {replay_ok}\n")
-    md.append(md_table(["id", "radius px", "GT depth_scale (height units)", "GT rim-to-floor relief (height units)",
+        }
+        results["C2"] = c2
+        md.append(f"\n### C2 ground truth (seed 42, synthetic_meta detections, theta 35, 1.0 m/px) — replay verified: {replay_ok}\n")
+        md.append(md_table(["id", "radius px", "GT depth_scale (height units)", "GT rim-to-floor relief (height units)",
                         "est depth_m", "est − depth_scale", "|est − depth_scale|", "est − relief"],
                        [[r["crater_id"], r["radius_px"], repr(r["gt_depth_scale"]), repr(r["gt_rim_to_floor_relief"]),
                          r["est_depth_m"], repr(r["error_vs_depth_scale"]), repr(r["abs_error_vs_depth_scale"]),
                          repr(r["error_vs_relief"])] for r in c2_rows]))
-    md.append("\n" + "\n".join(f"- {k}: {v!r}" for k, v in c2.items() if k != "rows"))
+        md.append("\n" + "\n".join(f"- {k}: {v!r}" for k, v in c2.items() if k != "rows"))
 
     # ---------------- C2b depth estimator validity (pooled seeds, ground-truth boxes) ----------------
     factor = math.cos(math.radians(AZIMUTH)) + math.sin(math.radians(AZIMUTH))
@@ -582,6 +599,66 @@ def main() -> None:
         md.append(f"\nFull 46×41 grid distinct (SAFE, CAUTION, HAZARD) outcomes: {c3[label]['grid_distinct_outcomes']}; "
                   f"corners: {c3[label]['grid_corners']}")
     results["C3"] = c3
+
+    # ---------------- C4 shipped estimator on ray-cast shadow scenes ----------------
+    # The legacy scene has no cast shadows at all; this block measures the shipped
+    # estimator on scenes whose shadows come from occlusion ray-casting (item 3).
+    import collections
+
+    def corr(a: list[float], b: list[float]) -> float | None:
+        if len(a) < 3 or float(np.std(a)) == 0 or float(np.std(b)) == 0:
+            return None
+        return float(np.corrcoef(a, b)[0, 1])
+
+    RAY_ELEV = 20.0
+    c4: dict[str, Any] = {"sun_elevation_deg": RAY_ELEV}
+    for box_source in ("ground_truth", "yolo"):
+        reasons: collections.Counter[str] = collections.Counter()
+        ray = {"est": [], "gt": [], "rad": [], "slope": []}
+        total = 0
+        for seed in SEEDS:
+            sy = generate_synthetic_lunar_surface(
+                size=SIZE, seed=seed, cast_shadows=True, sun_elevation_deg=RAY_ELEV, sun_angle_deg=AZIMUTH
+            )
+            gt_by_id = {f"CR-{i + 1:02d}": c for i, c in enumerate(sy["craters"])}
+            if box_source == "ground_truth":
+                dets = detect_ground_truth(sy["image"], sy["craters"])["detections"]
+            else:
+                spp = preprocess_pipeline(sy["image"], clip_limit=CLIP, tile_grid_size=(GRID, GRID), sigma=SIGMA)
+                dets = detect_craters(spp["smoothed"], conf_threshold=CONF)["detections"]
+            depth_rows = estimate_crater_depths(sy["image"], dets, RAY_ELEV, AZIMUTH, PIXEL_SCALE)["rows"]
+            for r in depth_rows:
+                total += 1
+                if r["depth_m"] is None:
+                    reasons[(r["not_measurable_reason"] or "unknown").split(":")[0].split(",")[0]] += 1
+                    continue
+                reasons["MEASURED"] += 1
+                ray["est"].append(r["depth_m"])
+                ray["slope"].append(r["slope_estimate_deg"])
+                # YOLO ids do not correspond to generator craters; match by centre distance.
+                if box_source == "ground_truth":
+                    crater = gt_by_id[r["crater_id"]]
+                else:
+                    crater = min(
+                        sy["craters"],
+                        key=lambda c: (c["center_x"] - r["center_x"]) ** 2 + (c["center_y"] - r["center_y"]) ** 2,
+                    )
+                ray["gt"].append(crater["true_depth"])
+                ray["rad"].append(crater["radius_px"])
+        c4[box_source] = {
+            "craters": total,
+            "measured": len(ray["est"]),
+            "not_measurable": total - len(ray["est"]),
+            "rejection_reasons": {k: v for k, v in sorted(reasons.items(), key=lambda kv: -kv[1])},
+            "pearson_est_vs_true_depth": corr(ray["est"], ray["gt"]),
+            "pearson_est_vs_radius_px": corr(ray["est"], ray["rad"]),
+            "slope_min_deg": min(ray["slope"]) if ray["slope"] else None,
+            "slope_max_deg": max(ray["slope"]) if ray["slope"] else None,
+            "slope_std_deg": float(np.std(ray["slope"])) if ray["slope"] else None,
+        }
+    results["C4"] = c4
+    md.append("\n### C4 shipped estimator on ray-cast shadow scenes (seeds 42/7/123, elevation 20, azimuth 35)\n")
+    md.append("\n".join(f"- {k}: {v!r}" for k, v in c4.items()))
 
     with open(OUT_JSON, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=1, default=lambda o: o.item() if hasattr(o, "item") else str(o))

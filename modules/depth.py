@@ -133,9 +133,15 @@ def measure_crater_shadow(
     below makes the projected length something other than a shadow length, so
     the function returns ``length_px = None`` with a reason instead of a number.
 
-    Shadow-side convention: the shadow is expected on the anti-solar side of the
-    crater centre, i.e. along ``solar_azimuth_deg + 180``. ``solar_azimuth_deg``
-    is therefore the direction TOWARDS the sun in image coordinates.
+    Shadow-side convention: inside a crater the cast shadow lies against the
+    UP-SUN rim, i.e. on the half of the interior towards the sun, and extends
+    down-sun across the floor. (Terrain outside the rim is shadowed on the
+    anti-solar side, but that shadow is set by rim height, not crater depth.)
+    Measured on ray-cast scenes (scripts/shadow_sanity.py, 29 craters over
+    seeds 42/7/123): the mean shadow position is +0.53 crater radii along the
+    direction towards the sun, and 0 of 29 craters have their interior shadow
+    on the anti-solar side. ``solar_azimuth_deg`` is the direction TOWARDS the
+    sun in image coordinates.
 
     Args:
         roi: Grayscale crater crop.
@@ -175,21 +181,21 @@ def measure_crater_shadow(
         )
 
     n_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(mask, connectivity=8)
-    anti = math.radians((solar_azimuth_deg + 180.0) % 360.0)
-    anti_vec = (math.cos(anti), math.sin(anti))
+    sun = math.radians(solar_azimuth_deg % 360.0)
+    sun_vec = (math.cos(sun), math.sin(sun))
 
     best_label, best_area = 0, 0
     for label in range(1, n_labels):
         cx, cy = centroids[label]
-        side = (cx - center[0]) * anti_vec[0] + (cy - center[1]) * anti_vec[1]
+        side = (cx - center[0]) * sun_vec[0] + (cy - center[1]) * sun_vec[1]
         if side <= 0.0:
-            continue  # component sits on the sunlit side
+            continue  # component sits on the down-sun (lit) half of the floor
         area = int(stats[label, cv2.CC_STAT_AREA])
         if area > best_area:
             best_label, best_area = label, area
 
     if best_label == 0:
-        return fail("no shadow component on the anti-solar side of the crater", fraction, empty)
+        return fail("no shadow component against the up-sun rim of the crater", fraction, empty)
 
     keep = np.where(labels == best_label, 255, 0).astype(np.uint8)
     if best_area < MIN_SHADOW_PIXELS:

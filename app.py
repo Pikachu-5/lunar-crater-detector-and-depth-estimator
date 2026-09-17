@@ -94,7 +94,11 @@ def init_state() -> None:
 
     if "raw_image" not in st.session_state:
         # Initial synthetic scene uses seed 42 (reproducible default); Regenerate draws a fresh seed.
-        synth = generate_synthetic_lunar_surface(size=512, seed=42)
+        # Shadows are ray-cast by occlusion over the height field, so shadow-based
+        # depth estimation has something physical to recover.
+        synth = generate_synthetic_lunar_surface(
+            size=512, seed=42, cast_shadows=True, sun_angle_deg=35.0, sun_elevation_deg=35.0
+        )
         st.session_state.synthetic_seed = 42
         st.session_state.raw_image = synth["image"]
         st.session_state.synthetic_meta = synth
@@ -693,19 +697,39 @@ def render_sidebar() -> dict[str, Any]:
         st.markdown("---")
         if st.button("↻ Regenerate Synthetic Surface", use_container_width=True):
             seed = int(np.random.default_rng().integers(0, 2**31 - 1))
-            synth = generate_synthetic_lunar_surface(size=512, seed=seed)
+            synth = generate_synthetic_lunar_surface(
+                size=512,
+                seed=seed,
+                cast_shadows=True,
+                sun_angle_deg=float(solar_azimuth),
+                sun_elevation_deg=float(theta),
+            )
             st.session_state.synthetic_seed = seed
             st.session_state.raw_image = synth["image"]
             st.session_state.synthetic_meta = synth
             st.session_state.image_name = "SYNTHETIC_LUNAR_FEED"
             st.session_state.file_size_bytes = None
             reset_downstream(start_step=3)
-            append_log(f"[SYNTH] >> Regenerated synthetic lunar surface with seed={seed}")
-        if st.session_state.image_name == "SYNTHETIC_LUNAR_FEED" and st.session_state.synthetic_seed is not None:
-            st.caption(
-                f"Synthetic seed: {st.session_state.synthetic_seed} — reproduce with "
-                f"generate_synthetic_lunar_surface(size=512, seed={st.session_state.synthetic_seed})"
+            append_log(
+                f"[SYNTH] >> Regenerated synthetic lunar surface with seed={seed}, "
+                f"ray-cast shadows at elevation={theta} deg, azimuth={solar_azimuth} deg"
             )
+        if st.session_state.image_name == "SYNTHETIC_LUNAR_FEED" and st.session_state.synthetic_seed is not None:
+            shadow_params = (st.session_state.get("synthetic_meta") or {}).get("shadow_params")
+            if shadow_params:
+                st.caption(
+                    f"Synthetic seed: {st.session_state.synthetic_seed}; ray-cast shadows at "
+                    f"elevation {shadow_params['sun_elevation_deg']:g} deg, azimuth "
+                    f"{shadow_params['sun_azimuth_deg']:g} deg. Reproduce with "
+                    f"generate_synthetic_lunar_surface(size=512, seed={st.session_state.synthetic_seed}, "
+                    f"cast_shadows=True, sun_angle_deg={shadow_params['sun_azimuth_deg']:g}, "
+                    f"sun_elevation_deg={shadow_params['sun_elevation_deg']:g})"
+                )
+            else:
+                st.caption(
+                    f"Synthetic seed: {st.session_state.synthetic_seed} — reproduce with "
+                    f"generate_synthetic_lunar_surface(size=512, seed={st.session_state.synthetic_seed})"
+                )
 
     return {
         "theta": theta,
