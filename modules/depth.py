@@ -246,7 +246,8 @@ def fuse_depth_estimates(
         iou_threshold: Minimum IoU to accept a crater match.
 
     Returns:
-        Dictionary containing fused rows and uncertainty reduction estimate.
+        Dictionary containing fused rows and the mean absolute depth difference
+        between the two views for matched craters.
     """
 
     fused_rows: list[dict[str, Any]] = []
@@ -281,16 +282,13 @@ def fuse_depth_estimates(
             )
 
     if len(fused_rows) == 0:
-        return {"rows": [], "uncertainty_reduction_pct": 0.0}
+        return {"rows": [], "mean_abs_view_difference_m": None}
 
-    single = np.array([r["single_angle_depth_m"] for r in fused_rows], dtype=np.float64)
-    fused = np.array([r["fused_depth_m"] for r in fused_rows], dtype=np.float64)
-
-    sigma_single = float(np.std(single) + 1e-9)
-    sigma_fused = float(np.std(fused) + 1e-9)
-    reduction = max(0.0, (sigma_single - sigma_fused) / sigma_single * 100.0)
+    # No per-estimate uncertainty exists, so no "uncertainty reduction" is
+    # reported. The measurable quantity is how much the two views disagree.
+    diffs = [abs(r["single_angle_depth_m"] - r["secondary_depth_m"]) for r in fused_rows]
 
     return {
         "rows": fused_rows,
-        "uncertainty_reduction_pct": round(reduction, 2),
+        "mean_abs_view_difference_m": round(float(np.mean(diffs)), 3),
     }

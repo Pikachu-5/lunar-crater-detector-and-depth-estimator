@@ -14,11 +14,23 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 from modules.depth import estimate_crater_depths, fuse_depth_estimates
-from modules.detector import detect_craters, detect_craters_cv, draw_detections, ground_truth_detections
+from modules.detector import (
+    checkpoint_reported_metrics,
+    detect_craters,
+    detect_craters_cv,
+    draw_detections,
+    ground_truth_detections,
+)
 from modules.pathfinder import draw_paths_on_map, plan_descent_paths
-from modules.preprocess import compute_histogram, image_stats, preprocess_pipeline
+from modules.preprocess import compute_histogram, gaussian_kernel_size, image_stats, preprocess_pipeline
 from modules.reporter import build_mission_pdf, crater_rows_to_csv, image_to_png_bytes
-from modules.scorer import annotate_hazard_map, build_safety_gauge, build_score_map, score_landing_safety
+from modules.scorer import (
+    NON_CRATER_TERRAIN_SCORE,
+    annotate_hazard_map,
+    build_safety_gauge,
+    build_score_map,
+    score_landing_safety,
+)
 from modules.terrain3d import build_depth_map, make_contour_figure, make_heatmap_figure, make_surface_figure
 from utils.synthetic import generate_secondary_solar_view, generate_synthetic_lunar_surface
 from utils.ui_components import (
@@ -131,7 +143,7 @@ def init_state() -> None:
         st.session_state.pp_sigma = 1.2
 
     if "terrain_profile" not in st.session_state:
-        st.session_state.terrain_profile = "High Fidelity (512 MB)"
+        st.session_state.terrain_profile = "High Fidelity"
 
     if "depth_signature" not in st.session_state:
         st.session_state.depth_signature = None
@@ -339,7 +351,7 @@ def run_detection() -> None:
         "step4_detected",
         "[DETECTOR] >> "
         f"Source: {detection['source']} | Craters detected: {len(detection['detections'])} "
-        f"| mAP@0.5: {detection['map50_proxy']:.3f} | Time: {detection['elapsed_s']:.2f}s",
+        f"| Time: {detection['elapsed_s']:.2f}s",
     )
     append_log(f"[DETECTOR-DETAIL] >> {detection['status']}")
 
@@ -368,6 +380,7 @@ def run_cv_detection() -> None:
         st.session_state.raw_image,
         cv_det["detections"],
         color=(255, 179, 0),
+        show_confidence=False,
     )
     cv_det["overlay"] = cv_overlay
     st.session_state.cv_detection = cv_det
@@ -432,28 +445,13 @@ def _terrain_profile_target_size(profile: str, shape: tuple[int, int]) -> int:
 
     h, w = shape
     max_dim = max(h, w)
-    if profile == "Balanced (256 MB)":
+    if profile == "Balanced":
         return int(np.clip(min(max_dim, 520), 320, 520))
-    if profile == "Max Fidelity (1 GB)":
+    if profile == "Max Fidelity":
         return int(np.clip(min(max_dim, 960), 420, 960))
     if profile == "Adaptive":
         return int(np.clip(min(max_dim, 760), 360, 760))
     return int(np.clip(min(max_dim, 720), 380, 720))
-
-
-def _estimate_surface_memory_mb(target_size: int) -> float:
-    """Estimate memory footprint for Plotly 3D mesh buffers.
-
-    Args:
-        target_size: Approximate max dimension of rendered surface grid.
-
-    Returns:
-        Estimated memory usage in MB.
-    """
-
-    points = float(target_size * target_size)
-    bytes_estimate = points * 48.0
-    return bytes_estimate / (1024.0 * 1024.0)
 
 
 def ensure_terrain(profile: str) -> None:
@@ -464,14 +462,14 @@ def ensure_terrain(profile: str) -> None:
 
     depth_map = build_depth_map(st.session_state.raw_image.shape, st.session_state.depth["rows"])
     target_size = _terrain_profile_target_size(profile, depth_map.shape)
-    est_mb = _estimate_surface_memory_mb(target_size)
+    surface_fig = make_surface_figure(depth_map, downsample=True, target_size=target_size)
     st.session_state.terrain = {
         "depth_map": depth_map,
         "heatmap_fig": make_heatmap_figure(depth_map),
-        "surface_fig": make_surface_figure(depth_map, downsample=True, target_size=target_size),
+        "surface_fig": surface_fig,
         "contour_fig": make_contour_figure(depth_map),
         "surface_target_size": target_size,
-        "surface_memory_est_mb": est_mb,
+        "surface_grid_shape": tuple(np.shape(surface_fig.data[0].z)),
         "surface_profile": profile,
     }
     st.session_state.completed_steps.add(6)
@@ -591,13 +589,14 @@ def render_sidebar() -> dict[str, Any]:
         st.markdown("---")
         terrain_profile = st.selectbox(
             "3D Terrain Memory Profile",
-            options=["Balanced (256 MB)", "High Fidelity (512 MB)", "Max Fidelity (1 GB)", "Adaptive"],
-            index=["Balanced (256 MB)", "High Fidelity (512 MB)", "Max Fidelity (1 GB)", "Adaptive"].index(
+            options=["Balanced", "High Fidelity", "Max Fidelity", "Adaptive"],
+            index=["Balanced", "High Fidelity", "Max Fidelity", "Adaptive"].index(
                 st.session_state.terrain_profile
-                if st.session_state.terrain_profile in {"Balanced (256 MB)", "High Fidelity (512 MB)", "Max Fidelity (1 GB)", "Adaptive"}
-                else "High Fidelity (512 MB)"
+                if st.session_state.terrain_profile in {"Balanced", "High Fidelity", "Max Fidelity", "Adaptive"}
+                else "High Fidelity"
             ),
-            help="Raises 3D mesh capacity beyond the legacy 200-size render path. Higher fidelity needs more RAM/VRAM.",
+            help="Sets the 3D surface mesh's maximum dimension: Balanced 520 px, High Fidelity 720 px, "
+            "Adaptive 760 px, Max Fidelity 960 px (never above the image size). Memory use is not measured.",
         )
         if terrain_profile != st.session_state.terrain_profile:
             st.session_state.terrain_profile = terrain_profile
@@ -858,7 +857,7 @@ def step_03_preprocess() -> None:
         f"""
         <code>G(x,y) = (1 / 2πσ²) × exp(-(x² + y²) / 2σ²)</code><br/>
         σ = {sigma:.1f} px &nbsp;→&nbsp;
-        kernel ≈ {max(3, int(round(sigma * 4.5)) | 1)}×{max(3, int(round(sigma * 4.5)) | 1)} px
+        kernel = {gaussian_kernel_size(sigma)}×{gaussian_kernel_size(sigma)} px (OpenCV auto size for 8-bit: round(6σ+1) | 1)
         """,
     )
 
@@ -918,6 +917,15 @@ def step_04_detection() -> None:
     cv_count = len(cv_detection["detections"]) if cv_detection else 0
 
     st.markdown("### Detection Results")
+
+    ckpt_metrics = checkpoint_reported_metrics()
+    if ckpt_metrics and "map50" in ckpt_metrics:
+        st.caption(
+            f"Reported by the checkpoint from training, not measured on this image: "
+            f"mAP@0.5 = {ckpt_metrics['map50']}"
+            + (f", mAP@0.5:0.95 = {ckpt_metrics['map50_95']}" if "map50_95" in ckpt_metrics else "")
+            + ". No detection accuracy is measured in this app."
+        )
 
     # Metric cards
     m1, m2, m3, m4 = st.columns(4)
@@ -1067,6 +1075,11 @@ def step_05_depth(params: dict[str, Any]) -> None:
 
     if params["enable_fusion"]:
         st.markdown("### Multi-Angle Depth Fusion")
+        st.caption(
+            "Second-view angles are ASSUMED, not observed: θ+15° (clipped to 10–80°) and φ+25°. "
+            "In synthetic mode the second view is SIMULATED — the same image with an added linear "
+            "brightness gradient, not a different illumination."
+        )
 
         second_image = None
         if st.session_state.image_name == "SYNTHETIC_LUNAR_FEED":
@@ -1101,9 +1114,14 @@ def step_05_depth(params: dict[str, Any]) -> None:
             if len(fusion["rows"]) > 0:
                 fdf = pd.DataFrame(fusion["rows"])
                 st.dataframe(fdf, use_container_width=True, hide_index=True)
+                st.caption(
+                    f"Matched craters: {len(fusion['rows'])} | mean absolute depth difference between views: "
+                    f"{fusion['mean_abs_view_difference_m']:.3f} m"
+                )
                 log_once(
                     f"fusion_{params['theta']}",
-                    f"[FUSION] >> Depth uncertainty reduced by {fusion['uncertainty_reduction_pct']:.2f}%",
+                    f"[FUSION] >> Matched {len(fusion['rows'])} craters | mean |view1 - view2| depth = "
+                    f"{fusion['mean_abs_view_difference_m']:.3f} m",
                 )
             else:
                 st.info("Fusion attempted but no crater correspondences passed IoU threshold.")
@@ -1134,7 +1152,7 @@ def step_06_terrain(params: dict[str, Any]) -> None:
 
     st.caption(
         f"3D profile: {terrain['surface_profile']} | mesh target: {terrain['surface_target_size']} px | "
-        f"estimated render memory: {terrain['surface_memory_est_mb']:.1f} MB"
+        f"rendered surface grid: {terrain['surface_grid_shape'][0]}×{terrain['surface_grid_shape'][1]} points"
     )
 
     col1, col2 = st.columns([1.2, 1.0])
@@ -1384,25 +1402,34 @@ def step_08_path(params: dict[str, Any]) -> None:
             st.plotly_chart(fig, use_container_width=True)
 
     gx, gy = paths["goal"]
+    crossed_ids = f"({', '.join(paths['hazard_craters_crossed'])})" if paths["hazard_craters_crossed"] else ""
     st.markdown(
         f"""
         <div class='glow-panel'>
             <b>RECOMMENDED LANDING COORDINATES</b><br/>
-            Pixel: ({gx}, {gy})<br/>
-            Confidence: <span style='color:#7dd3fc'>{paths['landing_confidence']:.1f}%</span><br/>
-            Path Length: {paths['path_length_m']:.1f} m
+            Pixel: ({gx}, {gy}) — centre of {paths['goal_crater_id']} (zone: {paths['goal_zone']})<br/>
+            Path Length: {paths['path_length_m']:.1f} m<br/>
+            HAZARD craters the route passes through (excluding the goal crater):
+            {len(paths['hazard_craters_crossed'])} of {paths['hazard_craters_other_than_goal']}
+            {crossed_ids}
         </div>
         """,
         unsafe_allow_html=True,
     )
 
     st.image(paths["overlay"], caption="Path Overlay on Hazard Map", use_container_width=True)
+    st.caption(
+        f"Assumption: terrain away from detected craters is assigned a fixed safety score of "
+        f"{NON_CRATER_TERRAIN_SCORE:g} (not measured). The goal is the highest-scoring crater in the best "
+        f"available zone; no landing confidence is computed."
+    )
 
     log_once(
         "step8_path",
         "[PATHFINDER] >> A* complete | "
-        f"Path length: {paths['path_length_m']:.1f}m | Obstacles avoided: {paths['obstacles_avoided']} | "
-        f"LZ confidence: {paths['landing_confidence']:.0f}%",
+        f"Path length: {paths['path_length_m']:.1f}m | HAZARD craters crossed (excl. goal): "
+        f"{len(paths['hazard_craters_crossed'])}/{paths['hazard_craters_other_than_goal']} | "
+        f"goal zone: {paths['goal_zone']}",
     )
 
 

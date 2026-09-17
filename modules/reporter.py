@@ -160,7 +160,6 @@ def build_mission_pdf(
     story.append(Paragraph(f"NASA Mission Control Report - {mission_id}", title_style))
     story.append(Spacer(1, 0.2 * cm))
     story.append(Paragraph(f"Timestamp: {datetime.utcnow().isoformat()}Z", mono))
-    story.append(Paragraph("Telemetry: NOMINAL", mono))
     story.append(Paragraph(f"Overall Terrain Safety Score: {overall_score:.2f}/100", mono))
 
     if recommended_coordinates is not None:

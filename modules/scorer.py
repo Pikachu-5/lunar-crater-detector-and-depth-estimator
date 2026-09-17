@@ -9,6 +9,12 @@ import numpy as np
 import plotly.graph_objects as go
 
 
+# Score assigned to every pixel not influenced by a detected crater. This is a
+# modelling assumption (no terrain measurement exists away from craters); it is
+# shown to the user as an assumption in the path-planning step.
+NON_CRATER_TERRAIN_SCORE = 82.0
+
+
 def _local_density(
     rows: list[dict[str, Any]],
     index: int,
@@ -215,7 +221,7 @@ def build_score_map(
     """
 
     h, w = image_shape
-    score_map = np.full((h, w), 82.0, dtype=np.float32)
+    score_map = np.full((h, w), NON_CRATER_TERRAIN_SCORE, dtype=np.float32)
 
     yy, xx = np.mgrid[0:h, 0:w]
     for row in scored_rows:

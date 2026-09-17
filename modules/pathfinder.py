@@ -191,8 +191,9 @@ def plan_descent_paths(
         pixel_scale_m: Meters per original image pixel.
 
     Returns:
-        Dictionary with primary path, alternatives, target coordinates, and
-        mission metrics such as length and confidence.
+        Dictionary with primary path, alternatives, target coordinates, path
+        length, the goal crater and its zone, and which HAZARD craters (other
+        than the goal) the primary path passes through.
     """
 
     h, w = score_map.shape
@@ -233,18 +234,44 @@ def plan_descent_paths(
     length_px = _path_length(primary)
     length_m = float(length_px * pixel_scale_m)
 
-    hazards_avoided = sum(1 for row in scored_rows if row["zone"] == "HAZARD")
-    confidence = float(np.clip(goal_score + 0.2 * (100.0 - min(100.0, hazards_avoided * 8.0)), 40.0, 99.0))
+    goal_row = next(
+        (r for r in scored_rows if int(r["center_x"]) == goal_x and int(r["center_y"]) == goal_y),
+        None,
+    )
+    hazard_rows = [r for r in scored_rows if r["zone"] == "HAZARD" and r is not goal_row]
+    crossed = [r["crater_id"] for r in hazard_rows if primary and _path_enters_crater(primary, r)]
 
     return {
         "start": start_orig,
         "goal": (goal_x, goal_y),
+        "goal_crater_id": goal_row["crater_id"] if goal_row else None,
+        "goal_zone": goal_row["zone"] if goal_row else None,
         "primary_path": primary,
         "alternative_paths": alt_paths,
         "path_length_m": round(length_m, 2),
-        "obstacles_avoided": int(hazards_avoided),
-        "landing_confidence": round(confidence, 2),
+        "hazard_craters_other_than_goal": len(hazard_rows),
+        "hazard_craters_crossed": crossed if primary else None,
     }
+
+
+def _path_enters_crater(path: list[tuple[int, int]], row: dict[str, Any]) -> bool:
+    """Return True if the polyline passes within the crater's radius.
+
+    Each segment is sampled at <= 1 px spacing so crossings between waypoints
+    (which are ~2.8 px apart on the downsampled A* grid) are not missed.
+    """
+
+    cx, cy, r = float(row["center_x"]), float(row["center_y"]), float(row["radius_px"])
+    pts = path if len(path) > 1 else path * 2
+    for (x0, y0), (x1, y1) in zip(pts[:-1], pts[1:]):
+        n = max(1, int(math.ceil(math.hypot(x1 - x0, y1 - y0))))
+        for i in range(n + 1):
+            t = i / n
+            x = x0 + t * (x1 - x0)
+            y = y0 + t * (y1 - y0)
+            if (x - cx) ** 2 + (y - cy) ** 2 <= r * r:
+                return True
+    return False
 
 
 def draw_paths_on_map(

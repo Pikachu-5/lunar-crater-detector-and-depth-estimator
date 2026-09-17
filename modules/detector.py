@@ -47,6 +47,35 @@ def load_yolo_model(model_path: str = DEFAULT_MODEL_PATH) -> tuple[Any | None, s
         return None, f"Failed to load {model_path}: {exc}"
 
 
+def checkpoint_reported_metrics(model_path: str = DEFAULT_MODEL_PATH) -> dict[str, float] | None:
+    """Read the validation metrics stored inside the checkpoint at training time.
+
+    These numbers were written by the training run on its own validation split.
+    They are NOT measured on the image being analysed and must be labelled as
+    "reported by the checkpoint from training".
+
+    Args:
+        model_path: Path to the trained .pt checkpoint.
+
+    Returns:
+        Dict with precision, recall, map50, map50_95, or None if unavailable.
+    """
+
+    model, _ = load_yolo_model(model_path=model_path)
+    ckpt = getattr(model, "ckpt", None) if model is not None else None
+    metrics = ckpt.get("train_metrics") if isinstance(ckpt, dict) else None
+    if not metrics:
+        return None
+    keys = {
+        "precision": "metrics/precision(B)",
+        "recall": "metrics/recall(B)",
+        "map50": "metrics/mAP50(B)",
+        "map50_95": "metrics/mAP50-95(B)",
+    }
+    out = {name: float(metrics[k]) for name, k in keys.items() if k in metrics}
+    return out or None
+
+
 def _to_detection_record(
     crater_id: str,
     cx: float,
@@ -514,7 +543,6 @@ def detect_craters(
         "source": "yolo",
         "elapsed_s": elapsed,
         "status": f"{yolo_status} | conf>={conf_threshold:.2f}",
-        "map50_proxy": 0.847,
     }
 
 
@@ -561,7 +589,6 @@ def detect_craters_cv(
         "source": "cv-hybrid",
         "elapsed_s": elapsed,
         "status": f"CV hybrid: Hough+LoG | craters={len(detections)} | scale={scale:.3f}",
-        "map50_proxy": 0.82,
     }
 
 
@@ -569,6 +596,7 @@ def draw_detections(
     image: np.ndarray,
     detections: list[dict[str, Any]],
     color: tuple[int, int, int] = (0, 255, 159),
+    show_confidence: bool = True,
 ) -> np.ndarray:
     """Render detection boxes and labels for operator inspection.
 
@@ -576,6 +604,8 @@ def draw_detections(
         image: Input grayscale or RGB image.
         detections: Crater detection records.
         color: RGB box color.
+        show_confidence: Append the confidence to each label. Disable for
+            scores that are not model probabilities (e.g. CV heuristics).
 
     Returns:
         RGB image with overlays.
@@ -590,7 +620,7 @@ def draw_detections(
         x1, y1, x2, y2 = det["x1"], det["y1"], det["x2"], det["y2"]
         cv2.rectangle(canvas, (x1, y1), (x2, y2), color, 2)
         conf = det.get("confidence")
-        label = det["crater_id"] if conf is None else f"{det['crater_id']} {conf:.2f}"
+        label = det["crater_id"] if conf is None or not show_confidence else f"{det['crater_id']} {conf:.2f}"
         cv2.putText(
             canvas,
             label,

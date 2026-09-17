@@ -357,8 +357,10 @@ def main() -> None:
                 "start": p["start"],
                 "goal": p["goal"],
                 "planning_grid_shape": list(ds_map.shape),
-                "landing_confidence": p["landing_confidence"],
-                "obstacles_avoided": p["obstacles_avoided"],
+                "goal_crater_id": p["goal_crater_id"],
+                "goal_zone": p["goal_zone"],
+                "hazard_craters_crossed": p["hazard_craters_crossed"],
+                "hazard_craters_other_than_goal": p["hazard_craters_other_than_goal"],
             }
             ss = summary(scores)
             b4_rows.append([seed, label, len(scores), repr(ss.get("min")), repr(ss.get("median")), repr(ss.get("max")),
@@ -367,7 +369,7 @@ def main() -> None:
             pr = seed_res[f"{label}_paths"]
             b5_rows.append([seed, label, pr["route_found"], repr(pr["path_length_m"]), pr["path_nodes"],
                             f"{pr['alternatives_succeeded']}/3", pr["alt_nodes"], pr["start"], pr["goal"],
-                            "x".join(map(str, pr["planning_grid_shape"])), repr(pr["landing_confidence"])])
+                            "x".join(map(str, pr["planning_grid_shape"])), pr["goal_zone"], f"{len(pr['hazard_craters_crossed'])}/{pr['hazard_craters_other_than_goal']}"])
         per_seed[seed] = seed_res
     results["per_seed"] = per_seed
 
@@ -405,7 +407,7 @@ def main() -> None:
                         "overall_score"], b4_rows))
     md.append("\n### B5 pathfinding\n")
     md.append(md_table(["seed", "detections", "route found", "path length m", "path nodes", "alternatives ok",
-                        "alt nodes", "start px", "goal px", "A* grid (h x w)", "landing_confidence (heuristic)"], b5_rows))
+                        "alt nodes", "start px", "goal px", "A* grid (h x w)", "goal zone", "HAZARD craters crossed (excl. goal)"], b5_rows))
 
     # ---------------- C1 solar angle sweep ----------------
     syn = synths[42]
