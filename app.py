@@ -92,7 +92,9 @@ def init_state() -> None:
         st.session_state.terminal_logs = []
 
     if "raw_image" not in st.session_state:
-        synth = generate_synthetic_lunar_surface(size=512)
+        # Initial synthetic scene uses seed 42 (reproducible default); Regenerate draws a fresh seed.
+        synth = generate_synthetic_lunar_surface(size=512, seed=42)
+        st.session_state.synthetic_seed = 42
         st.session_state.raw_image = synth["image"]
         st.session_state.synthetic_meta = synth
         st.session_state.image_name = "SYNTHETIC_LUNAR_FEED"
@@ -153,6 +155,12 @@ def init_state() -> None:
 
     if "last_score_slider_signature" not in st.session_state:
         st.session_state.last_score_slider_signature = None
+
+    if "synthetic_seed" not in st.session_state:
+        st.session_state.synthetic_seed = None
+
+    if "last_conf_threshold" not in st.session_state:
+        st.session_state.last_conf_threshold = None
 
 
 def append_log(message: str) -> None:
@@ -329,8 +337,12 @@ def ensure_preprocess() -> None:
         )
 
 
-def run_detection() -> None:
-    """Execute YOLO crater detection and cache results."""
+def run_detection(conf_threshold: float) -> None:
+    """Execute YOLO crater detection and cache results.
+
+    Args:
+        conf_threshold: Minimum YOLO confidence for a box to be kept.
+    """
 
     ensure_preprocess()
     smoothed = st.session_state.preprocess["smoothed"]
@@ -339,8 +351,9 @@ def run_detection() -> None:
     # never substituted for model output (see synthetic_ground_truth()).
     detection = detect_craters(
         smoothed,
-        conf_threshold=0.35,
+        conf_threshold=conf_threshold,
     )
+    st.session_state.last_conf_threshold = conf_threshold
 
     overlay = draw_detections(st.session_state.raw_image, detection["detections"])
     detection["overlay"] = overlay
@@ -584,6 +597,16 @@ def render_sidebar() -> dict[str, Any]:
         pixel_scale = st.slider("Pixel Scale (m/px)", min_value=0.2, max_value=4.0, value=1.0, step=0.1)
         st.caption("Converts pixel distances to meters for depth, path length, and safety calculations.")
 
+        conf_threshold = st.slider(
+            "Detection Confidence Threshold",
+            min_value=0.05,
+            max_value=0.95,
+            value=0.35,
+            step=0.05,
+            help="Minimum YOLO confidence for a box to be kept. Changing it clears detections; re-run Step 4.",
+        )
+        st.caption("YOLO boxes below this confidence are discarded before depth estimation.")
+
         with st.expander("What this controls"):
             st.markdown(
                 """
@@ -623,6 +646,15 @@ def render_sidebar() -> dict[str, Any]:
                 "Restart Streamlit after config changes to apply the 210 MB minimum limits."
             )
 
+        prev_conf = st.session_state.last_conf_threshold
+        if prev_conf is not None and abs(prev_conf - conf_threshold) > 1e-9 and st.session_state.detection is not None:
+            reset_downstream(start_step=4)
+            st.session_state.last_conf_threshold = None
+            append_log(
+                f"[PARAM] >> Detection confidence changed {prev_conf:.2f} -> {conf_threshold:.2f}; "
+                "detections cleared, re-run YOLO detection."
+            )
+
         depth_slider_signature = (
             round(float(theta), 3),
             int(solar_azimuth),
@@ -658,13 +690,20 @@ def render_sidebar() -> dict[str, Any]:
 
         st.markdown("---")
         if st.button("↻ Regenerate Synthetic Surface", use_container_width=True):
-            synth = generate_synthetic_lunar_surface(size=512)
+            seed = int(np.random.default_rng().integers(0, 2**31 - 1))
+            synth = generate_synthetic_lunar_surface(size=512, seed=seed)
+            st.session_state.synthetic_seed = seed
             st.session_state.raw_image = synth["image"]
             st.session_state.synthetic_meta = synth
             st.session_state.image_name = "SYNTHETIC_LUNAR_FEED"
             st.session_state.file_size_bytes = None
             reset_downstream(start_step=3)
-            append_log("[SYNTH] >> Regenerated synthetic lunar surface with crater metadata")
+            append_log(f"[SYNTH] >> Regenerated synthetic lunar surface with seed={seed}")
+        if st.session_state.image_name == "SYNTHETIC_LUNAR_FEED" and st.session_state.synthetic_seed is not None:
+            st.caption(
+                f"Synthetic seed: {st.session_state.synthetic_seed} — reproduce with "
+                f"generate_synthetic_lunar_surface(size=512, seed={st.session_state.synthetic_seed})"
+            )
 
     return {
         "theta": theta,
@@ -673,6 +712,7 @@ def render_sidebar() -> dict[str, Any]:
         "gear_span": gear_span,
         "density_radius": density_radius,
         "pixel_scale": pixel_scale,
+        "conf_threshold": float(conf_threshold),
         "enable_fusion": enable_fusion,
         "terrain_profile": terrain_profile,
     }
@@ -703,6 +743,7 @@ def step_01_briefing() -> None:
             st.session_state.image_name = uploader.name
             st.session_state.file_size_bytes = size_bytes
             st.session_state.synthetic_meta = None
+            st.session_state.synthetic_seed = None
             reset_downstream(start_step=3)
             append_log(f"[UPLOAD] >> New telemetry image acquired: {uploader.name}")
             if resize_note:
@@ -711,7 +752,10 @@ def step_01_briefing() -> None:
         except Exception as exc:
             st.error(f"Upload failed: {exc}")
 
-    st.image(st.session_state.raw_image, caption=f"Active Feed: {st.session_state.image_name}", use_container_width=True)
+    feed_caption = f"Active Feed: {st.session_state.image_name}"
+    if st.session_state.image_name == "SYNTHETIC_LUNAR_FEED" and st.session_state.synthetic_seed is not None:
+        feed_caption += f" (seed {st.session_state.synthetic_seed})"
+    st.image(st.session_state.raw_image, caption=feed_caption, use_container_width=True)
 
     if st.button("LAUNCH MISSION ►", use_container_width=True):
         st.session_state.mission_started = True
@@ -895,7 +939,7 @@ def step_03_preprocess() -> None:
     st.session_state.completed_steps.add(3)
 
 
-def step_04_detection() -> None:
+def step_04_detection(params: dict[str, Any]) -> None:
     """Render crater detection with dual YOLO vs CV comparison."""
 
     initialization_animation("step04", "YOLO11m")
@@ -908,7 +952,7 @@ def step_04_detection() -> None:
         if st.button("Run YOLO Detection", use_container_width=True):
             ensure_preprocess()
             with st.spinner("Running YOLO11m crater detection..."):
-                run_detection()
+                run_detection(params["conf_threshold"])
     with bc:
         if st.button("Run CV Detection", use_container_width=True):
             ensure_preprocess()
@@ -1030,7 +1074,7 @@ def step_05_depth(params: dict[str, Any]) -> None:
         if st.button("Run YOLO Detection Now", key="depth_run_yolo", use_container_width=True):
             ensure_preprocess()
             with st.spinner("Running YOLO11m crater detection..."):
-                run_detection()
+                run_detection(params["conf_threshold"])
             st.rerun()
         return
 
@@ -1108,7 +1152,7 @@ def step_05_depth(params: dict[str, Any]) -> None:
 
         if second_image is not None:
             second_pp = preprocess_pipeline(second_image)
-            second_det = detect_craters(second_pp["smoothed"], conf_threshold=0.35)
+            second_det = detect_craters(second_pp["smoothed"], conf_threshold=params["conf_threshold"])
 
             second_depth = estimate_crater_depths(
                 image=second_image,
@@ -1588,7 +1632,7 @@ def main() -> None:
     elif step == 3:
         step_03_preprocess()
     elif step == 4:
-        step_04_detection()
+        step_04_detection(params)
     elif step == 5:
         step_05_depth(params)
     elif step == 6:

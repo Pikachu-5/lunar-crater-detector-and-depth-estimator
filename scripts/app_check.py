@@ -12,9 +12,12 @@ from __future__ import annotations
 import os
 import sys
 
-from streamlit.testing.v1 import AppTest
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)
 
-APP = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "app.py")
+from streamlit.testing.v1 import AppTest  # noqa: E402
+
+APP = os.path.join(ROOT, "app.py")
 
 
 def texts(at: AppTest) -> list[str]:
@@ -68,6 +71,32 @@ def main() -> int:
     at.run()
     print("step 5 fusion exceptions:", [e.value for e in at.exception])
     print("step 5 fusion text:", [t for t in texts(at) if "view" in t.lower() or "fusion" in t.lower()])
+
+    # --- detection confidence slider ---
+    conf = [s for s in at.sidebar.slider if s.label == "Detection Confidence Threshold"][0]
+    print("conf slider:", conf.min, conf.max, conf.value)
+    at.session_state["current_step"] = 4
+    conf.set_value(0.7).run()
+    print("after conf change without re-run, detection is None:", at.session_state["detection"] is None)
+    [b for b in at.button if b.label == "Run YOLO Detection"][0].click().run()
+    confs = [d["confidence"] for d in at.session_state["detection"]["detections"]]
+    print("conf=0.7 -> n:", len(confs), "min conf:", min(confs) if confs else None, "status:", at.session_state["detection"]["status"])
+
+    # --- regenerate synthetic surface ---
+    import numpy as np
+    from utils.synthetic import generate_synthetic_lunar_surface
+
+    print("initial seed:", at.session_state["synthetic_seed"])
+    seeds, images = [], []
+    for _ in range(2):
+        [b for b in at.sidebar.button if "Regenerate" in b.label][0].click().run()
+        seeds.append(at.session_state["synthetic_seed"])
+        images.append(at.session_state["raw_image"].copy())
+    print("regenerated seeds:", seeds, "| images differ:", not np.array_equal(images[0], images[1]))
+    print("seed caption:", [c.value for c in at.sidebar.caption if "Synthetic seed" in c.value])
+    print("displayed seed reproduces image:",
+          np.array_equal(generate_synthetic_lunar_surface(size=512, seed=seeds[-1])["image"], images[-1]))
+    print("exceptions at end:", [e.value for e in at.exception])
     return 1 if at.exception else 0
 
 
