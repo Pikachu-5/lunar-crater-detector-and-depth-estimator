@@ -169,3 +169,62 @@ Per seed on the legacy scene (ground-truth boxes) immediately after item 2, befo
 5. **The CV heuristic "confidence"** is still computed and still appears in the B2 comparison table; it is not shown in the app. The comparison was left untouched as instructed.
 6. **No genuine detection metrics.** `LU3M6TGT_yolo_format/` is still absent, so precision/recall/mAP cannot be measured; the app shows only the checkpoint's stored training values, labelled as such.
 7. **Multi-angle fusion remains a simulated second view** (same image plus a brightness gradient, assumed θ+15°/φ+25°). It is labelled in the UI but is not a real second observation.
+
+---
+
+# Addendum — ROI expansion and an honest radius-only comparison
+
+Date: 2026-09-18, commit `7b40b65` on `main`. Scripts: `scripts/roi_comparison.py` (→ `scripts/roi_comparison_results.txt`), `scripts/audit_run.py` block C4.
+
+## What changed
+
+`estimate_crater_depths` now crops a square analysis window of ±1.4 × crater radius about the crater centre (`ROI_WINDOW_RADIUS_FACTOR`, `modules/depth.py`), clipped to image bounds, instead of using the detection box. The crater circle used for masking keeps the detection radius — only the observable window grows. **The >60% area threshold and the boundary rule are unchanged**; the boundary test now means "the shadow left the window", not "the box was drawn tight".
+
+## Ray-cast data: coverage and failure reasons
+
+| Boxes | ROI | Measured / detected | Coverage | Boundary failures | >60% area failures |
+|---|---|---|---|---|---|
+| ground truth | box (old) | 2 / 30 | 0.06666666666666667 | 16 | 12 |
+| ground truth | window (new) | 19 / 30 | 0.6333333333333333 | **0** | 11 |
+| YOLO | box (old) | 18 / 26 | 0.6923076923076923 | 5 | 3 |
+| YOLO | window (new) | 23 / 26 | 0.8846153846153846 | **0** | 3 |
+
+The boundary guard no longer fires at all. Every remaining failure is the >60% area guard, which is the threshold you asked to leave alone: a bowl crater at low sun genuinely has a shadow covering 60.9%–81.7% of its interior.
+
+## Correlations and slope spread
+
+| Boxes | ROI | r(estimate, true depth) | r(estimate, radius) | Slope spread (std) |
+|---|---|---|---|---|
+| ground truth | box | not computable (n=2) | not computable | 20.456750414379716–20.95693833543677 (0.2500939605285275) |
+| ground truth | window | 0.831327912297354 | 0.9358898950821479 | 19.16727773985974–28.091120345969784 (2.421973871469177) |
+| YOLO | box | 0.8995703292607853 | 0.9694400346997122 | 18.49593827811613–26.647717209120316 (2.1957625636829534) |
+| YOLO | window | 0.8346774071496863 | 0.9338802524982774 | 18.49593827811614–32.84101468693158 (3.0021074162556483) |
+
+## The honest comparison
+
+Radius-only = depth predicted from crater radius alone, ignoring the shadow entirely. Pearson r of any linear function of radius equals r(radius, true depth), so that is the baseline. Everything below is computed **on exactly the craters that were measured**, and coverage is stated so a high correlation on an easy subset cannot pass as a result.
+
+| Boxes | ROI | Coverage | Shadow r | Radius-only r (same craters) | Difference | Partial r given radius (p) | Radius-only r (all detected) |
+|---|---|---|---|---|---|---|---|
+| ground truth | box | 2/30 | n/a | n/a | n/a | n/a | 0.8636430715431034 |
+| ground truth | window | 19/30 | 0.831327912297354 | 0.8291224217811244 | **+0.0022054905162296468** | 0.28108224687631833 (p = 0.2585243788167261) | 0.8636430715431034 |
+| YOLO | box | 18/26 | 0.8995703292607853 | 0.8682422753601329 | **+0.03132805390065241** | 0.47537604794193633 (p = 0.05378833089122232) | 0.8764990870379938 |
+| YOLO | window | 23/26 | 0.8346774071496863 | 0.8730120392220289 | **−0.038334632072342556** | 0.1111774806114964 (p = 0.6223227140301517) | 0.8764990870379938 |
+
+### Headline
+
+**The shadow measurement does not beat a radius-only estimator on the same craters.** The best case is +0.0022 (ground-truth boxes) and the configuration with the best coverage is −0.0383, i.e. *worse* than simply predicting depth from crater size. No partial correlation reaches significance (p = 0.26, 0.054, 0.62).
+
+The `yolo/box` row is exactly the trap you flagged: at 18/26 coverage it looked like the best configuration (+0.031, partial 0.475, p = 0.054). Widening the window to measure 23/26 of the same craters drops it to −0.038 with partial 0.111. The five craters the boundary guard used to reject were the ones where the shadow carried information beyond size; with them included, the shadow signal is no better than the radius. The earlier headline in this document — "r = 0.8996 on ray-cast data" — should be read with its radius-only baseline of 0.8682 next to it, and with the coverage caveat.
+
+So: the ROI fix is a real improvement in **coverage** (2/30 → 19/30 and 18/26 → 23/26) and it makes the boundary guard mean what it was meant to mean. It is **not** evidence that the depth estimator works. On this test data, shadow-length depth estimation is statistically indistinguishable from guessing depth from crater diameter.
+
+## Side effects on the legacy shadow-free scene
+
+Pooled not-measurable counts improve slightly but the scene stays mostly unmeasurable, which is the correct answer where no shadow was ever cast: YOLO boxes 25/28 → 23/28, ground-truth boxes 28/30 → 25/30. C2b (legacy, ground-truth boxes) now has 5 measured craters instead of 2: r(estimate, true depth) −0.39861994556559466, r(estimate, radius) 0.6992320833316884, slope 41.352–47.72°.
+
+## Still unfixed
+
+1. The >60% area guard still rejects 11 of 30 ground-truth-box craters and 3 of 26 YOLO-box craters on ray-cast data, all legitimately deep bowls. Unchanged as instructed; raising it is a design decision.
+2. Depth accuracy remains unproven — see the headline above.
+3. Everything else listed in the previous "What remains unfixed" section stands.
