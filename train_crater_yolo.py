@@ -1,4 +1,4 @@
-"""
+r"""
 YOLO11m Crater Detection Training Script — Intel Arc GPU (XPU)
 ==============================================================
 

@@ -488,7 +488,8 @@ def render_pipeline_flow(current_step: int, total_steps: int, completed: set[int
     """
 
     labels = [
-        "Upload",
+        "Briefing",
+        "Acquire",
         "Preprocess",
         "Detect",
         "Depth",

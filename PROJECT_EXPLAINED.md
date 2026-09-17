@@ -122,7 +122,8 @@ Computation concept:
 Why this helps:
 
 - Lunar rims and shadow boundaries are local features; global equalization is weaker.
-- CLAHE boosts local separability for both YOLO/CV detection and shadow segmentation.
+- CLAHE boosts local separability for YOLO/CV detection, which run on the smoothed image.
+- It does NOT affect shadow segmentation: depth estimation reads the RAW image (app.py passes st.session_state.raw_image to estimate_crater_depths), so CLAHE and the Gaussian blur do not change measured shadow lengths.
 
 ### 5.3.2 Gaussian blur
 

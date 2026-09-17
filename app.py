@@ -167,6 +167,10 @@ def init_state() -> None:
     if "last_conf_threshold" not in st.session_state:
         st.session_state.last_conf_threshold = None
 
+    for key in ("terrain_signature", "scoring_signature", "paths_signature", "upload_signature"):
+        if key not in st.session_state:
+            st.session_state[key] = None
+
 
 def append_log(message: str) -> None:
     """Append timestamped terminal message to mission log stream.
@@ -244,12 +248,15 @@ def reset_downstream(start_step: int) -> None:
         st.session_state.depth_signature = None
     if start_step <= 6:
         st.session_state.terrain = None
+        st.session_state.terrain_signature = None
     if start_step <= 7:
         st.session_state.scoring = None
+        st.session_state.scoring_signature = None
         st.session_state.hazard_map = None
         st.session_state.last_score_slider_signature = None
     if start_step <= 8:
         st.session_state.paths = None
+        st.session_state.paths_signature = None
 
 
 def _on_step_change() -> None:
@@ -423,7 +430,7 @@ def ensure_depth(theta_deg: float, pixel_scale_m: float, solar_azimuth_deg: floa
         return False
 
     det = st.session_state.detection["detections"]
-    geom_key = tuple((d["x1"], d["y1"], d["x2"], d["y2"]) for d in det[:20])
+    geom_key = tuple((d["x1"], d["y1"], d["x2"], d["y2"]) for d in det)
     signature = (
         round(float(theta_deg), 3),
         round(float(pixel_scale_m), 4),
@@ -474,9 +481,13 @@ def _terrain_profile_target_size(profile: str, shape: tuple[int, int]) -> int:
 
 
 def ensure_terrain(profile: str) -> None:
-    """Build terrain depth-map artifacts from crater depth table."""
+    """Build terrain depth-map artifacts from crater depth table (cached)."""
 
     if st.session_state.depth is None:
+        return
+
+    signature = (profile, st.session_state.depth_signature)
+    if st.session_state.terrain is not None and st.session_state.terrain_signature == signature:
         return
 
     depth_map = build_depth_map(st.session_state.raw_image.shape, st.session_state.depth["rows"])
@@ -491,6 +502,7 @@ def ensure_terrain(profile: str) -> None:
         "surface_grid_shape": tuple(np.shape(surface_fig.data[0].z)),
         "surface_profile": profile,
     }
+    st.session_state.terrain_signature = signature
     st.session_state.completed_steps.add(6)
 
 
@@ -505,6 +517,16 @@ def ensure_scoring(td: float, gear_span_m: float, density_radius_px: int, pixel_
     """
 
     if st.session_state.depth is None:
+        return
+
+    signature = (
+        round(float(td), 3),
+        round(float(gear_span_m), 3),
+        int(density_radius_px),
+        round(float(pixel_scale_m), 4),
+        st.session_state.depth_signature,
+    )
+    if st.session_state.scoring is not None and st.session_state.scoring_signature == signature:
         return
 
     scoring = score_landing_safety(
@@ -524,6 +546,7 @@ def ensure_scoring(td: float, gear_span_m: float, density_radius_px: int, pixel_
 
     scoring["score_map"] = score_map
     st.session_state.scoring = scoring
+    st.session_state.scoring_signature = signature
     st.session_state.hazard_map = hazard_map
     st.session_state.completed_steps.add(7)
 
@@ -536,6 +559,10 @@ def ensure_paths(pixel_scale_m: float) -> None:
     """
 
     if not st.session_state.scoring:
+        return
+
+    signature = (round(float(pixel_scale_m), 4), st.session_state.scoring_signature)
+    if st.session_state.paths is not None and st.session_state.paths_signature == signature:
         return
 
     paths = plan_descent_paths(
@@ -552,6 +579,7 @@ def ensure_paths(pixel_scale_m: float) -> None:
     paths["overlay"] = overlay
 
     st.session_state.paths = paths
+    st.session_state.paths_signature = signature
     st.session_state.completed_steps.add(8)
 
 
@@ -593,7 +621,11 @@ def render_sidebar() -> dict[str, Any]:
         st.caption("Controls illumination geometry for shadow-based depth. Larger angles usually increase estimated depth.")
 
         solar_azimuth = st.slider("Solar Azimuth φ", min_value=0, max_value=359, value=35, step=1)
-        st.caption("Controls shadow direction in ROI diagnostics. This rotates the depth arrow annotation.")
+        st.caption(
+            "Direction towards the sun. It sets the axis the shadow is projected onto and which side of "
+            "the crater a shadow is accepted on, so it changes the measured shadow length and depth — "
+            "not just the arrow drawn in the ROI panels."
+        )
 
         td = st.slider("Depth Safety Threshold Td (m)", min_value=0.5, max_value=5.0, value=1.8, step=0.1)
         st.caption("Maximum crater depth considered landing-safe. Lower values make safety scoring stricter.")
@@ -621,7 +653,7 @@ def render_sidebar() -> dict[str, Any]:
             st.markdown(
                 """
                 - Solar elevation angle (above horizontal) scales depth by tan(angle).
-                - Solar azimuth rotates shadow-direction arrows used for ROI diagnostics.
+                - Solar azimuth sets the shadow projection axis and the accepted shadow side, so it changes measured depth.
                 - Depth threshold shifts SAFE vs HAZARD boundaries.
                 - Gear span affects diameter-based landing feasibility.
                 - Density radius controls how strongly crater clustering is penalized.
@@ -766,7 +798,8 @@ def step_01_briefing() -> None:
         key="primary_upload",
     )
 
-    if uploader is not None:
+    upload_signature = None if uploader is None else (uploader.name, getattr(uploader, "size", None))
+    if uploader is not None and upload_signature != st.session_state.upload_signature:
         try:
             img, size_bytes, resize_note = decode_upload_to_gray(uploader)
             st.session_state.raw_image = img
@@ -774,6 +807,7 @@ def step_01_briefing() -> None:
             st.session_state.file_size_bytes = size_bytes
             st.session_state.synthetic_meta = None
             st.session_state.synthetic_seed = None
+            st.session_state.upload_signature = upload_signature
             reset_downstream(start_step=3)
             append_log(f"[UPLOAD] >> New telemetry image acquired: {uploader.name}")
             if resize_note:
