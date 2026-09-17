@@ -69,6 +69,13 @@ def t_now() -> float:
     return time.perf_counter()
 
 
+def mean_or_none(xs: list[Any]) -> float | None:
+    """Mean of the values that exist; None when nothing is measurable."""
+
+    vals = [x for x in xs if x is not None]
+    return statistics.fmean(vals) if vals else None
+
+
 def summary(xs: list[float]) -> dict[str, Any]:
     if not xs:
         return {"n": 0}
@@ -197,13 +204,12 @@ def diagnose_depth(image: np.ndarray, dets: list[dict[str, Any]], rows: list[dic
                 "depth_m": by_id[det["crater_id"]]["depth_m"],
             }
         )
-        if by_id[det["crater_id"]]["depth_m"] == 0.0:
-            if pre_morph == 0:
-                rec["reason"] = "Otsu split produced no pixels below threshold (uniform ROI)"
-            elif n < 3:
-                rec["reason"] = "fewer than 3 shadow pixels after morphology (depth.py:54)"
-            else:
-                rec["reason"] = "shadow projection range is 0"
+        row = by_id[det["crater_id"]]
+        rec["measurable"] = bool(row.get("measurable", row["depth_m"] is not None))
+        if not rec["measurable"]:
+            rec["reason"] = row.get("not_measurable_reason") or "not measurable (no reason recorded)"
+        elif row["depth_m"] == 0.0:
+            rec["reason"] = "depth is exactly 0.0 m"
         out.append(rec)
     return out
 
@@ -369,7 +375,7 @@ def main() -> None:
             ss = summary(scores)
             b4_rows.append([seed, label, len(scores), repr(ss.get("min")), repr(ss.get("median")), repr(ss.get("max")),
                             repr(ss.get("mean")), sc["summary"]["safe"], sc["summary"]["caution"], sc["summary"]["hazard"],
-                            repr(sc["overall_score"])])
+                            sc["summary"].get("unknown", 0), repr(sc["overall_score"])])
             pr = seed_res[f"{label}_paths"]
             b5_rows.append([seed, label, pr["route_found"], repr(pr["path_length_m"]), pr["path_nodes"],
                             f"{pr['alternatives_succeeded']}/3", pr["alt_nodes"], pr["start"], pr["goal"],
@@ -387,28 +393,37 @@ def main() -> None:
         rows = []
         for r in per_seed[42][f"{label}_depth_rows"]:
             dg = diag[r["crater_id"]]
-            rows.append([r["crater_id"], r["shadow_length_px"], r["depth_m"], r["slope_estimate_deg"], r["confidence"],
-                         r["diameter_px"], dg["otsu_threshold"], dg["shadow_px_after_morph"], dg.get("reason", "")])
+            fmt = lambda v: "not measurable" if v is None else v
+            rows.append([r["crater_id"], fmt(r["shadow_length_px"]), fmt(r["depth_m"]), fmt(r["slope_estimate_deg"]),
+                         r["confidence"], r["diameter_px"], dg.get("otsu_threshold", "-"),
+                         dg.get("shadow_px_after_morph", "-"), dg.get("reason", "")])
         md.append(f"\n#### {label}\n")
         md.append(md_table(["id", "shadow length px", "depth m", "slope deg", "confidence", "diameter px",
-                            "Otsu T", "shadow px", "zero-depth reason"], rows))
+                            "Otsu T", "shadow px", "not-measurable reason"], rows))
         skipped = [d for d in diag.values() if "roi_w" not in d]
-        zeros = [d for d in diag.values() if d.get("depth_m") == 0.0]
-        md.append(f"\nrows={len(per_seed[42][f'{label}_depth_rows'])}, skipped (no row)={len(skipped)}, zero depth={len(zeros)}")
-    zero_counts = []
+        bad = [d for d in diag.values() if not d.get("measurable", True)]
+        md.append(f"\nrows={len(per_seed[42][f'{label}_depth_rows'])}, skipped (no row)={len(skipped)}, "
+                  f"not measurable={len(bad)}")
+    nm_counts = []
+    pooled_nm = {"yolo": [0, 0], "synthetic_meta": [0, 0]}
     for seed in SEEDS:
         for label in ("yolo", "synthetic_meta"):
             diag = per_seed[seed][f"{label}_depth_diagnostics"]
-            zc = [d for d in diag if d.get("depth_m") == 0.0]
+            bad = [d for d in diag if not d.get("measurable", True)]
             sk = [d for d in diag if "roi_w" not in d]
-            zero_counts.append([seed, label, len(per_seed[seed][f"{label}_depth_rows"]), len(zc), len(sk),
-                                "; ".join(sorted({d["reason"] for d in zc + sk})) or "-"])
-    md.append("\n#### Zero-depth count across seeds\n")
-    md.append(md_table(["seed", "detections", "rows", "zero depth", "skipped", "reasons"], zero_counts))
+            n_rows = len(per_seed[seed][f"{label}_depth_rows"])
+            pooled_nm[label][0] += len(bad)
+            pooled_nm[label][1] += n_rows
+            nm_counts.append([seed, label, n_rows, len(bad), len(sk),
+                              "; ".join(sorted({d["reason"] for d in bad + sk})) or "-"])
+    results["not_measurable_pooled"] = {k: {"not_measurable": v[0], "rows": v[1]} for k, v in pooled_nm.items()}
+    md.append("\n#### Not-measurable count across seeds\n")
+    md.append(md_table(["seed", "detections", "rows", "not measurable", "skipped", "reasons"], nm_counts))
+    md.append("\nPooled: " + ", ".join(f"{k} {v[0]}/{v[1]}" for k, v in pooled_nm.items()))
 
     md.append("\n### B4 scoring (Td 1.8, gear 2.6, density 85 px, 1.0 m/px)\n")
     md.append(md_table(["seed", "detections", "n", "score min", "median", "max", "mean", "SAFE", "CAUTION", "HAZARD",
-                        "overall_score"], b4_rows))
+                        "UNKNOWN", "overall_score"], b4_rows))
     md.append("\n### B5 pathfinding\n")
     md.append(md_table(["seed", "detections", "route found", "path length m", "path nodes", "alternatives ok",
                         "alt nodes", "start px", "goal px", "A* grid (h x w)", "goal zone", "HAZARD craters crossed (excl. goal)"], b5_rows))
@@ -438,18 +453,19 @@ def main() -> None:
             c1[label].append({
                 "theta": theta,
                 "tan": math.tan(math.radians(theta)),
-                "mean_depth_tan_code": statistics.fmean(r["depth_m"] for r in a),
-                "mean_depth_inverse_tan": statistics.fmean(r["depth_m"] for r in b),
-                "mean_shadow_length_px": statistics.fmean(r["shadow_length_px"] for r in a),
+                "mean_depth_tan_code": mean_or_none([r["depth_m"] for r in a]),
+                "mean_depth_inverse_tan": mean_or_none([r["depth_m"] for r in b]),
+                "mean_shadow_length_px": mean_or_none([r["shadow_length_px"] for r in a]),
                 "n": len(a),
+                "n_measurable": sum(1 for r in a if r["depth_m"] is not None),
             })
     results["C1"] = c1
     for label, rows in c1.items():
         md.append(f"\n### C1 solar angle sweep — seed 42, detections={label}, azimuth 35, 1.0 m/px\n")
         md.append(md_table(["theta deg", "tan(theta)", "mean shadow length px", "mean depth m (code: × tan)",
-                            "mean depth m (alt: ÷ tan)", "n craters"],
+                            "mean depth m (alt: ÷ tan)", "n craters", "n measurable"],
                            [[r["theta"], repr(r["tan"]), repr(r["mean_shadow_length_px"]), repr(r["mean_depth_tan_code"]),
-                             repr(r["mean_depth_inverse_tan"]), r["n"]] for r in rows]))
+                             repr(r["mean_depth_inverse_tan"]), r["n"], r["n_measurable"]] for r in rows]))
 
     # ---------------- C2 ground truth ----------------
     specs = replay_crater_specs(42)
@@ -460,8 +476,12 @@ def main() -> None:
     # "true_depth"); the RNG replay is kept only as an independent cross-check.
     true_depths = [c["true_depth"] for c in syn["craters"]]
     returned_equals_replay = true_depths == [s.depth_scale for s in specs]
+    n_c2_skipped = 0
     for s, r, gt_depth in zip(specs, rows, true_depths):
         assert s.crater_id == r["crater_id"]
+        if r["depth_m"] is None:
+            n_c2_skipped += 1
+            continue
         relief = rim_to_floor_relief(syn["height_map"], s)
         e = r["depth_m"] - gt_depth
         errs.append(abs(e))
@@ -477,6 +497,7 @@ def main() -> None:
     shadow = np.array([r["shadow_length_px"] for r in c2_rows])
     c2 = {
         "replay_verified_bitwise_equal_height_map": replay_ok,
+        "craters_skipped_not_measurable": n_c2_skipped,
         "returned_true_depth_equals_replay": returned_equals_replay,
         "rows": c2_rows,
         "MAE_vs_depth_scale": statistics.fmean(errs),

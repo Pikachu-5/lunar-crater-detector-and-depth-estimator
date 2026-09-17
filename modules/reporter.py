@@ -75,16 +75,21 @@ def _table_from_rows(rows: list[dict[str, Any]], max_rows: int = 20) -> Table:
         "Shadow (px)",
     ]
 
+    def cell(value: Any) -> Any:
+        """None means the shadow measurement failed; never print it as a number."""
+
+        return "not measurable" if value is None else value
+
     data = [header]
     for row in rows[:max_rows]:
         data.append(
             [
                 row.get("crater_id", "-"),
-                row.get("depth_m", "-"),
-                row.get("safety_score", "-"),
+                cell(row.get("depth_m", "-")),
+                cell(row.get("safety_score", "-")),
                 row.get("zone", "-"),
                 row.get("diameter_px", "-"),
-                row.get("shadow_length_px", "-"),
+                cell(row.get("shadow_length_px", "-")),
             ]
         )
 

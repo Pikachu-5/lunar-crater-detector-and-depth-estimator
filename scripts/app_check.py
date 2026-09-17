@@ -97,6 +97,34 @@ def main() -> int:
     print("displayed seed reproduces image:",
           np.array_equal(generate_synthetic_lunar_surface(size=512, seed=seeds[-1])["image"], images[-1]))
     print("exceptions at end:", [e.value for e in at.exception])
+
+    # --- not-measurable propagation (item 2) ---
+    # Regenerating above cleared detections, so re-run detection first.
+    at.session_state["current_step"] = 4
+    at.run()
+    [b for b in at.button if b.label == "Run YOLO Detection"][0].click().run()
+    at.session_state["current_step"] = 5
+    at.run()
+    depth = at.session_state["depth"]
+    print("depth rows not measurable:", depth["n_not_measurable"], "of", depth["n_craters"])
+    print("depth_m values:", [r["depth_m"] for r in depth["rows"]])
+    print("slope values:", [r["slope_estimate_deg"] for r in depth["rows"]])
+    print("not-measurable warnings:", [" ".join(w.value.split()) for w in at.warning if "not measurable" in w.value])
+    at.session_state["current_step"] = 7
+    at.run()
+    sc = at.session_state["scoring"]
+    print("zone summary:", sc["summary"])
+    print("zones:", [(r["crater_id"], r["zone"], r["depth_m"]) for r in sc["rows"]])
+    print("UNKNOWN rows scored SAFE?:", any(r["zone"] == "SAFE" and r["depth_m"] is None for r in sc["rows"]))
+    import numpy as np2
+
+    terrain_rows = [r for r in at.session_state["depth"]["rows"] if r["depth_m"] is not None]
+    print("craters in terrain model:", len(terrain_rows), "of", len(at.session_state["depth"]["rows"]))
+    for step in (8, 9):
+        at.session_state["current_step"] = step
+        at.run()
+        print(f"step {step} exceptions:", [e.value for e in at.exception])
+    print("mission status:", at.session_state["mission_status"])
     return 1 if at.exception else 0
 
 

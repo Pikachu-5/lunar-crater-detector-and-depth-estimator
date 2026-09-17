@@ -51,6 +51,10 @@ def _local_density(
 def classify_zone(score: float) -> str:
     """Map numeric safety score to mission zone class.
 
+    Note:
+        Craters with an unmeasurable depth are labelled "UNKNOWN" by
+        score_landing_safety and never passed through this function.
+
     Args:
         score: Landing safety score in [0, 100].
 
@@ -76,6 +80,8 @@ def score_landing_safety(
 
     Risk model:
     - Depth penalty: larger depth relative to threshold increases risk smoothly.
+      Craters whose shadow was not measurable (depth_m None) get NO depth
+      penalty and zone "UNKNOWN" - never SAFE - because their depth is unknown.
     - Diameter penalty: crater width relative to gear span increases risk smoothly.
     - Density penalty: clusters of impacts increase obstacle congestion.
 
@@ -93,16 +99,23 @@ def score_landing_safety(
     scored: list[dict[str, Any]] = []
 
     for i, row in enumerate(depth_rows):
-        depth_m = float(row["depth_m"])
+        measurable = row.get("depth_m") is not None
+        depth_m = float(row["depth_m"]) if measurable else None
         diameter_m = float(row["diameter_px"]) * pixel_scale_m
         neighbors = _local_density(depth_rows, i, radius_px=float(density_radius_px))
 
         score = 100.0
 
         # Continuous penalties preserve slider sensitivity even in rough scenes.
-        depth_scale = max(0.2, float(depth_threshold_m) * 5.0)
-        depth_penalty = 45.0 * (depth_m / (depth_m + depth_scale))
-        score -= depth_penalty
+        if measurable:
+            depth_scale = max(0.2, float(depth_threshold_m) * 5.0)
+            depth_penalty = 45.0 * (depth_m / (depth_m + depth_scale))
+            score -= depth_penalty
+        else:
+            # Depth is unknown, so no depth penalty can be applied. Scoring on
+            # diameter and density alone would otherwise make an unmeasured
+            # crater look SAFE, which is backwards; the zone is UNKNOWN instead.
+            depth_penalty = None
 
         gear_scale = max(0.2, float(landing_gear_span_m) * 3.0)
         diameter_penalty = 30.0 * (diameter_m / (diameter_m + gear_scale))
@@ -111,13 +124,14 @@ def score_landing_safety(
         score -= min(25.0, neighbors * 4.0)
         score = float(np.clip(score, 0.0, 100.0))
 
-        zone = classify_zone(score)
+        zone = classify_zone(score) if measurable else "UNKNOWN"
         scored.append(
             {
                 **row,
                 "diameter_m": round(diameter_m, 3),
                 "neighbor_count": int(neighbors),
                 "safety_score": round(score, 2),
+                "depth_penalty": None if depth_penalty is None else round(float(depth_penalty), 2),
                 "zone": zone,
             }
         )
@@ -125,11 +139,12 @@ def score_landing_safety(
     safe = sum(1 for r in scored if r["zone"] == "SAFE")
     caution = sum(1 for r in scored if r["zone"] == "CAUTION")
     hazard = sum(1 for r in scored if r["zone"] == "HAZARD")
+    unknown = sum(1 for r in scored if r["zone"] == "UNKNOWN")
     overall = float(np.mean([r["safety_score"] for r in scored])) if scored else 0.0
 
     return {
         "rows": scored,
-        "summary": {"safe": safe, "caution": caution, "hazard": hazard},
+        "summary": {"safe": safe, "caution": caution, "hazard": hazard, "unknown": unknown},
         "overall_score": round(overall, 2),
     }
 
@@ -154,6 +169,7 @@ def annotate_hazard_map(
         "SAFE": (0, 255, 159),
         "CAUTION": (255, 179, 0),
         "HAZARD": (255, 60, 60),
+        "UNKNOWN": (190, 190, 190),
     }
 
     for row in scored_rows:

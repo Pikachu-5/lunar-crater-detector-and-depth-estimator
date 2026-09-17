@@ -148,7 +148,8 @@ def _pick_goal(scored_rows: list[dict[str, Any]], image_shape: tuple[int, int]) 
     """Choose target landing zone from highest-scoring safe/caution crater.
 
     Strategy:
-    Prefer SAFE zones first, otherwise CAUTION, otherwise highest score overall.
+    Prefer SAFE zones first, then CAUTION, then UNKNOWN (depth not measurable),
+    then HAZARD; within a zone the highest safety score wins.
 
     Args:
         scored_rows: Crater rows with safety score and center coordinates.
@@ -162,7 +163,9 @@ def _pick_goal(scored_rows: list[dict[str, Any]], image_shape: tuple[int, int]) 
         h, w = image_shape
         return w // 2, int(h * 0.85), 50.0
 
-    priorities = ["SAFE", "CAUTION", "HAZARD"]
+    # UNKNOWN = depth not measurable: preferred over HAZARD but never over a
+    # measured SAFE/CAUTION crater.
+    priorities = ["SAFE", "CAUTION", "UNKNOWN", "HAZARD"]
     for z in priorities:
         cand = [r for r in scored_rows if r["zone"] == z]
         if cand:

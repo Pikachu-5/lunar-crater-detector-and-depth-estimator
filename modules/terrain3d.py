@@ -31,16 +31,22 @@ def build_depth_map(
 
     Returns:
         Float32 depth map in meters where larger values indicate deeper terrain.
+        Craters with depth_m None (not measurable) are omitted entirely.
     """
 
     h, w = image_shape
     depth_map = np.zeros((h, w), dtype=np.float32)
 
     for row in depth_rows:
+        # Craters whose shadow could not be measured carry depth_m = None. They
+        # are EXCLUDED rather than reconstructed as flat, zero-depth ground.
+        if row.get("depth_m") is None:
+            continue
+
         cx = float(row.get("center_x", 0))
         cy = float(row.get("center_y", 0))
         radius = max(4.0, float(row.get("radius_px", 8)))
-        depth_m = max(0.0, float(row.get("depth_m", 0.0)))
+        depth_m = max(0.0, float(row["depth_m"]))
 
         if depth_m < 0.001:
             continue

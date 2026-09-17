@@ -115,6 +115,111 @@ def measure_shadow_length(mask: np.ndarray, solar_azimuth_deg: float) -> tuple[f
     return length, p0, p1
 
 
+MAX_SHADOW_CIRCLE_FRACTION = 0.60
+MIN_SHADOW_PIXELS = 3
+
+
+def measure_crater_shadow(
+    roi: np.ndarray,
+    center: tuple[float, float],
+    radius_px: float,
+    solar_azimuth_deg: float,
+) -> dict[str, Any]:
+    """Measure one crater's shadow, or report why it is not measurable.
+
+    Validity model:
+    A shadow measurement is only meaningful when a compact dark region sits on
+    the shadowed side of the crater and is fully inside the ROI. Each failure
+    below makes the projected length something other than a shadow length, so
+    the function returns ``length_px = None`` with a reason instead of a number.
+
+    Shadow-side convention: the shadow is expected on the anti-solar side of the
+    crater centre, i.e. along ``solar_azimuth_deg + 180``. ``solar_azimuth_deg``
+    is therefore the direction TOWARDS the sun in image coordinates.
+
+    Args:
+        roi: Grayscale crater crop.
+        center: Crater centre in ROI coordinates as (x, y).
+        radius_px: Crater radius in pixels.
+        solar_azimuth_deg: Direction towards the sun, degrees in the image plane.
+
+    Returns:
+        Dict with length_px (float or None), mask, p0, p1, mask_circle_fraction
+        and reason (None when measurable).
+    """
+
+    circle = crater_circle_mask(roi.shape, center, radius_px)
+    circle_px = int(np.count_nonzero(circle))
+    mask = compute_otsu_shadow_mask(roi, center=center, radius_px=radius_px)
+    empty = np.zeros_like(mask)
+
+    def fail(reason: str, fraction: float, keep: np.ndarray | None = None) -> dict[str, Any]:
+        return {
+            "length_px": None,
+            "mask": keep if keep is not None else mask,
+            "p0": (0, 0),
+            "p1": (0, 0),
+            "mask_circle_fraction": fraction,
+            "reason": reason,
+        }
+
+    if circle_px <= 0:
+        return fail("crater circle falls outside the ROI", 0.0, empty)
+
+    fraction = float(np.count_nonzero(mask)) / float(circle_px)
+    if fraction > MAX_SHADOW_CIRCLE_FRACTION:
+        return fail(
+            f"shadow mask covers {fraction * 100:.1f}% of the crater area "
+            f"(> {MAX_SHADOW_CIRCLE_FRACTION * 100:.0f}%): ROI histogram was not bimodal",
+            fraction,
+        )
+
+    n_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(mask, connectivity=8)
+    anti = math.radians((solar_azimuth_deg + 180.0) % 360.0)
+    anti_vec = (math.cos(anti), math.sin(anti))
+
+    best_label, best_area = 0, 0
+    for label in range(1, n_labels):
+        cx, cy = centroids[label]
+        side = (cx - center[0]) * anti_vec[0] + (cy - center[1]) * anti_vec[1]
+        if side <= 0.0:
+            continue  # component sits on the sunlit side
+        area = int(stats[label, cv2.CC_STAT_AREA])
+        if area > best_area:
+            best_label, best_area = label, area
+
+    if best_label == 0:
+        return fail("no shadow component on the anti-solar side of the crater", fraction, empty)
+
+    keep = np.where(labels == best_label, 255, 0).astype(np.uint8)
+    if best_area < MIN_SHADOW_PIXELS:
+        return fail(f"only {best_area} shadow pixels survived cleanup (< {MIN_SHADOW_PIXELS})", fraction, keep)
+
+    x = int(stats[best_label, cv2.CC_STAT_LEFT])
+    y = int(stats[best_label, cv2.CC_STAT_TOP])
+    w = int(stats[best_label, cv2.CC_STAT_WIDTH])
+    h = int(stats[best_label, cv2.CC_STAT_HEIGHT])
+    if x <= 0 or y <= 0 or x + w >= roi.shape[1] or y + h >= roi.shape[0]:
+        return fail(
+            "shadow component touches the ROI boundary, so its length is a lower bound, not a measurement",
+            fraction,
+            keep,
+        )
+
+    length, p0, p1 = measure_shadow_length(keep, solar_azimuth_deg=solar_azimuth_deg)
+    if length <= 0.0:
+        return fail("shadow projection range is zero", fraction, keep)
+
+    return {
+        "length_px": float(length),
+        "mask": keep,
+        "p0": p0,
+        "p1": p1,
+        "mask_circle_fraction": fraction,
+        "reason": None,
+    }
+
+
 def depth_from_shadow(
     shadow_length_px: float,
     solar_elevation_angle_deg: float,
@@ -181,43 +286,56 @@ def estimate_crater_depths(
             continue
 
         roi = image[y1:y2, x1:x2]
-        mask = compute_otsu_shadow_mask(
+        measurement = measure_crater_shadow(
             roi,
             center=(float(det["center_x"] - x1), float(det["center_y"] - y1)),
             radius_px=float(det["radius_px"]),
+            solar_azimuth_deg=solar_azimuth_deg,
         )
-        shadow_len, p0, p1 = measure_shadow_length(mask, solar_azimuth_deg=solar_azimuth_deg)
+        mask = measurement["mask"]
+        p0, p1 = measurement["p0"], measurement["p1"]
+        shadow_len = measurement["length_px"]
 
-        depth_m = depth_from_shadow(
-            shadow_length_px=shadow_len,
-            solar_elevation_angle_deg=solar_elevation_angle_deg,
-            pixel_scale_m=pixel_scale_m,
-        )
-
-        radius_m = max(0.1, 0.5 * det["diameter_px"] * pixel_scale_m)
-        slope_deg = float(np.degrees(np.arctan2(depth_m, radius_m)))
+        if shadow_len is None:
+            depth_m = None
+            slope_deg = None
+        else:
+            depth_m = depth_from_shadow(
+                shadow_length_px=shadow_len,
+                solar_elevation_angle_deg=solar_elevation_angle_deg,
+                pixel_scale_m=pixel_scale_m,
+            )
+            radius_m = max(0.1, 0.5 * det["diameter_px"] * pixel_scale_m)
+            slope_deg = float(np.degrees(np.arctan2(depth_m, radius_m)))
 
         annotated = cv2.cvtColor(roi, cv2.COLOR_GRAY2RGB)
-        cv2.arrowedLine(annotated, p0, p1, (255, 179, 0), 2, tipLength=0.22)
+        if shadow_len is None:
+            label = "NOT MEASURABLE"
+        else:
+            cv2.arrowedLine(annotated, p0, p1, (255, 179, 0), 2, tipLength=0.22)
+            label = f"L={shadow_len:.1f}px  AZ={solar_azimuth_deg:.0f}deg"
         cv2.putText(
             annotated,
-            f"L={shadow_len:.1f}px  AZ={solar_azimuth_deg:.0f}deg",
+            label,
             (6, 14),
             cv2.FONT_HERSHEY_SIMPLEX,
             0.45,
-            (0, 255, 159),
+            (0, 255, 159) if shadow_len is not None else (255, 80, 80),
             1,
             cv2.LINE_AA,
         )
 
         row = {
             "crater_id": det["crater_id"],
-            "shadow_length_px": round(float(shadow_len), 3),
+            "shadow_length_px": None if shadow_len is None else round(float(shadow_len), 3),
             "solar_angle_deg": round(float(solar_elevation_angle_deg), 3),
             "solar_elevation_deg": round(float(solar_elevation_angle_deg), 3),
             "solar_azimuth_deg": round(float(solar_azimuth_deg), 3),
-            "depth_m": round(float(depth_m), 3),
-            "slope_estimate_deg": round(float(slope_deg), 3),
+            "depth_m": None if depth_m is None else round(float(depth_m), 3),
+            "slope_estimate_deg": None if slope_deg is None else round(float(slope_deg), 3),
+            "measurable": shadow_len is not None,
+            "not_measurable_reason": measurement["reason"],
+            "shadow_mask_circle_fraction": round(float(measurement["mask_circle_fraction"]), 4),
             "confidence": None if det.get("confidence") is None else float(det["confidence"]),
             "x1": x1,
             "y1": y1,
@@ -239,10 +357,13 @@ def estimate_crater_depths(
             }
         )
 
+    n_not_measurable = sum(1 for r in rows if not r["measurable"])
     return {
         "rows": rows,
         "rois": rois,
         "formula": "depth_m = shadow_length_px * pixel_scale_m * tan(theta)",
+        "n_craters": len(rows),
+        "n_not_measurable": n_not_measurable,
     }
 
 
@@ -305,6 +426,8 @@ def fuse_depth_estimates(
     used_secondary: set[int] = set()
 
     for p in primary_rows:
+        if p.get("depth_m") is None:
+            continue  # not measurable in the primary view: nothing to fuse
         best_idx = -1
         best_iou = 0.0
         for idx, s in enumerate(secondary_rows):
@@ -317,6 +440,8 @@ def fuse_depth_estimates(
 
         if best_idx >= 0 and best_iou >= iou_threshold:
             s = secondary_rows[best_idx]
+            if s.get("depth_m") is None:
+                continue  # not measurable in the secondary view
             used_secondary.add(best_idx)
             w1 = float(np.clip(p.get("confidence", 0.7), 0.05, 0.99))
             w2 = float(np.clip(s.get("confidence", 0.7), 0.05, 0.99))

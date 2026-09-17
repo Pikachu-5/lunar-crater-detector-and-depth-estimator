@@ -54,6 +54,7 @@ except Exception as exc:  # pragma: no cover
 
 
 TOTAL_STEPS = 9
+NOT_MEASURABLE = "not measurable"
 MISSION_ID = "DIP"
 
 
@@ -285,10 +286,11 @@ def mission_status_from_findings() -> str:
     safe = int(summary.get("safe", 0))
     caution = int(summary.get("caution", 0))
     hazard = int(summary.get("hazard", 0))
+    unknown = int(summary.get("unknown", 0))
 
     if hazard > max(safe, 0):
         return "RED"
-    if hazard > 0 or caution > 0:
+    if hazard > 0 or caution > 0 or unknown > 0:
         return "AMBER"
     return "GREEN"
 
@@ -1110,16 +1112,31 @@ def step_05_depth(params: dict[str, Any]) -> None:
             with c3:
                 st.image(roi_bundle["annotated"], caption="Shadow Arrow Annotation", use_container_width=True)
 
-    df = pd.DataFrame(depth["rows"])
-    st.dataframe(
-        df[["crater_id", "shadow_length_px", "solar_elevation_deg", "solar_azimuth_deg", "depth_m", "slope_estimate_deg"]],
-        use_container_width=True,
-        hide_index=True,
-    )
+    n_bad = int(depth["n_not_measurable"])
+    n_all = int(depth["n_craters"])
+    if n_bad:
+        st.warning(
+            f"{n_bad} of {n_all} craters not measurable — their shadow failed the validity checks, so "
+            "no depth or slope is reported, they are excluded from the terrain model, and they are "
+            "scored without a depth term (zone UNKNOWN)."
+        )
+    else:
+        st.caption(f"0 of {n_all} craters not measurable: every crater passed the shadow validity checks.")
 
-    fig = go.Figure(data=go.Bar(x=df["crater_id"], y=df["depth_m"], marker_color="#f59e0b"))
+    df = pd.DataFrame(depth["rows"])
+    display = df[[
+        "crater_id", "shadow_length_px", "solar_elevation_deg", "solar_azimuth_deg",
+        "depth_m", "slope_estimate_deg", "not_measurable_reason",
+    ]].copy()
+    for col in ("shadow_length_px", "depth_m", "slope_estimate_deg"):
+        display[col] = [NOT_MEASURABLE if v is None else v for v in display[col]]
+    display["not_measurable_reason"] = ["" if v is None else v for v in display["not_measurable_reason"]]
+    st.dataframe(display, use_container_width=True, hide_index=True)
+
+    measured = df[df["depth_m"].notna()]
+    fig = go.Figure(data=go.Bar(x=measured["crater_id"], y=measured["depth_m"], marker_color="#f59e0b"))
     fig.update_layout(
-        title="Crater Depth Estimates",
+        title=f"Crater Depth Estimates (measurable craters only: {len(measured)} of {n_all})",
         paper_bgcolor="#0a0e1a",
         plot_bgcolor="#0a0e1a",
         font=dict(color="#dbe7f4", family="Courier New"),
@@ -1255,6 +1272,8 @@ def _zone_style(zone: str) -> tuple[str, str]:
         return "#1a2a3f", "#7dd3fc"
     if zone == "CAUTION":
         return "#3a2a08", "#f59e0b"
+    if zone == "UNKNOWN":
+        return "#26262b", "#b8b8c0"
     return "#3b1010", "#ef4444"
 
 
@@ -1299,7 +1318,7 @@ def step_07_scoring(params: dict[str, Any]) -> None:
                 <div><b>{row['crater_id']}</b></div>
                 <div>Score: <b>{row['safety_score']:.1f}</b></div>
                 <div>Zone: {row['zone']}</div>
-                <div>Depth: {row['depth_m']:.2f} m</div>
+                <div>Depth: {(f"{row['depth_m']:.2f} m" if row['depth_m'] is not None else NOT_MEASURABLE)}</div>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -1314,6 +1333,8 @@ def step_07_scoring(params: dict[str, Any]) -> None:
             <span style='color:#f59e0b; font-size:1.2rem;'>{s['caution']} CAUTION ZONES</span>
             &nbsp; | &nbsp;
             <span style='color:#ef4444; font-size:1.2rem;'>{s['hazard']} HAZARD ZONES</span>
+            &nbsp; | &nbsp;
+            <span style='color:#b8b8c0; font-size:1.2rem;'>{s.get('unknown', 0)} UNKNOWN (depth not measurable)</span>
         </div>
         """,
         unsafe_allow_html=True,
@@ -1325,7 +1346,8 @@ def step_07_scoring(params: dict[str, Any]) -> None:
     log_once(
         f"score_{params['td']}_{params['gear_span']}_{params['density_radius']}",
         "[SCORER] >> "
-        f"safe={s['safe']} caution={s['caution']} hazard={s['hazard']} | overall={scoring['overall_score']:.1f}",
+        f"safe={s['safe']} caution={s['caution']} hazard={s['hazard']} "
+        f"unknown={s.get('unknown', 0)} | overall={scoring['overall_score']:.1f}",
     )
 
 
